@@ -45,10 +45,10 @@ export default [
         label: "答疑问题查询",
         to: "/end/wentisousuo",
       },
-      {
-        label: "答疑问题添加",
-        to: "/end/wentisousuo/add",
-      },
+      // {
+      //   label: "答疑问题添加",
+      //   to: "/end/wentisousuo/add",
+      // },
     ],
   },
   // {

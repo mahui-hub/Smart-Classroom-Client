@@ -14,7 +14,7 @@
             >&nbsp;<span
               >发表于: {{ addtime ? addtime.substr(0, 10) : "" }}</span
             >
-            <span v-if=""
+            <span v-if="username == nickname"
               ><el-button
                 style="float:right;"
                 size="mini"
@@ -67,9 +67,14 @@
 export default {
   name: "e-forum-item",
   data() {
-    return {};
+    return {
+      username: "",
+    };
   },
   props: {
+    nickname: {
+      type: String,
+    },
     title: {
       type: String,
     },
@@ -88,7 +93,9 @@ export default {
     deleteItem() {},
     edit() {},
   },
-  created() {},
+  created() {
+    this.username = localStorage.getItem("username");
+  },
   mounted() {},
   destroyed() {},
 };

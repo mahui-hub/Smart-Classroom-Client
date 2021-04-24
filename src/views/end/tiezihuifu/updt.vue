@@ -2,7 +2,7 @@
   <div class="tiezihuifu-add" v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix updt">
-        <el-page-header @back="$router.go(-1)" content="编辑帖子回复">
+        <el-page-header @back="$router.go(-1)" content="编辑帖子回复1212">
         </el-page-header>
       </div>
       <div class="form-database-form">

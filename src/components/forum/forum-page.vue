@@ -2,7 +2,6 @@
   <div class="e-forum-page">
     <template v-for="(row, index) in forumList">
       <slot name="default" :row="row" :index="index" :floor="getFloor(index)">
-        <el-button>1212</el-button>
       </slot>
     </template>
 

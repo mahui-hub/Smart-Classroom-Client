@@ -176,20 +176,20 @@ export default [
       },
     ],
   },
-  {
-    label: "资源管理",
-    to: "",
-    children: [
-      // {
-      //   label: "资源添加",
-      //   to: "/end/ziyuanadd",
-      // },
-      {
-        label: "资源管理",
-        to: "/end/ziyuan",
-      },
-    ],
-  },
+  // {
+  //   label: "资源管理",
+  //   to: "",
+  //   children: [
+  //     // {
+  //     //   label: "资源添加",
+  //     //   to: "/end/ziyuanadd",
+  //     // },
+  //     {
+  //       label: "资源管理",
+  //       to: "/end/ziyuan",
+  //     },
+  //   ],
+  // },
   {
     label: "屏蔽词管理",
     to: "",

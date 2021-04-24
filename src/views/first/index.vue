@@ -31,7 +31,7 @@
                   style="float: right; padding: 3px 0"
                   type="text"
                   v-if="role == '学生'"
-                  @click.native="$router.push('/admin/xueshengupdtself')"
+                  @click.native="$router.push('/end/xueshengupdtself')"
                   >修改资料</el-button
                 >
               </div>
@@ -165,11 +165,12 @@
           <el-form :model="search" :inline="true" style="float: right;">
             <el-form-item prop="kechengmingcheng">
               <el-input
+                clearable
                 type="text"
                 size="mini"
                 style="width: 150px"
                 v-model="search.kechengmingcheng"
-                @keyup.enter.native="searchSubmit()"
+                @keyup.enter.native="searchSubmit"
                 placeholder="请输入课程名称"
               >
               </el-input>

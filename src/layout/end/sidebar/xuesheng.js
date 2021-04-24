@@ -40,15 +40,15 @@ export default [
     ],
   },
   {
-    label: "问题搜索管理",
+    label: "答疑信息管理",
     to: "",
     children: [
+      // {
+      //   label: "问题搜索添加",
+      //   to: "/end/wentisousuoadd",
+      // },
       {
-        label: "问题搜索添加",
-        to: "/end/wentisousuoadd",
-      },
-      {
-        label: "问题搜索查询",
+        label: "答疑信息管理",
         to: "/end/wentisousuo",
       },
     ],

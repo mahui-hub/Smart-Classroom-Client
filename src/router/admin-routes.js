@@ -98,6 +98,13 @@ export default [
     component: () => import("@/views/end/gonggao/detail"),
     meta: { title: "公告详情" },
   },
+  {
+    path: "xueshengupdtself",
+    name: "AdminxueshengUpdtSelf",
+    props: (route) => ({ id: store.state.user.session.id }),
+    component: () => import("@/views/end/xuesheng/updt"),
+    meta: { title: "编辑学生", authLogin: true },
+  },
   // {
   //   path: "gonggao_faburen",
   //   name: "AdmingonggaoListfaburen",

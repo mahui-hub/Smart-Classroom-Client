@@ -10,6 +10,10 @@
       <span class="el-icon-timer">时间：{{ map.addtime }}</span>
       <span class="el-icon-thumb">点赞量：{{ map.dianzanliang }}</span>
       <span class="el-icon-info">回复数：{{ map.tiezihuifuCount }}</span>
+      <span class="el-icon-download" v-if="map.fujian != ''">
+        资源：
+        <e-file-list v-model="map.fujian"> </e-file-list>
+      </span>
     </div>
     <div class="app-content">
       <img :src="map.tupian" alt="" style="width:100px;height:100px;" />
@@ -32,6 +36,7 @@
           <e-forum-item
             :floor="floor"
             :addtime="row.addtime"
+            :nickname="row.user.xuehao"
             :content="row.huifuneirong"
           >
             <e-user

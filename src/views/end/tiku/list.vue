@@ -46,18 +46,18 @@
 
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button @click="$goto('/admin/shitiadd?id=' + row.id)" type="text">
+          <el-button @click="$goto('/end/shitiadd?id=' + row.id)" type="text">
             试题添加
           </el-button>
 
           <el-button
-            @click="$goto({ path: '/admin/tikudetail', query: { id: row.id } })"
+            @click="$goto({ path: '/end/tikudetail', query: { id: row.id } })"
             type="text"
             >详情</el-button
           >
 
           <el-button
-            @click="$goto({ path: '/admin/tikuupdt', query: { id: row.id } })"
+            @click="$goto({ path: '/end/tikuupdt', query: { id: row.id } })"
             type="text"
             >编辑</el-button
           >

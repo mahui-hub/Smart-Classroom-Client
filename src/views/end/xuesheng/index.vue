@@ -145,9 +145,16 @@
                   query: { id: row.id },
                 })
               " -->
-          <el-button @click="edit(row)" type="text">编辑信息</el-button>
+                   <el-button @click="edit(row)" v-if="role == '管理员'" type="text"
+            >编辑信息</el-button
+          >
 
-          <el-button type="text" @click="deleteItem(row)">删除信息 </el-button>
+          <el-button
+            type="text"
+            v-if="role == '管理员'"
+            @click="deleteItem(row)"
+            >删除信息
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
