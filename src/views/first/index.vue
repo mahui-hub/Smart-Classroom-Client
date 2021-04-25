@@ -5,7 +5,7 @@
       <el-row :gutter="10">
         <el-col :span="7"
           ><div class="baseInfo">
-            <el-card class="box-card" style="height:300px;">
+            <el-card class="box-card" style="height: 300px">
               <div slot="header" class="clearfix">
                 <span v-if="role != '管理员'"
                   >欢迎您， <b>{{ $session.xingming }}</b></span
@@ -138,13 +138,13 @@
               </el-carousel>
             </el-col>
             <el-col :span="12">
-              <el-tabs v-model="activeName" style="height:300px;">
+              <el-tabs v-model="activeName" style="height: 300px">
                 <el-tab-pane label="通知公告" name="first">
                   <div v-for="m in gonggaolist" :key="m.id">
-                    <div style="margin:10px 0;">
+                    <div style="margin: 10px 0">
                       <span
                         @click="gonggaoDetail(m.id)"
-                        style="cursor: pointer;"
+                        style="cursor: pointer"
                       >
                         {{ m.biaoti }}</span
                       >
@@ -162,7 +162,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span class="el-icon-s-grid">课程资源</span>
-          <el-form :model="search" :inline="true" style="float: right;">
+          <el-form :model="search" :inline="true" style="float: right">
             <el-form-item prop="kechengmingcheng">
               <el-input
                 clearable
@@ -212,7 +212,7 @@
               >
             </div>
             <div class="card-picture">
-              <img :src="o.tupian" style="width:250px;height:250px;" />
+              <img :src="o.tupian" style="width: 250px; height: 250px" />
             </div>
           </el-card>
         </div>
@@ -245,6 +245,8 @@ export default {
         banjimingcheng: "",
         kechengjieshao: "",
         faburen: "",
+        banjiid: "",
+        jiaoshiid: "",
       },
       mapkechengleixing2: [],
     };
@@ -252,11 +254,22 @@ export default {
   created() {
     this.loadPageData();
     this.loadList();
-    this.initKengcheng();
     this.role = localStorage.getItem("role");
     this.token = localStorage.getItem("token");
+    this.panduan();
   },
   methods: {
+    panduan() {
+      if (localStorage.getItem("role") == "管理员") {
+        this.initKengcheng();
+      } else if (localStorage.getItem("role") == "学生") {
+        this.search.banjiid = localStorage.getItem("banjiId");
+        this.initKengcheng();
+      } else if (localStorage.getItem("role") == "教师") {
+        this.search.jiaoshiid = localStorage.getItem("jiaoshiid");
+        this.initKengcheng();
+      }
+    },
     gonggaoDetail(id) {
       this.$router.push("/gonggaodetail?id=" + id);
     },

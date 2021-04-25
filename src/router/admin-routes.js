@@ -510,19 +510,19 @@ export default [
     component: () => import("@/views/end/wentisousuo/index"),
     meta: { title: "问题搜索列表", authLogin: true },
   },
-  {
-    path: "wentisousuoadd",
-    name: "AdminwentisousuoAdd",
-    component: () => import("@/views/end/wentisousuo/add"),
-    meta: { title: "添加问题搜索", authLogin: true },
-  },
-  {
-    path: "wentisousuoupdt",
-    name: "AdminwentisousuoUpdt",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/end/wentisousuo/updt"),
-    meta: { title: "编辑问题搜索", authLogin: true },
-  },
+  // {
+  //   path: "wentisousuoadd",
+  //   name: "AdminwentisousuoAdd",
+  //   component: () => import("@/views/end/wentisousuo/add"),
+  //   meta: { title: "添加问题搜索", authLogin: true },
+  // },
+  // {
+  //   path: "wentisousuoupdt",
+  //   name: "AdminwentisousuoUpdt",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/end/wentisousuo/updt"),
+  //   meta: { title: "编辑问题搜索", authLogin: true },
+  // },
   {
     path: "wentisousuodetail",
     props: (route) => ({ id: route.query.id }),
@@ -559,15 +559,15 @@ export default [
   {
     path: "tiku",
     name: "AdmintikuList",
-    component: () => import("@/views/end/tiku/list"),
+    component: () => import("@/views/end/tiku/index"),
     meta: { title: "题库列表", authLogin: true },
   },
-  {
-    path: "tiku_faburen",
-    name: "AdmintikuListfaburen",
-    component: () => import("@/views/end/tiku/list-faburen"),
-    meta: { title: "题库列表", authLogin: true },
-  },
+  // {
+  //   path: "tiku_faburen",
+  //   name: "AdmintikuListfaburen",
+  //   component: () => import("@/views/end/tiku/list-faburen"),
+  //   meta: { title: "题库列表", authLogin: true },
+  // },
   {
     path: "tikuadd",
     name: "AdmintikuAdd",

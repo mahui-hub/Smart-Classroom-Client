@@ -57,24 +57,23 @@
             type="text"
             >详情</el-button
           >
-
           <el-button
-            @click="
-              $goto({
-                path: '/end/wentisousuoupdt',
-                query: { id: row.id },
-              })
-            "
+            @click="edit(row)"
             v-if="row.xuehao == username"
             type="text"
             >编辑</el-button
           >
 
-          <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+          <el-button
+            type="text"
+            v-if="row.xuehao == username"
+            @click="deleteItem(row)"
+            >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="e-pages" style="margin-top: 10px;text-align: center">
+    <div class="e-pages" style="margin-top: 10px; text-align: center">
       <el-pagination
         @current-change="loadList"
         :current-page="page"
@@ -95,26 +94,38 @@
           status-icon
           validate-on-rule-change
         >
-          <el-form-item label="课程名称" prop="kechengmingcheng">
-            <el-input
+          <el-form-item label="课程名称" prop="kechengmingcheng" required>
+            <!-- <el-input
               placeholder="请输入课程名称"
               v-model="form.kechengmingcheng"
-            />
+            /> -->
+            <el-select
+              v-model="form.kechengmingcheng"
+              style="width: 100%"
+              clearable
+            >
+              <el-option
+                v-for="m in kechengmingchengList"
+                :key="m.kechengmingcheng"
+                :value="m.kechengmingcheng"
+                :label="m.kechengmingcheng"
+              ></el-option>
+            </el-select>
           </el-form-item>
 
-          <el-form-item label="问题标题" prop="wentibiaoti">
+          <el-form-item label="问题标题" prop="wentibiaoti" required>
             <el-input type="textarea" v-model="form.wentibiaoti"></el-input>
           </el-form-item>
 
-          <el-form-item label="问题内容" prop="wentineirong">
+          <el-form-item label="问题内容" prop="wentineirong" required>
             <el-input type="textarea" v-model="form.wentineirong"></el-input>
           </el-form-item>
 
-          <el-form-item label="答疑内容" prop="dayineirong">
+          <el-form-item label="答疑内容" prop="dayineirong" required>
             <el-input type="textarea" v-model="form.dayineirong"></el-input>
           </el-form-item>
 
-          <el-form-item label="学号" prop="xuehao">
+          <el-form-item label="发布人" prop="xuehao" required>
             <el-input v-model="form.xuehao" readonly disabled></el-input>
           </el-form-item>
         </el-form>
@@ -122,6 +133,53 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 编辑答题内容 -->
+    <el-dialog title="编辑答疑问题" :visible.sync="dialogVisible1" size="mini">
+      <div class="form-database-form">
+        <el-form
+          :model="form1"
+          ref="formModel1"
+          label-width="100px"
+          status-icon
+          validate-on-rule-change
+        >
+          <el-form-item label="课程名称" prop="kechengmingcheng" required>
+            <el-input
+              placeholder="输入课程名称"
+              v-model="form1.kechengmingcheng"
+            />
+          </el-form-item>
+
+          <el-form-item label="问题标题" prop="wentibiaoti" required>
+            <el-input type="textarea" v-model="form1.wentibiaoti"></el-input>
+          </el-form-item>
+
+          <el-form-item label="问题内容" prop="wentineirong" required>
+            <el-input
+              type="textarea"
+              v-model="form1.wentineirong"
+              :rows="2"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="答疑内容" prop="dayineirong" required>
+            <el-input
+              type="textarea"
+              v-model="form1.dayineirong"
+              :rows="4"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="发布人" prop="xuehao">
+            <el-input v-model="form1.xuehao" readonly disabled></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible1 = false">取 消</el-button>
+        <el-button type="primary" @click="submit1">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -140,6 +198,7 @@ import rule from "@/utils/rule";
 export default {
   data() {
     return {
+      kechengmingchengList: [],
       rule,
       form: {
         kechengmingcheng: "",
@@ -149,6 +208,14 @@ export default {
         xuehao: this.$store.state.user.session.username,
       },
       dialogVisible: false,
+      dialogVisible1: false,
+      form1: {
+        kechengmingcheng: "",
+        wentibiaoti: "",
+        wentineirong: "",
+        dayineirong: "",
+        xuehao: this.$store.state.user.session.username,
+      },
       username: "",
       loading: false,
       list: [],
@@ -166,6 +233,85 @@ export default {
   watch: {},
   computed: {},
   methods: {
+    edit(row) {
+      console.log(row);
+      this.dialogVisible1 = true;
+      this.form1 = row;
+    },
+    submit1() {
+      this.$refs.formModel1
+        .validate()
+        .then((res) => {
+          if (this.loading) return;
+          this.loading = true;
+          var form = this.form1;
+
+          this.$post(api.wentisousuo.update, form)
+            .then((res) => {
+              this.loading = false;
+              if (res.code == api.code.OK) {
+                this.$message.success("修改成功");
+                this.dialogVisible1 = false;
+                this.loadList(1);
+                this.$refs.formModel1.resetFields();
+                // this.loadInfo3();
+              } else {
+                this.$message.error(res.msg);
+              }
+            })
+            .catch((err) => {
+              this.loading = false;
+              this.$message.error(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    },
+    loadInfo3() {
+      // 更新数据,获取数据
+      this.loading = true;
+      var form = this.form;
+      this.$post(api.wentisousuo.edit, {
+        id: this.id,
+      })
+        .then((res) => {
+          this.loading = false;
+          if (res.code == api.code.OK) {
+            extend(this, res.data);
+            this.form = res.data.mmm;
+          } else {
+            this.$message.error(res.msg);
+            this.$router.go(-1);
+          }
+        })
+        .catch((err) => {
+          this.$message.error(err.message);
+          this.$router.go(-1);
+        });
+    },
+    initKecheng() {
+      // 防止重新点加载列表
+      // 筛选条件
+      var filter = extend(true, {}, this.search1, {
+        page: 1,
+        pagesize: 10,
+      });
+
+      this.$post(api.kecheng.list, filter)
+        .then((res) => {
+          if (res.code == api.code.OK) {
+            this.kechengmingchengList = res.data.list;
+            // extend(this, res.data);
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
+    },
     submit() {
       this.$refs.formModel
         .validate()
@@ -174,7 +320,7 @@ export default {
           this.loading = true;
           var form = this.form;
 
-          this.$post(api.wentiqiangda.insert, form)
+          this.$post(api.wentisousuo.insert, form)
             .then((res) => {
               this.loading = false;
               if (res.code == api.code.OK) {
@@ -201,7 +347,7 @@ export default {
       var form = this.form;
       // 获取模块得数据
       this.loading = true;
-      this.$post(api.wentiqiangda.create, {
+      this.$post(api.wentisousuo.create, {
         id: this.$route.query.id,
       })
         .then((res) => {
@@ -312,7 +458,7 @@ export default {
       this.pagesize = Math.floor(this.$route.query.pagesize);
       delete search.pagesize;
     }
-
+    this.initKecheng();
     this.loadList(1);
   },
   mounted() {},

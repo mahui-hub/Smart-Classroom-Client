@@ -1,26 +1,26 @@
 export default [
-  {
-    label: "论坛管理",
-    to: "",
-    children: [
-      // {
-      //     label:'帖子添加',
-      //     to:'/end/tieziadd',
-      // },
-      {
-        label: "帖子查询",
-        to: "/end/tiezi_faburen",
-      },
-      {
-        label: "回复查询",
-        to: "/end/tiezihuifu_huifuren",
-      },
-      {
-        label: "点赞查询",
-        to: "/end/dianzan_dianzanren",
-      },
-    ],
-  },
+  // {
+  //   label: "论坛管理",
+  //   to: "",
+  //   children: [
+  //     // {
+  //     //     label:'帖子添加',
+  //     //     to:'/end/tieziadd',
+  //     // },
+  //     {
+  //       label: "帖子查询",
+  //       to: "/end/tiezi_faburen",
+  //     },
+  //     {
+  //       label: "回复查询",
+  //       to: "/end/tiezihuifu_huifuren",
+  //     },
+  //     {
+  //       label: "点赞查询",
+  //       to: "/end/dianzan_dianzanren",
+  //     },
+  //   ],
+  // },
   {
     label: "抢答问题管理",
     to: "",
@@ -29,10 +29,10 @@ export default [
         label: "抢答问题查询",
         to: "/end/qiangdawenti_qiangdaren",
       },
-      {
-        label: "回答问题查询",
-        to: "/end/huidawenti_qiangdaren",
-      },
+      // {
+      //   label: "回答问题查询",
+      //   to: "/end/huidawenti_qiangdaren",
+      // },
       {
         label: "评阅问题查询",
         to: "/end/pingyuewenti_qiangdaren",

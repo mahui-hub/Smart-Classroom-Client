@@ -11,17 +11,17 @@
                                 </el-form-item>
 
 
-                                <el-form-item label="编号">
+                                <!-- <el-form-item label="编号">
                                     <el-input v-model="search.bianhao"></el-input>
-                                </el-form-item>
+                                </el-form-item> -->
 
-                                <el-form-item label="标题">
+                                <el-form-item label="问题标题">
                                     <el-input v-model="search.biaoti"></el-input>
                                 </el-form-item>
 
-                                <el-form-item label="发布人">
+                                <!-- <el-form-item label="发布人">
                                     <el-input v-model="search.faburen"></el-input>
-                                </el-form-item>
+                                </el-form-item> -->
 
                                 <el-form-item>
                                     <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
@@ -33,7 +33,7 @@
                             <table width="100%" border="1" class="table table-list table-bordered table-hover">
                                 <thead>
                                 <tr align="center">
-                                    <th> 编号</th>
+                                    <th> 问题编号</th>
                                     <th> 标题</th>
                                     <th> 图片</th>
                                     <th> 抢答人数</th>

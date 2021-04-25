@@ -15,12 +15,22 @@
         <el-form-item label="问题标题">
           <el-input v-model="search.biaoti"></el-input>
         </el-form-item>
-        <el-form-item label="发布人">
+          <el-form-item label="课程名称" prop="kechengid">
+          <el-select v-model="search.kechengid" style="width: 100%" clearable>
+            <el-option
+              v-for="m in kechengmingchengList"
+              :key="m.id"
+              :value="m.id"
+              :label="m.kechengmingcheng"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="发布人">
           <el-input v-model="search.faburen"></el-input>
         </el-form-item>
         <el-form-item label="抢答人">
           <el-input v-model="search.qiangdaren"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search"
             >查询</el-button
@@ -32,16 +42,21 @@
     <el-table border :data="list" highlight-current-row stripe>
       <el-table-column type="index" label=" "></el-table-column>
       <!-- 序号 -->
-
-      <el-table-column label="编号" align="center">
+      <el-table-column label="抢答编号" align="center">
         <template slot-scope="{ row }">
           {{ row.bianhao }}
         </template>
       </el-table-column>
-      <el-table-column label="标题" align="center">
+      <el-table-column label="问题标题" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }">
           {{ row.biaoti }}
         </template>
+      </el-table-column>
+         <el-table-column
+        label="课程名称"
+        align="center"
+        :formatter="kechengFormatter"
+      >
       </el-table-column>
       <!-- <el-table-column label="图片" align="center">
         <template slot-scope="{ row }">
@@ -53,25 +68,26 @@
           {{ row.faburen }}
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+         <!-- <el-table-column label="抢答人" align="center">
+        <template slot-scope="{ row }">
+          {{ row.qiangdaren }}
+        </template>
+      </el-table-column> -->
+      <el-table-column label="回答内容" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }">
           {{ row.beizhu }}
         </template>
       </el-table-column>
-      <el-table-column label="抢答人" align="center">
-        <template slot-scope="{ row }">
-          {{ row.qiangdaren }}
-        </template>
-      </el-table-column>
+   
 
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button
+          <!-- <el-button
             @click="$goto('/end/huidawentiadd?id=' + row.id)"
             type="text"
           >
             回答问题添加
-          </el-button>
+          </el-button> -->
 
           <el-button
             @click="
@@ -129,23 +145,54 @@ export default {
       loading: false,
       list: [],
       search: {
+        kechengid:'',
         bianhao: "",
-
         biaoti: "",
-
         faburen: "",
-
         qiangdaren: "",
       },
       total: {},
       page: 1, // 当前页
       pagesize: 10, // 页大小
       totalCount: 0, // 总行数
+      kechengmingchengList:[]
     };
+    
   },
   watch: {},
   computed: {},
   methods: {
+     initKecheng() {
+      const params = {};
+      params.kechengbianhao = "";
+      params.kechengmingcheng = "";
+      params.kechengleixing = "";
+      params.jiaoshiid=localStorage.getItem('jiaoshiid')
+      params.pagesize = 10;
+      params.page = 1;
+      this.$post(api.kecheng.list, params)
+        .then((res) => {
+          if (res.code == api.code.OK) {
+            this.kechengmingchengList = res.data.list;
+            // extend(this, res.data);
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
+    },
+     kechengFormatter(row) {
+      var name = "";
+      this.kechengmingchengList.forEach(function (item) {
+        if (row.kechengid == item.id) {
+          name = item.kechengmingcheng;
+        }
+      });
+      return name;
+    },
     searchSubmit() {
       this.loadList(1);
     },
@@ -155,6 +202,7 @@ export default {
     },
 
     loadList(page) {
+      this.search.qiangdaren=localStorage.getItem('username')
       // 防止重新点加载列表
       if (this.loading) return;
       this.loading = true;
@@ -235,7 +283,7 @@ export default {
       this.pagesize = Math.floor(this.$route.query.pagesize);
       delete search.pagesize;
     }
-
+this.initKecheng()
     this.loadList(1);
   },
   mounted() {},

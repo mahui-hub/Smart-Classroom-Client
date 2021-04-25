@@ -5,7 +5,12 @@
         <el-row :gutter="15">
           <el-col :md="24">
             <div
-              style="margin:15px 0 0 0;box-shadow:0px 0px 2px 2px #DDDDDD;background: #ffffff;padding: 10px"
+              style="
+                margin: 15px 0 0 0;
+                box-shadow: 0px 0px 2px 2px #dddddd;
+                background: #ffffff;
+                padding: 10px;
+              "
             >
               <e-module-widget-title title="教学评价">
                 <div class="list-table">
@@ -18,7 +23,8 @@
                       <tr align="center">
                         <th>题库编号</th>
                         <th>题库名称</th>
-                        <th>教师</th>
+                        <th>课程名称</th>
+                        <!-- <th>教师</th> -->
                         <th>发布人</th>
                         <th width="180" align="center">添加时间</th>
                         <th width="80" align="center">操作</th>
@@ -28,7 +34,8 @@
                       <tr v-for="(r, i) in list">
                         <td>{{ r.tikubianhao }}</td>
                         <td>{{ r.tikumingcheng }}</td>
-                        <td>{{ r.jiaoshi }}</td>
+                        <td>{{ r.kechengid }}</td>
+                        <!-- <td>{{ r.jiaoshi }}</td> -->
                         <td>{{ r.faburen }}</td>
 
                         <td align="center" v-text="r.addtime"></td>
@@ -37,16 +44,14 @@
                           <!-- <el-button @click="$goto('/tikudetail?id=' + r.id)">
                             详细
                           </el-button> -->
-                          <el-button @click="xingxi(r)">
-                            详细
-                          </el-button>
+                          <el-button @click="xingxi(r)"> 详细 </el-button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
 
-                <div style="margin-top: 10px;text-align: center">
+                <div style="margin-top: 10px; text-align: center">
                   <el-pagination
                     @current-change="loadList"
                     :current-page="page"
@@ -63,7 +68,7 @@
         </el-row>
       </e-container>
     </div>
-    <el-dialog
+    <!-- <el-dialog
       title="选择课程进行评价"
       :visible.sync="dialogVisible"
       size="mini"
@@ -86,7 +91,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="submit2">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <style type="text/scss" scoped lang="scss"></style>
@@ -131,8 +136,9 @@ export default {
       this.$router.push("/tikudetail?id=" + this.id);
     },
     xingxi(row) {
-      this.dialogVisible = true;
-      this.id = row.id;
+      // this.dialogVisible = true;
+      // this.id = row.id;
+      this.$router.push("/tikudetail?id=" + row.id);
     },
     searchSubmit() {
       this.loadList(1);

@@ -6,22 +6,22 @@
         <el-form-item label="题库名称">
           <el-input v-model="search.tikumingcheng"></el-input>
         </el-form-item>
-        <el-form-item label="评价编号">
+        <!-- <el-form-item label="评价编号">
           <el-input v-model="search.kaoshibianhao"></el-input>
-        </el-form-item>
-        <el-form-item label="单选题得分">
+        </el-form-item> -->
+        <!-- <el-form-item label="单选题得分">
           <el-input
             type="text"
-            style="width:100px;"
+            style="width: 100px"
             v-model="search.danxuantidefen_start"
           ></el-input>
           -
           <el-input
             type="text"
-            style="width:100px;"
+            style="width: 100px"
             v-model="search.danxuantidefen_end"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search"
             >查询</el-button
@@ -39,9 +39,9 @@
     >
       <el-table-column type="index" align="center"></el-table-column>
       <!-- 序号 -->
-      <el-table-column label="评价编号" align="center">
+      <!-- <el-table-column label="评价编号" align="center">
         <template slot-scope="{ row }"> {{ row.kaoshibianhao }} </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="评价人" align="center">
         <template slot-scope="{ row }"> {{ row.kaoshiren }} </template>
       </el-table-column>
@@ -50,6 +50,12 @@
       </el-table-column>
       <el-table-column label="题库名称" align="center">
         <template slot-scope="{ row }"> {{ row.tikumingcheng }} </template>
+      </el-table-column>
+      <el-table-column
+        label="课程名称"
+        align="center"
+        :formatter="kechengFormatter"
+      >
       </el-table-column>
       <el-table-column label="发布人" align="center">
         <template slot-scope="{ row }"> {{ row.faburen }} </template>
@@ -97,7 +103,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="e-pages" style="margin-top: 10px;text-align: center">
+    <div class="e-pages" style="margin-top: 10px; text-align: center">
       <el-pagination
         @current-change="loadList"
         :current-page="page"
@@ -143,13 +149,14 @@ import objectDiff from "objectdiff";
 export default {
   data() {
     return {
+      kechengmingchengList: [],
       loading: false,
       list: [],
       search: {
         tikumingcheng: "",
-
+        kechengid: "",
+        tikutype: "评价题库",
         kaoshibianhao: "",
-
         danxuantidefen_start: "",
         danxuantidefen_end: "",
       },
@@ -162,6 +169,37 @@ export default {
   watch: {},
   computed: {},
   methods: {
+    initKecheng() {
+      const params = {};
+      params.kechengbianhao = "";
+      params.kechengmingcheng = "";
+      params.kechengleixing = "";
+      params.pagesize = 10;
+      params.page = 1;
+
+      this.$post(api.kecheng.list, params)
+        .then((res) => {
+          if (res.code == api.code.OK) {
+            this.kechengmingchengList = res.data.list;
+            // extend(this, res.data);
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
+    },
+    kechengFormatter(row) {
+      var name = "";
+      this.kechengmingchengList.forEach(function (item) {
+        if (row.kechengid == item.id) {
+          name = item.kechengmingcheng;
+        }
+      });
+      return name;
+    },
     searchSubmit() {
       this.loadList(1);
     },
@@ -252,7 +290,7 @@ export default {
       this.pagesize = Math.floor(this.$route.query.pagesize);
       delete search.pagesize;
     }
-
+    this.initKecheng();
     this.loadList(1);
   },
   mounted() {},

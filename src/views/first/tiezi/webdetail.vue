@@ -35,6 +35,8 @@
         <template v-slot:default="{ row, floor }">
           <e-forum-item
             :floor="floor"
+            :id="row.id"
+            :row="row"
             :addtime="row.addtime"
             :nickname="row.user.xuehao"
             :content="row.huifuneirong"

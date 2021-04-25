@@ -42,7 +42,7 @@ export default [
                 to: '/end/wentisousuoadd',
             },*/
       {
-        label: "答疑问题查询",
+        label: "答疑问题管理",
         to: "/end/wentisousuo",
       },
       // {

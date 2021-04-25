@@ -3,9 +3,9 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" :inline="true" size="mini">
-        <el-form-item label="课程编号">
+        <!-- <el-form-item label="课程编号">
           <el-input v-model="search.kechengbianhao"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="课程名称">
           <el-input v-model="search.kechengmingcheng"></el-input>
         </el-form-item>
@@ -38,7 +38,7 @@
       <!-- 序号 -->
       <el-table-column label="图片" align="center">
         <template slot-scope="{ row }">
-          <e-img :src="row.tupian" style="width:80px;height:100px;" />
+          <e-img :src="row.tupian" style="width: 80px; height: 100px" />
         </template>
       </el-table-column>
       <el-table-column label="课程编号" align="center">
@@ -65,13 +65,13 @@
 
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button
+          <!-- <el-button
             @click="
               $goto({ path: '/end/kechengdetail', query: { id: row.id } })
             "
             type="text"
             >详情</el-button
-          >
+          > -->
           <el-button @click="edit(row)" type="text">编辑</el-button>
           <!-- <el-button
             @click="$goto({ path: '/end/kechengupdt', query: { id: row.id } })"
@@ -82,7 +82,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="e-pages" style="margin-top: 10px;text-align: center">
+    <div class="e-pages" style="margin-top: 10px; text-align: center">
       <el-pagination
         @current-change="loadList"
         :current-page="page"
@@ -130,7 +130,7 @@
           </el-form-item> -->
 
           <el-form-item label="课程类型" prop="kechengleixing">
-            <el-select v-model="form.kechengleixing" style="width:100%;">
+            <el-select v-model="form.kechengleixing" style="width: 100%">
               <el-option
                 :key="m.kechengleixing"
                 v-for="m in kechengleixingList"
@@ -139,8 +139,8 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="教师姓名" prop="jiaoshiid">
-            <el-select v-model="form.jiaoshiid" style="width:100%;">
+          <el-form-item label="教师姓名" prop="jiaoshiid" v-if="role=='管理员'">
+            <el-select v-model="form.jiaoshiid" style="width: 100%">
               <el-option
                 :key="m.id"
                 v-for="m in jiaoshilist"
@@ -171,7 +171,7 @@
             </el-checkbox-group> -->
             <el-select
               v-model="form.banjimingcheng"
-              style="width:100%;"
+              style="width: 100%"
               @change="handleChange"
             >
               <el-option
@@ -251,7 +251,7 @@
             prop="kechengleixing"
             :rules="[{ required: true, message: '请选择课程类型' }]"
           >
-            <el-select v-model="form1.kechengleixing" style="width:100%;">
+            <el-select v-model="form1.kechengleixing" style="width: 100%">
               <el-option
                 :key="m.kechengleixing"
                 v-for="m in kechengleixingList"
@@ -261,7 +261,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="教师姓名" prop="jiaoshiid">
-            <el-select v-model="form1.jiaoshiid" style="width:100%;">
+            <el-select v-model="form1.jiaoshiid" style="width: 100%" disabled>
               <el-option
                 :key="m.id"
                 v-for="m in jiaoshilist"
@@ -292,7 +292,7 @@
             </el-checkbox-group> -->
             <el-select
               v-model="form1.banjimingcheng"
-              style="width:100%;"
+              style="width: 100%"
               @change="handleChange1"
             >
               <el-option
@@ -353,6 +353,7 @@ import rule from "@/utils/rule";
 export default {
   data() {
     return {
+      role:'',
       jiaoshilist: [],
       checkAll: false,
       isIndeterminate: true,
@@ -376,6 +377,8 @@ export default {
       loading: false,
       list: [],
       search: {
+        jiaoshiid: "",
+
         kechengbianhao: "",
         kechengmingcheng: "",
         kechengleixing: "",
@@ -415,9 +418,17 @@ export default {
     };
   },
   methods: {
+    panduan() {
+      if (localStorage.getItem("role") == "管理员") {
+        this.loadList1();
+      } else if (localStorage.getItem("role") == "教师") {
+        this.search.jiaoshiid = localStorage.getItem("jiaoshiid");
+        this.loadList1();
+      }
+    },
     typeformatter(row) {
       var name = "";
-      this.kechengleixingList.forEach(function(item) {
+      this.kechengleixingList.forEach(function (item) {
         if (row.kechengleixing == item.id) {
           name = item.kechengleixing;
         }
@@ -445,7 +456,7 @@ export default {
     },
     handleChange(data) {
       var id = "";
-      this.banjiList.map(function(item) {
+      this.banjiList.map(function (item) {
         if (item.banjimingcheng == data) {
           id = item.id;
         }
@@ -454,7 +465,7 @@ export default {
     },
     handleChange1(data) {
       var id = "";
-      this.banjiList.map(function(item) {
+      this.banjiList.map(function (item) {
         if (item.banjimingcheng == data) {
           id = item.id;
         }
@@ -576,6 +587,9 @@ export default {
         .then((res) => {
           if (this.loading) return;
           this.loading = true;
+          if (localStorage.getItem("role") == "教师") {
+            this.form.jiaoshiid = localStorage.getItem("jiaoshiid");
+          }
           var form = this.form;
           console.log(form);
           this.$post(api.kecheng.insert, form)
@@ -624,6 +638,9 @@ export default {
     },
     addSubmit() {
       this.dialogVisible = true;
+      if(localStorage.getItem('role')=='教师'){
+        this.form.jiaoshiid=localStorage.getItem('jiaoshiid')
+      }
     },
     searchSubmit() {
       this.loadList(1);
@@ -739,8 +756,10 @@ export default {
       this.pagesize = Math.floor(this.$route.query.pagesize);
       delete search.pagesize;
     }
+    this.role=localStorage.getItem('role')
+    this.panduan();
     this.loadList2();
-    this.loadList1();
+    // this.loadList1();
     this.loadInfo();
   },
 };

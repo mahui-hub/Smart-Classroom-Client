@@ -8,7 +8,7 @@
         <el-form
           :model="form"
           ref="formModel"
-          label-width="130px"
+          label-width="100px"
           status-icon
           validate-on-rule-change
         >
@@ -19,7 +19,9 @@
           <el-form-item v-if="isRead" label="题库名称" prop="tikumingcheng">
             <el-input v-model="form.tikumingcheng" disabled></el-input>
           </el-form-item>
-
+          <el-form-item label="发布人" prop="faburen">
+            <el-input v-model="form.faburen" readonly disabled></el-input>
+          </el-form-item>
           <el-form-item
             label="试题题目"
             prop="shititimu"
@@ -30,7 +32,7 @@
           </el-form-item>
 
           <el-form-item label="题目类型" prop="leixing">
-            <el-select v-model="form.leixing"
+            <el-select v-model="form.leixing" style="width: 100%"
               ><el-option label="单选题" value="单选题"></el-option>
               <el-option label="多选题" value="多选题"></el-option>
             </el-select>
@@ -44,10 +46,6 @@
               duoxuanti=""
               panduanti=""
             ></e-paper>
-          </el-form-item>
-
-          <el-form-item label="发布人" prop="faburen">
-            <el-input v-model="form.faburen" readonly disabled></el-input>
           </el-form-item>
 
           <el-form-item v-if="btnText">
@@ -77,6 +75,8 @@ export default {
       rule,
       loading: false,
       form: {
+        kechengid:"",
+        tikutype:"",
         tikubianhao: "",
         tikumingcheng: "",
         shititimu: "",

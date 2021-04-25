@@ -42,22 +42,22 @@
       <el-table-column type="index" align="center"></el-table-column>
       <!-- 序号 -->
 
-      <el-table-column label="题库编号" align="center">
+      <!-- <el-table-column label="题库编号" align="center">
         <template slot-scope="{ row }"> {{ row.tikubianhao }} </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="题库名称" align="center">
         <template slot-scope="{ row }"> {{ row.tikumingcheng }} </template>
       </el-table-column>
-      <!-- <el-table-column label="题库类别" align="center">
-          <template slot-scope="{ row }"> {{ row.tikumingcheng }} </template>
-        </el-table-column> -->
+      <el-table-column label="题库类别" align="center">
+          <template slot-scope="{ row }"> {{ row.tikutype }} </template>
+        </el-table-column>
       <el-table-column label="试题题目" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }"> {{ row.shititimu }} </template>
       </el-table-column>
       <el-table-column label="题目类型" align="center">
         <template slot-scope="{ row }"> {{ row.leixing }} </template>
       </el-table-column>
-      <el-table-column label="答案" align="center" show-overflow-tooltip>
+      <el-table-column label="答案" align="center">
         <template slot-scope="{ row }">
           <e-paper-view :vo="row" :map="row.daan"></e-paper-view>
         </template>
@@ -70,14 +70,14 @@
         <template slot-scope="{ row }">
           <el-button
             @click="
-              $goto({ path: '/admin/shitidetail', query: { id: row.id } })
+              $goto({ path: '/end/shitidetail', query: { id: row.id } })
             "
             type="text"
             >详情</el-button
           >
 
           <el-button
-            @click="$goto({ path: '/admin/shitiupdt', query: { id: row.id } })"
+            @click="$goto({ path: '/end/shitiupdt', query: { id: row.id } })"
             type="text"
             >编辑</el-button
           >
@@ -116,9 +116,7 @@ export default {
       list: [],
       search: {
         tikumingcheng: "",
-
         shititimu: "",
-
         leixing: "",
       },
       total: {},

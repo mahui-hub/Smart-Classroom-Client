@@ -9,25 +9,26 @@
       <!-- 搜索 -->
       <div class="form-search">
         <el-form @submit.prevent.stop :inline="true" size="mini">
-          <el-form-item label="帖子编号">
+          <!-- <el-form-item label="帖子编号121">
             <el-input v-model="search.tiezibianhao"></el-input>
-          </el-form-item>
-          <el-form-item label="标题">
+          </el-form-item> -->
+          <el-form-item label="帖子标题">
             <el-input v-model="search.biaoti"></el-input>
           </el-form-item>
-          <el-form-item label="分类">
+          <el-form-item label="帖子分类">
             <el-select v-model="search.fenlei"
               ><el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="m in tiezifenleiList"
+                :key="m.id"
                 :value="m.id"
                 :label="m.fenleimingcheng"
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="回复人">
+          <!-- <el-form-item label="回复人">
             <el-input v-model="search.huifuren"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-button
               type="primary"
@@ -43,13 +44,13 @@
         <el-table-column type="index" label="#"></el-table-column>
         <!-- 序号 -->
 
-        <el-table-column label="帖子编号" width="130">
+        <el-table-column label="帖子编号" align="center">
           <template slot-scope="{ row }"> {{ row.tiezibianhao }} </template>
         </el-table-column>
-        <el-table-column label="标题">
+        <el-table-column label="帖子标题" align="center" show-overflow-tooltip>
           <template slot-scope="{ row }"> {{ row.biaoti }} </template>
         </el-table-column>
-        <el-table-column label="分类" width="80">
+        <el-table-column label="帖子分类" align="center">
           <template slot-scope="{ row }">
             <e-select-view
               module="tiezifenlei"
@@ -59,15 +60,14 @@
             ></e-select-view>
           </template>
         </el-table-column>
-        <el-table-column label="回复人" width="80">
+        <el-table-column label="回复人" align="center">
           <template slot-scope="{ row }"> {{ row.huifuren }} </template>
         </el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" align="center">
           <template slot-scope="{ row }">
           
                 <el-button
-                
                   @click="
                     $goto({
                       path: '/end/tiezihuifuupdt',

@@ -1,135 +1,148 @@
 <template>
   <div class="v-list" v-loading="loading" element-loading-text="加载中">
-    <el-card class="box-card">
+    <!-- <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span class="title">
           抢答问题管理
         </span>
-      </div>
-      <!-- 搜索 -->
-      <div class="form-search">
-        <el-form :model="search" :inline="true" size="mini">
-          <!-- <el-form-item label="编号">
+      </div> -->
+    <!-- 搜索 -->
+    <div class="form-search">
+      <el-form :model="search" :inline="true" size="mini">
+        <!-- <el-form-item label="编号">
             <el-input v-model="search.bianhao"></el-input>
           </el-form-item> -->
-          <el-form-item label="问题标题">
-            <el-input v-model="search.biaoti"></el-input>
-          </el-form-item>
-          <!-- <el-form-item label="发布人">
+        <el-form-item label="问题标题">
+          <el-input v-model="search.biaoti"></el-input>
+        </el-form-item>
+        <el-form-item label="课程名称" prop="kechengid">
+          <el-select v-model="search.kechengid" style="width: 100%" clearable>
+            <el-option
+              v-for="m in kechengmingchengList"
+              :key="m.id"
+              :value="m.id"
+              :label="m.kechengmingcheng"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="发布人">
             <el-input v-model="search.faburen"></el-input>
           </el-form-item> -->
-          <el-form-item>
-            <el-button
-              type="primary"
-              @click="searchSubmit"
-              icon="el-icon-search"
-              >查询</el-button
-            >
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="addSubmit" icon="el-icon-plus"
-              >发起抢答</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
+        <el-form-item>
+          <el-button type="primary" @click="searchSubmit" icon="el-icon-search"
+            >查询</el-button
+          >
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="addSubmit" icon="el-icon-plus"
+            >发起抢答</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </div>
 
-      <el-table
-        border
-        :data="list"
-        style="width: 100%"
-        highlight-current-row
-        stripe
+    <el-table
+      border
+      :data="list"
+      style="width: 100%"
+      highlight-current-row
+      stripe
+    >
+      <el-table-column type="index" align="center"></el-table-column>
+      <!-- 序号 -->
+
+      <el-table-column label="抢答编号" align="center">
+        <template slot-scope="{ row }">
+          {{ row.bianhao }}
+        </template>
+      </el-table-column>
+      <el-table-column label="问题标题" align="center">
+        <template slot-scope="{ row }">
+          {{ row.biaoti }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="课程名称"
+        align="center"
+        :formatter="kechengFormatter"
       >
-        <el-table-column type="index" align="center"></el-table-column>
-        <!-- 序号 -->
-
-        <el-table-column label="抢答编号" align="center">
-          <template slot-scope="{ row }">
-            {{ row.bianhao }}
-          </template>
-        </el-table-column>
-        <el-table-column label="问题标题" align="center">
-          <template slot-scope="{ row }">
-            {{ row.biaoti }}
-          </template>
-        </el-table-column>
-        <!-- <el-table-column label="图片" align="center">
+      </el-table-column>
+      <!-- <el-table-column label="图片" align="center">
           <template slot-scope="{ row }">
             <e-img :src="row.tupian" style="max-width:120px" />
           </template>
         </el-table-column> -->
-        <el-table-column label="抢答人数" align="center">
-          <template slot-scope="{ row }">
-            {{ row.qiangdarenshu }}
-          </template>
-        </el-table-column>
-        <el-table-column label="已抢人数" align="center">
-          <template slot-scope="{ row }">
-            {{ row.yiqiangrenshu }}
-          </template>
-        </el-table-column>
-        <el-table-column label="附件" align="center">
-          <template slot-scope="{ row }">
-            <e-file-list v-model="row.fujian"></e-file-list>
-          </template>
-        </el-table-column>
-        <el-table-column label="发布人" align="center">
-          <template slot-scope="{ row }">
-            {{ row.faburen }}
-          </template>
-        </el-table-column>
+      <el-table-column label="抢答人数" align="center">
+        <template slot-scope="{ row }">
+          {{ row.qiangdarenshu }}
+        </template>
+      </el-table-column>
+      <el-table-column label="已抢人数" align="center">
+        <template slot-scope="{ row }">
+          {{ row.yiqiangrenshu }}
+        </template>
+      </el-table-column>
+      <el-table-column label="附件" align="center">
+        <template slot-scope="{ row }">
+          <e-file-list v-model="row.fujian"></e-file-list>
+        </template>
+      </el-table-column>
+      <el-table-column label="发布人" align="center">
+        <template slot-scope="{ row }">
+          {{ row.faburen }}
+        </template>
+      </el-table-column>
 
-        <el-table-column label="操作" align="center">
-          <template slot-scope="{ row }">
-            <!-- <el-button @click="$goto('/admin/qiangdawentiadd?id='+row.id)" type="success"
+      <el-table-column label="操作" align="center">
+        <template slot-scope="{ row }">
+          <!-- <el-button @click="$goto('/end/qiangdawentiadd?id='+row.id)" type="success"
                                        icon="el-icon-plus" size="mini">
                                 抢答问题添加
                             </el-button>
-                            <el-button type="info" @click="'/admin/qiangdawenti?wentiqiangdaid='+row.id"
+                            <el-button type="info" @click="'/end/qiangdawenti?wentiqiangdaid='+row.id"
                                        icon="el-icon-search" size="mini">
                                 抢答问题查询
                             </el-button>-->
-            <!-- <el-tooltip content="详情" placement="top"> -->
-            <el-button
-              @click="
-                $goto({
-                  path: '/admin/wentiqiangdadetail',
-                  query: { id: row.id },
-                })
-              "
-              type="text"
-              >详情</el-button
-            >
-            <!-- </el-tooltip> -->
-            <!-- <el-tooltip content="编辑" placement="top"> -->
-            <el-button
-              @click="
-                $goto({
-                  path: '/admin/wentiqiangdaupdt',
-                  query: { id: row.id },
-                })
-              "
-              type="text"
-              >编辑</el-button
-            >
+          <!-- <el-tooltip content="详情" placement="top"> -->
+          <el-button
+            @click="
+              $goto({
+                path: '/end/wentiqiangdadetail',
+                query: { id: row.id },
+              })
+            "
+            type="text"
+            >详情</el-button
+          >
+          <!-- </el-tooltip> -->
+          <!-- <el-tooltip content="编辑" placement="top"> -->
+          <el-button
+            @click="
+              $goto({
+                path: '/end/wentiqiangdaupdt',
+                query: { id: row.id },
+              })
+            "
+            type="text"
+            >编辑</el-button
+          >
 
-            <el-button type="text" @click="deleteItem(row)">删除 </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="e-pages" style="margin-top: 10px;text-align: center">
-        <el-pagination
-          @current-change="loadList"
-          :current-page="page"
-          :page-size="pagesize"
-          @size-change="sizeChange"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="totalCount"
-        >
-        </el-pagination>
-      </div>
-    </el-card>
+          <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="e-pages" style="margin-top: 10px; text-align: center">
+      <el-pagination
+        @current-change="loadList"
+        :current-page="page"
+        :page-size="pagesize"
+        @size-change="sizeChange"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+      >
+      </el-pagination>
+    </div>
+    <!-- </el-card> -->
     <el-dialog title="发起抢答" :visible.sync="dialogVisible" size="mini">
       <div class="form-database-form">
         <el-form
@@ -144,17 +157,24 @@
             prop="bianhao"
             :rules="[{ required: true, message: '请填写编号' }]"
           >
-            <el-input placeholder="输入编号" disabled v-model="form.bianhao" />
+            <el-input
+              placeholder="请输入编号"
+              disabled
+              v-model="form.bianhao"
+            />
           </el-form-item>
 
           <el-form-item label="问题标题" prop="biaoti" required>
             <el-input placeholder="请输入问题标题" v-model="form.biaoti" />
           </el-form-item>
-          <!-- 后续添加 -->
-          <el-form-item label="所属班级" prop="banji">
-            <el-select v-model="form.banji" multiple>
-              <!-- <el-option :label="'附件'" :value="'1'">附件</el-option>
-              <el-option :label="'问题详情'" :value="'0'">问题详情</el-option> -->
+          <el-form-item label="课程名称" prop="kechengmingcheng">
+            <el-select v-model="form.kechengid" style="width: 100%" clearable>
+              <el-option
+                v-for="m in kechengmingchengList"
+                :key="m.id"
+                :value="m.id"
+                :label="m.kechengmingcheng"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item
@@ -174,7 +194,7 @@
             <e-upload-image v-model="form.tupian"></e-upload-image>
           </el-form-item>
           <el-form-item label="上传问题类型" prop="changeleixing">
-            <el-select v-model="form.changeleixing">
+            <el-select v-model="form.changeleixing" style="width: 100%">
               <el-option :label="'附件'" :value="'1'">附件</el-option>
               <el-option :label="'问题详情'" :value="'0'">问题详情</el-option>
             </el-select>
@@ -217,8 +237,10 @@ import rule from "@/utils/rule";
 export default {
   data() {
     return {
+      kechengmingchengList: [],
       rule,
       form: {
+        kechengid: "",
         bianhao: rule.getID(),
         biaoti: "",
         tupian: "",
@@ -235,7 +257,7 @@ export default {
       list: [],
       search: {
         bianhao: "",
-
+        kechengid: "",
         biaoti: "",
 
         faburen: "",
@@ -249,6 +271,37 @@ export default {
   watch: {},
   computed: {},
   methods: {
+    kechengFormatter(row) {
+      var name = "";
+      this.kechengmingchengList.forEach(function (item) {
+        if (row.kechengid == item.id) {
+          name = item.kechengmingcheng;
+        }
+      });
+      return name;
+    },
+    initKecheng() {
+      const params = {};
+      params.kechengbianhao = "";
+      params.kechengmingcheng = "";
+      params.kechengleixing = "";
+      params.jiaoshiid = localStorage.getItem("jiaoshiid");
+      params.pagesize = 10;
+      params.page = 1;
+      this.$post(api.kecheng.list, params)
+        .then((res) => {
+          if (res.code == api.code.OK) {
+            this.kechengmingchengList = res.data.list;
+            // extend(this, res.data);
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
+    },
     submit() {
       this.$refs.formModel
         .validate()
@@ -309,14 +362,14 @@ export default {
           this.loading = true;
           var form = this.form;
 
-          this.$post(api.pingyuewenti.insert, form)
+          this.$post(api.wentiqiangda.insert, form)
             .then((res) => {
               this.loading = false;
               if (res.code == api.code.OK) {
                 this.$message.success("添加成功");
-                this.$emit("success", res.data);
+                this.dialogVisible = false;
                 this.$refs.formModel.resetFields();
-                this.$router.go(-1);
+                this.loadList(1);
               } else {
                 this.$message.error(res.msg);
               }
@@ -462,6 +515,7 @@ export default {
     }
 
     this.loadList(1);
+    this.initKecheng();
   },
   mounted() {},
   destroyed() {},

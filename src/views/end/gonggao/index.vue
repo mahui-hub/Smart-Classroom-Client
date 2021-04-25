@@ -7,7 +7,7 @@
           <el-input v-model="search.bianhao"></el-input>
         </el-form-item> -->
         <el-form-item label="课程名称" prop="kechengid">
-          <el-select v-model="search.kechengid" style="width:100%" clearable>
+          <el-select v-model="search.kechengid" style="width: 100%" clearable>
             <el-option
               v-for="m in kechengmingchengList"
               :key="m.id"
@@ -83,7 +83,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="e-pages" style="margin-top: 10px;text-align: center">
+    <div class="e-pages" style="margin-top: 10px; text-align: center">
       <el-pagination
         @current-change="loadList"
         :current-page="page"
@@ -122,7 +122,7 @@
             />
           </el-form-item>
           <el-form-item label="公告类型" prop="gonggaotype">
-            <el-select v-model="form.gonggaotype" style="width:100%">
+            <el-select v-model="form.gonggaotype" style="width: 100%">
               <el-option
                 v-for="m in gonggaotypeList"
                 :key="m.gonggaotype"
@@ -136,7 +136,7 @@
             prop="kechengid"
             v-if="form.gonggaotype == '课程公告'"
           >
-            <el-select v-model="form.kechengid" style="width:100%">
+            <el-select v-model="form.kechengid" style="width: 100%">
               <el-option
                 v-for="m in kechengmingchengList"
                 :key="m.id"
@@ -183,6 +183,7 @@ import rule from "@/utils/rule";
 export default {
   data() {
     return {
+      role: "",
       username: "",
       gonggaotypeList: [
         { gonggaotype: "系统公告" },
@@ -198,6 +199,7 @@ export default {
         bianhao: "",
         biaoti: "",
         kechengid: "",
+        faburen:''
       },
       total: {},
       page: 1, // 当前页
@@ -218,6 +220,14 @@ export default {
   watch: {},
   computed: {},
   methods: {
+    panduan() {
+      if (localStorage.getItem("role") == "教师") {
+        this.search.faburen = localStorage.getItem("username");
+        this.loadList1();
+      } else {
+        this.loadList1();
+      }
+    },
     initKecheng() {
       // 防止重新点加载列表
       // 筛选条件
@@ -243,7 +253,7 @@ export default {
     kechengType(row) {
       var name = "";
       if (row.kechengid != 0) {
-        this.kechengmingchengList.map(function(item) {
+        this.kechengmingchengList.map(function (item) {
           if (item.id == row.kechengid) {
             name = item.kechengmingcheng;
           }
@@ -493,7 +503,6 @@ export default {
   beforeRouteUpdate(to, form, next) {
     extend(this.search, to.query);
     this.loadList(1);
-
     next();
   },
   created() {
@@ -506,7 +515,7 @@ export default {
       this.pagesize = Math.floor(this.$route.query.pagesize);
       delete search.pagesize;
     }
-    this.loadList1();
+    this.panduan()
     this.initKecheng();
     this.username = localStorage.getItem("username");
     // this.loadList(1);

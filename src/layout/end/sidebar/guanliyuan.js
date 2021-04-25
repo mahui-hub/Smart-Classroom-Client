@@ -86,14 +86,14 @@ export default [
         label: "题库试题查询",
         to: "/end/shiti",
       },
-      {
-        label: "结果查询",
-        to: "/end/jieguo",
-      },
-      {
-        label: "评价结果查询",
-        to: "/end/kaoshijieguo",
-      },
+      // {
+      //   label: "结果查询",
+      //   to: "/end/jieguo",
+      // },
+      // {
+      //   label: "评价结果查询",
+      //   to: "/end/kaoshijieguo",
+      // },
     ],
   },
   {
@@ -167,13 +167,14 @@ export default [
         to: "/end/tiezi",
       },
       {
-        label: "点赞查询",
-        to: "/end/dianzan",
-      },
-      {
         label: "帖子回复查询",
         to: "/end/tiezihuifu",
       },
+      {
+        label: "点赞查询",
+        to: "/end/dianzan",
+      },
+      
     ],
   },
   // {
