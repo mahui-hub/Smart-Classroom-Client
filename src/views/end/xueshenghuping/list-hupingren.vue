@@ -65,15 +65,9 @@
             type="text"
             >详情</el-button
           >
-  <!-- @click="
-              $goto({
-                path: '/end/xueshenghupingupdt',
-                query: { id: row.id },
-              }) -->
-            <!-- " -->
           <el-button
             v-if="row.hupingren == username"
-          @click="edit(row)"
+            @click="edit(row)"
             type="text"
             >编辑</el-button
           >
@@ -192,9 +186,9 @@ export default {
   watch: {},
   computed: {},
   methods: {
-    edit(row){
-this.form=row
-this.dialogVisible=true
+    edit(row) {
+      this.form = row;
+      this.dialogVisible = true;
     },
     submit1() {
       this.$refs.formModel1
@@ -209,8 +203,8 @@ this.dialogVisible=true
               this.loading = false;
               if (res.code == api.code.OK) {
                 this.$message.success("编辑成功");
-                this.dialogVisible=false
-                this.loadList(1)
+                this.dialogVisible = false;
+                this.loadList(1);
 
                 this.$refs.formModel1.resetFields();
               } else {
