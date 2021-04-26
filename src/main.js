@@ -17,6 +17,7 @@ import hls from "videojs-contrib-hls";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 
+
 Vue.use(Antd);
 
 /* eslint-disable no-new */

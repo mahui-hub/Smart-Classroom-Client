@@ -2,43 +2,41 @@
   <div v-loading="loading">
     <div>
       <e-container>
-        <div style="margin:15px 0 0 0;box-shadow:0px 0px 2px 2px #DDDDDD">
+        <div style="margin: 15px 0 0 0; box-shadow: 0px 0px 2px 2px #dddddd">
           <e-module-widget-title title="学生互评">
             <div class="form-search" style="margin-bottom: 20px">
-              <el-form inline @submit.prevent.stop :inline="true" size="mini">
-                <el-form-item inline="1">
-                  <i class="glyphicon glyphicon-search"></i>
-                </el-form-item>
-
-                <el-form-item label="学号">
+              <el-form inline :model="search" size="mini">
+                <!-- <el-form-item label="学号">
                   <el-input v-model="search.xuehao"></el-input>
-                </el-form-item>
+                </el-form-item> -->
 
                 <el-form-item label="姓名">
                   <el-input v-model="search.xingming"></el-input>
                 </el-form-item>
 
-                <el-form-item label="班级">
+                <!-- <el-form-item label="班级">
                   <el-select v-model="search.banji">
                     <el-option label="请选择" value=""></el-option>
                     <el-option
+                    :key="m.id"
                       v-for="m in banjiList"
                       :value="m.banjimingcheng"
                       :label="m.banjimingcheng"
                     ></el-option>
                   </el-select>
-                </el-form-item>
+                </el-form-item> -->
 
-                <el-form-item label="专业">
+                <!-- <el-form-item label="专业">
                   <el-select v-model="search.zhuanye">
                     <el-option label="请选择" value=""></el-option>
                     <el-option
+                      :key="m.id"
                       v-for="m in zhuanyeList"
                       :value="m.zhuanye"
                       :label="m.zhuanye"
                     ></el-option>
                   </el-select>
-                </el-form-item>
+                </el-form-item> -->
 
                 <el-form-item>
                   <el-button
@@ -52,58 +50,33 @@
             </div>
 
             <div class="list-table">
-              <table
-                width="100%"
-                border="1"
-                class="table table-list table-bordered table-hover"
-              >
-                <thead>
-                  <tr align="center">
-                    <th>学号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>班级</th>
-                    <th>专业</th>
-                    <th>联系电话</th>
-                    <th>QQ号</th>
-                    <th>头像</th>
-                    <th width="180" align="center">操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(r, i) in list">
-                    <td>{{ r.xuehao }}</td>
-                    <td>{{ r.xingming }}</td>
-                    <td>{{ r.xingbie }}</td>
-                    <td>{{ r.banji }}</td>
-                    <td>{{ r.zhuanye }}</td>
-                    <td>{{ r.lianxidianhua }}</td>
-                    <td>{{ r.qqhao }}</td>
-                    <td>
-                      <e-img :src="r.touxiang" style="max-width:120px" />
-                    </td>
+              <el-table border :data="list" stripe highlight-current-row>
+                <el-table-column type="index" align="center"></el-table-column>
+                <!-- 序号 -->
+                <el-table-column label="学号" align="center" prop="xuehao">
+                </el-table-column>
+                <el-table-column label="姓名" align="center" prop="xingming">
+                </el-table-column>
+                <el-table-column label="性别" align="center" prop="xingbie">
+                </el-table-column>
 
-                    <td align="center">
-                      <el-tooltip content="互评" placement="top">
-                        <el-button
-                          @click="
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="{ row }">
+                    <!-- @click="
                             $goto({
                               path: '/xueshenghupingadd',
-                              query: { id: r.id },
+                              query: { id: row.id },
                             })
-                          "
-                          icon="el-icon-info"
-                          type="info"
-                          size="mini"
-                        ></el-button>
-                      </el-tooltip>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                          "  -->
+                    <el-button type="text" @click="huping(row)">
+                      互评
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
             </div>
 
-            <div style="margin-top: 10px;text-align: center">
+            <div style="margin-top: 10px; text-align: center">
               <el-pagination
                 @current-change="loadList"
                 :current-page="page"
@@ -116,6 +89,57 @@
           </e-module-widget-title>
         </div>
       </e-container>
+
+      <el-dialog :title="headtitle" :visible.sync="dialogVisible" size="mini">
+        <div class="form-database-form">
+          <el-form
+            :model="form"
+            ref="formModel1"
+            label-width="100px"
+            status-icon
+            validate-on-rule-change
+          >
+            <el-form-item label="学号" prop="xuehao">
+              <el-input v-model="form.xuehao" disabled> </el-input>
+            </el-form-item>
+
+            <el-form-item label="姓名" prop="xingming">
+              <el-input v-model="form.xingming" disabled> </el-input>
+            </el-form-item>
+            <el-form-item label="课程名称" prop="kechengid" required>
+              <el-select v-model="form.kechengid" style="width: 100%">
+                <el-option
+                  v-for="m in kechengmingchengList"
+                  :key="m.id"
+                  :value="m.id"
+                  :label="m.kechengmingcheng"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item
+              label="互评分数"
+              prop="hupingfenshu"
+              :rules="[
+                { validator: rule.checkNumber, message: '请输入一个有效数字' },
+              ]"
+            >
+              <el-input
+                placeholder="请输入互评分数"
+                v-model="form.hupingfenshu"
+              />
+            </el-form-item>
+
+            <el-form-item label="互评人" prop="hupingren">
+              <el-input v-model="form.hupingren" readonly disabled></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit1">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -124,6 +148,7 @@
 import api from "@/api";
 import { extend } from "@/utils/extend";
 import objectDiff from "objectdiff";
+import rule from "@/utils/rule";
 
 /**
  * 后台列表页面
@@ -131,47 +156,154 @@ import objectDiff from "objectdiff";
 export default {
   data() {
     return {
+      headtitle: "",
+      rule,
+      dialogVisible: false,
       loading: false,
       list: [],
       search: {
         xuehao: "",
-
+        banjiid: "",
         xingming: "",
-
         xingbie: "",
-
         banji: "",
-
         zhuanye: "",
-
         lianxidianhua: "",
-
         qqhao: "",
-
         touxiang: "",
-
         xiangqing: "",
+      },
+      form: {
+        chishu: 0,
+        kechengid: "",
+        xuehao: "",
+        xingming: "",
+        hupingneirong: "",
+        hupingfenshu: "",
+        hupingren: "",
+        xueshengid: 0,
       },
       page: 1, // 当前页
       pagesize: 12, // 页大小
       totalCount: 0, // 总行数
       total: {},
-
       banjiList: [],
       zhuanyeList: [],
+      kechengmingchengList: [],
     };
   },
   watch: {},
   computed: {},
   methods: {
+    huping(row) {
+      this.headtitle = "对" + row.xingming + "同学进行评价";
+      this.form = row;
+      this.form.hupingren = this.$store.state.user.session.username;
+      this.dialogVisible = true;
+    },
+    submit1() {
+      this.$refs.formModel1
+        .validate()
+        .then((res) => {
+          if (this.loading) return;
+          this.loading = true;
+          this.form.chishu = 1;
+          var form = this.form;
+          this.$post(api.xueshenghuping.insert, form)
+            .then((res) => {
+              this.loading = false;
+              if (res.code == api.code.OK) {
+                this.$message.success("评价成功");
+                this.dialogVisible = false;
+                this.$refs.formModel1.resetFields();
+                this.loadList1(1);
+              } else {
+                this.$message.error(res.msg);
+              }
+            })
+            .catch((err) => {
+              this.loading = false;
+              this.$message.error(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    },
+    initKecheng() {
+      const params = {};
+      params.kechengbianhao = "";
+      params.kechengmingcheng = "";
+      params.kechengleixing = "";
+      params.banjiid = localStorage.getItem("banjiId");
+      params.pagesize = 10;
+      params.page = 1;
+      this.$post(api.kecheng.list, params)
+        .then((res) => {
+          if (res.code == api.code.OK) {
+            this.kechengmingchengList = res.data.list;
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
+    },
+    kechengFormatter(row) {
+      var name = "";
+      this.kechengmingchengList.forEach(function (item) {
+        if (row.kechengid == item.id) {
+          name = item.kechengmingcheng;
+        }
+      });
+      return name;
+    },
     searchSubmit() {
       this.loadList(1);
+    },
+    loadList1(page) {
+      // 防止重新点加载列表
+      if (this.loading) return;
+      this.loading = true;
+      this.page = page;
+      this.search.banjiid = localStorage.getItem("banjiId");
+      // 筛选条件
+      var filter = extend(true, {}, this.search, {
+        chishu: 1,
+        page: page + "",
+        pagesize: this.pagesize + "",
+      });
+      var diff = objectDiff.diff(filter, this.$route.query);
+      if (diff.changed != "equal") {
+        // 筛选的条件不一致则更新链接
+        this.$router.replace({
+          // 更新query
+          path: this.$route.path,
+          query: filter,
+        });
+      }
+      this.$post(api.xuesheng.weblist, filter)
+        .then((res) => {
+          this.loading = false;
+          if (res.code == api.code.OK) {
+            extend(this, res.data);
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
     },
     loadList(page) {
       // 防止重新点加载列表
       if (this.loading) return;
       this.loading = true;
       this.page = page;
+      this.search.banjiid = localStorage.getItem("banjiId");
       // 筛选条件
       var filter = extend(true, {}, this.search, {
         page: page + "",
@@ -229,6 +361,7 @@ export default {
       delete search.pagesize;
     }
     this.loadList(this.page);
+    this.initKecheng();
   },
   mounted() {},
   destroyed() {},

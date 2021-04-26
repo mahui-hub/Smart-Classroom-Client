@@ -146,12 +146,7 @@ export default {
           path: "/tiezi",
           role: "管理员",
         },
-        {
-          id: "4",
-          menuName: "学生互评",
-          path: "/xuesheng",
-          role: "学生",
-        },
+       
         {
           id: "7",
           menuName: "教学评价",
@@ -168,6 +163,12 @@ export default {
           id: "9",
           menuName: "在线答疑",
           path: "/wentisousuo",
+          role: "学生",
+        },
+         {
+          id: "4",
+          menuName: "学生互评",
+          path: "/xuesheng",
           role: "学生",
         },
         {

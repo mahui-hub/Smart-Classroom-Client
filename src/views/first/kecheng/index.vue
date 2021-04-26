@@ -79,7 +79,6 @@ export default {
           if (res.code == api.code.OK) {
             this.mapkechengleixing2 = res.data.mapkechengleixing2;
             this.kechenglist = res.data.list;
-            console.log(this.mapkechengleixing2);
           } else {
             this.$message.error(res.msg);
           }

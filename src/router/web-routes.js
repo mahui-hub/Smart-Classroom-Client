@@ -95,12 +95,12 @@ export default [
     component: () => import("@/views/first/wentiqiangda/webdetail"),
     meta: { title: "问题抢答详情", authLogin: true },
   },
-  {
-    path: "qiangdawentiadd",
-    name: "IndexqiangdawentiAdd",
-    component: () => import("@/views/first/qiangdawenti/webadd"),
-    meta: { title: "抢答问题添加", authLogin: true, msg: true },
-  },
+  // {
+  //   path: "qiangdawentiadd",
+  //   name: "IndexqiangdawentiAdd",
+  //   component: () => import("@/views/first/qiangdawenti/webadd"),
+  //   meta: { title: "抢答问题添加", authLogin: true, msg: true },
+  // },
   // {
   //   path: "jiaoshi",
   //   name: "IndexjiaoshiList",
@@ -165,13 +165,13 @@ export default [
     component: () => import("@/views/first/keqiankaoqin/index"),
     meta: { title: "课前考勤列表", authLogin: true },
   },
-  {
-    path: "keqiankaoqindetail",
-    name: "IndexkeqiankaoqinDetail",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/first/keqiankaoqin/webdetail"),
-    meta: { title: "课前考勤详情", authLogin: true },
-  },
+  // {
+  //   path: "keqiankaoqindetail",
+  //   name: "IndexkeqiankaoqinDetail",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/first/keqiankaoqin/webdetail"),
+  //   meta: { title: "课前考勤详情", authLogin: true },
+  // },
   {
     path: "qiandaoadd",
     name: "IndexqiandaoAdd",

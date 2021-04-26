@@ -14,41 +14,43 @@
             >
               <e-module-widget-title title="教学评价">
                 <div class="list-table">
-                  <table
-                    width="100%"
-                    border="1"
-                    class="table table-list table-bordered table-hover"
-                  >
-                    <thead>
-                      <tr align="center">
-                        <th>题库编号</th>
-                        <th>题库名称</th>
-                        <th>课程名称</th>
-                        <!-- <th>教师</th> -->
-                        <th>发布人</th>
-                        <th width="180" align="center">添加时间</th>
-                        <th width="80" align="center">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(r, i) in list">
-                        <td>{{ r.tikubianhao }}</td>
-                        <td>{{ r.tikumingcheng }}</td>
-                        <td>{{ r.kechengid }}</td>
-                        <!-- <td>{{ r.jiaoshi }}</td> -->
-                        <td>{{ r.faburen }}</td>
+                  <el-table border :data="list" stripe highlight-current-row>
+                    <el-table-column
+                      type="index"
+                      align="center"
+                    ></el-table-column>
+                    <!-- 序号 -->
+                    <el-table-column
+                      label="题库名称"
+                      align="center"
+                      prop="tikumingcheng"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      label="课程名称"
+                      align="center"
+                      :formatter="kechengFormatter"
+                    >
+                    </el-table-column>
+                    <el-table-column label="发布人" align="center">
+                      <template slot-scope="{ row }">
+                        {{ row.faburen }}
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="添加时间" align="center">
+                      <template slot-scope="{ row }">
+                        {{ row.addtime }}
+                      </template>
+                    </el-table-column>
 
-                        <td align="center" v-text="r.addtime"></td>
-
-                        <td align="center">
-                          <!-- <el-button @click="$goto('/tikudetail?id=' + r.id)">
-                            详细
-                          </el-button> -->
-                          <el-button @click="xingxi(r)"> 详细 </el-button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                    <el-table-column label="操作" align="center">
+                      <template slot-scope="{ row }">
+                        <el-button @click="xingxi(row)" type="text">
+                          评价
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
                 </div>
 
                 <div style="margin-top: 10px; text-align: center">
@@ -114,19 +116,15 @@ export default {
       loading: false,
       list: [],
       search: {
-        tikubianhao: "",
-
+        kechengid: "",
         tikumingcheng: "",
-
-        jiaoshi: "",
-
-        faburen: "",
       },
       page: 1, // 当前页
       pagesize: 12, // 页大小
       totalCount: 0, // 总行数
       total: {},
       id: "",
+      array: [],
     };
   },
   watch: {},
@@ -136,37 +134,74 @@ export default {
       this.$router.push("/tikudetail?id=" + this.id);
     },
     xingxi(row) {
-      // this.dialogVisible = true;
-      // this.id = row.id;
       this.$router.push("/tikudetail?id=" + row.id);
     },
-    searchSubmit() {
-      this.loadList(1);
+    initKecheng(page) {
+      const params = {};
+      params.kechengbianhao = "";
+      params.kechengmingcheng = "";
+      params.kechengleixing = "";
+      params.banjiid = localStorage.getItem("banjiId");
+      params.pagesize = 10;
+      params.page = 1;
+      this.$post(api.kecheng.list, params)
+        .then((res) => {
+          if (res.code == api.code.OK) {
+            this.kechengmingchengList = res.data.list;
+            for (var i in this.kechengmingchengList) {
+              this.loadList(page, this.kechengmingchengList[i].id);
+            }
+          } else {
+            this.$message.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message.error(err.message);
+        });
     },
-    loadList(page) {
-      // 防止重新点加载列表
-      if (this.loading) return;
+    kechengFormatter(row) {
+      var name = "";
+      this.kechengmingchengList.forEach(function (item) {
+        if (row.kechengid == item.id) {
+          name = item.kechengmingcheng;
+        }
+      });
+      return name;
+    },
+    searchSubmit() {
+       this.list=[]
+      this.initKecheng(1);
+      // this.loadList(1);
+    },
+    loadList(page, id) {
       this.loading = true;
       this.page = page;
+      this.array = [];
+      this.search.kechengid = id;
       // 筛选条件
       var filter = extend(true, {}, this.search, {
         page: page + "",
         pagesize: this.pagesize + "",
       });
-      var diff = objectDiff.diff(filter, this.$route.query);
-      if (diff.changed != "equal") {
-        // 筛选的条件不一致则更新链接
-        this.$router.replace({
-          // 更新query
-          path: this.$route.path,
-          query: filter,
-        });
-      }
-      this.$post(api.tiku.weblist, filter)
+      this.$post(api.tiku.list, filter)
         .then((res) => {
           this.loading = false;
           if (res.code == api.code.OK) {
-            extend(this, res.data);
+             this.totalCount = res.data.totalCount;
+            // extend(this, res.data);
+            var array1 = res.data.list;
+            var array = [];
+            array1.forEach((item) => {
+              array.push(item);
+            });
+            if (this.totalCount != 0) {
+              for(var i in array){
+               this.list.push(array[i]);
+              }  
+            }
+            this.totalCount=this.list.length
+            // console.log(this.list)
           } else {
             this.$message.error(res.msg);
           }
@@ -200,7 +235,8 @@ export default {
       this.pagesize = Math.floor(this.$route.query.pagesize);
       delete search.pagesize;
     }
-    this.loadList(this.page);
+    this.initKecheng(1);
+    // this.loadList(this.page);
   },
   mounted() {},
   destroyed() {},

@@ -2,13 +2,13 @@
 
     <div class="v-list" v-loading="loading" element-loading-text="加载中">
 
-        <el-card class="box-card">
+        <!-- <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span class="title">
                 课前考勤列表
                 </span>
 
-            </div>
+            </div> -->
             <!-- 搜索 -->
             <div class="form-search">
                 <el-form @submit.prevent.stop :inline="true" size="mini">
@@ -31,7 +31,7 @@
                         </el-select>
 
                     </el-form-item>
-                    <el-form-item label="开始时间">
+                    <el-form-item label="开始时间121">
 
                         <el-date-picker
                                 v-model="search.kaishishijian_start"
@@ -147,7 +147,7 @@
                 </el-pagination>
             </div>
 
-        </el-card>
+        <!-- </el-card> -->
     </div>
 </template>
 <style type="text/scss" scoped lang="scss">

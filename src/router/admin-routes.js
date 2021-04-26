@@ -401,12 +401,12 @@ export default [
     component: () => import("@/views/end/qiangdawenti/list-qiangdaren"),
     meta: { title: "抢答问题列表", authLogin: true },
   },
-  {
-    path: "qiangdawentiadd",
-    name: "AdminqiangdawentiAdd",
-    component: () => import("@/views/end/qiangdawenti/add"),
-    meta: { title: "添加抢答问题", authLogin: true },
-  },
+  // {
+  //   path: "qiangdawentiadd",
+  //   name: "AdminqiangdawentiAdd",
+  //   component: () => import("@/views/end/qiangdawenti/add"),
+  //   meta: { title: "添加抢答问题", authLogin: true },
+  // },
   {
     path: "qiangdawentiupdt",
     name: "AdminqiangdawentiUpdt",
