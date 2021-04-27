@@ -102,9 +102,13 @@ export default [
     ],
   },
   {
-    label: "成绩管理",
+    label: "成绩信息管理",
     to: "",
     children: [
+      {
+        label: "成绩比例设置",
+        to: "/end/chengjibili",
+      },
       {
         label: "成绩查询",
         to: "/end/chengji",

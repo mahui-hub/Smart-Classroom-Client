@@ -23,20 +23,12 @@
           ></el-input>
         </el-form-item> -->
         <el-form-item>
-          <el-button type="primary" @click="searchSubmit" icon="el-icon-search"
-            >查询</el-button
-          >
+          <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
-    <el-table
-      border
-      :data="list"
-      style="width: 100%"
-      highlight-current-row
-      stripe
-    >
+    <el-table border :data="list" style="width: 100%" highlight-current-row stripe>
       <el-table-column type="index" align="center"></el-table-column>
       <!-- 序号 -->
       <!-- <el-table-column label="评价编号" align="center">
@@ -51,11 +43,7 @@
       <el-table-column label="题库名称" align="center">
         <template slot-scope="{ row }"> {{ row.tikumingcheng }} </template>
       </el-table-column>
-      <el-table-column
-        label="课程名称"
-        align="center"
-        :formatter="kechengFormatter"
-      >
+      <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
       </el-table-column>
       <el-table-column label="发布人" align="center">
         <template slot-scope="{ row }"> {{ row.faburen }} </template>
@@ -74,16 +62,12 @@
 
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button
-            @click="
+          <el-button @click="
               $goto({
                 path: '/end/kaoshijieguodetail',
                 query: { id: row.id },
               })
-            "
-            type="text"
-            >详情</el-button
-          >
+            " type="text">详情</el-button>
 
           <!-- <el-tooltip content="编辑" placement="top">
                 <el-button
@@ -104,14 +88,8 @@
       </el-table-column>
     </el-table>
     <div class="e-pages" style="margin-top: 10px; text-align: center">
-      <el-pagination
-        @current-change="loadList"
-        :current-page="page"
-        :page-size="pagesize"
-        @size-change="sizeChange"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
-      >
+      <el-pagination @current-change="loadList" :current-page="page" :page-size="pagesize" @size-change="sizeChange"
+        layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
       </el-pagination>
     </div>
 
@@ -123,177 +101,176 @@
     <div>
       <span>得出结论：</span>
       <!-- <span v-if="(row.duoxuantidefen+row.danxuantidefen)/total.sum_zongdefen">该教师教学评价为及格</span> -->
-      <span v-if="0.85 < total.sum_zongdefen / 20 <= 1"
-        >该教师教学评价为优秀</span
-      >
-      <span v-if="0.75 < total.sum_zongdefen / 20 <= 0.85"
-        >该教师教学评价为良好</span
-      >
-      <span v-if="0.6 < total.sum_zongdefen / 20 <= 0.75"
-        >该教师教学评价为合格</span
-      >
+      <span v-if="0.85 < total.sum_zongdefen / 20 <= 1">该教师教学评价为优秀</span>
+      <span v-if="0.75 < total.sum_zongdefen / 20 <= 0.85">该教师教学评价为良好</span>
+      <span v-if="0.6 < total.sum_zongdefen / 20 <= 0.75">该教师教学评价为合格</span>
       <span v-if="total.sum_zongdefen / 20 < 0.6">该教师教学评价为不合格</span>
     </div>
   </div>
 </template>
 <style type="text/scss" scoped lang="scss"></style>
 <script>
-import api from "@/api";
-import { remove, checkIssh } from "@/utils/utils";
-import { extend } from "@/utils/extend";
-import objectDiff from "objectdiff";
+  import api from "@/api";
+  import {
+    remove,
+    checkIssh
+  } from "@/utils/utils";
+  import {
+    extend
+  } from "@/utils/extend";
+  import objectDiff from "objectdiff";
 
-/**
- * 后台列表页面
- */
-export default {
-  data() {
-    return {
-      kechengmingchengList: [],
-      loading: false,
-      list: [],
-      search: {
-        tikumingcheng: "",
-        kechengid: "",
-        tikutype: "评价题库",
-        kaoshibianhao: "",
-        danxuantidefen_start: "",
-        danxuantidefen_end: "",
-      },
-      total: {},
-      page: 1, // 当前页
-      pagesize: 10, // 页大小
-      totalCount: 0, // 总行数
-    };
-  },
-  watch: {},
-  computed: {},
-  methods: {
-    initKecheng() {
-      const params = {};
-      params.kechengbianhao = "";
-      params.kechengmingcheng = "";
-      params.kechengleixing = "";
-      params.pagesize = 10;
-      params.page = 1;
+  /**
+   * 后台列表页面
+   */
+  export default {
+    data() {
+      return {
+        kechengmingchengList: [],
+        loading: false,
+        list: [],
+        search: {
+          tikumingcheng: "",
+          kechengid: "",
+          tikutype: "评价题库",
+          kaoshibianhao: "",
+          danxuantidefen_start: "",
+          danxuantidefen_end: "",
+        },
+        total: {},
+        page: 1, // 当前页
+        pagesize: 10, // 页大小
+        totalCount: 0, // 总行数
+      };
+    },
+    watch: {},
+    computed: {},
+    methods: {
+      initKecheng() {
+        const params = {};
+        params.kechengbianhao = "";
+        params.kechengmingcheng = "";
+        params.kechengleixing = "";
+        params.pagesize = 10;
+        params.page = 1;
 
-      this.$post(api.kecheng.list, params)
-        .then((res) => {
-          if (res.code == api.code.OK) {
-            this.kechengmingchengList = res.data.list;
-            // extend(this, res.data);
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message.error(err.message);
-        });
-    },
-    kechengFormatter(row) {
-      var name = "";
-      this.kechengmingchengList.forEach(function (item) {
-        if (row.kechengid == item.id) {
-          name = item.kechengmingcheng;
-        }
-      });
-      return name;
-    },
-    searchSubmit() {
-      this.loadList(1);
-    },
-    sizeChange(e) {
-      this.pagesize = e;
-      this.loadList(1);
-    },
-    checkIssh,
-
-    loadList(page) {
-      // 防止重新点加载列表
-      if (this.loading) return;
-      this.loading = true;
-      this.page = page;
-      // 筛选条件
-      var filter = extend(true, {}, this.search, {
-        page: page + "",
-        pagesize: this.pagesize + "",
-      });
-      var diff = objectDiff.diff(filter, this.$route.query);
-      if (diff.changed != "equal") {
-        // 筛选的条件不一致则更新链接
-        this.$router.push({
-          // 更新query
-          path: this.$route.path,
-          query: filter,
-        });
-      }
-      this.$post(api.kaoshijieguo.list, filter)
-        .then((res) => {
-          this.loading = false;
-          if (res.code == api.code.OK) {
-            extend(this, res.data);
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message.error(err.message);
-        });
-    },
-    // 删除某行方法
-    deleteItem(row) {
-      this.$confirm("确定删除数据？", "提示", {
-        // 弹出 确认框提示是否要删除
-        type: "warning",
-      })
-        .then(() => {
-          // 确定操作
-
-          this.loading = true; // 滚动条
-          this.$post(api.kaoshijieguo.delete, {
-            // 提交后台
-            id: row.id,
+        this.$post(api.kecheng.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.kechengmingchengList = res.data.list;
+              // extend(this, res.data);
+            } else {
+              this.$message.error(res.msg);
+            }
           })
-            .then((res) => {
-              this.loading = false;
-              if (res.code != api.code.OK) {
-                this.$message.error(res.msg);
-              } else {
-                remove(this.list, row);
-              }
-            })
-            .catch((err) => {
-              // 访问网络错误
-              this.loading = false;
-              this.$message.error(err.message);
-            });
-        })
-        .catch(() => {
-          // 取消操作
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
+      kechengFormatter(row) {
+        var name = "";
+        this.kechengmingchengList.forEach(function (item) {
+          if (row.kechengid == item.id) {
+            name = item.kechengmingcheng;
+          }
         });
+        return name;
+      },
+      searchSubmit() {
+        this.loadList(1);
+      },
+      sizeChange(e) {
+        this.pagesize = e;
+        this.loadList(1);
+      },
+      checkIssh,
+
+      loadList(page) {
+        // 防止重新点加载列表
+        if (this.loading) return;
+        this.loading = true;
+        this.page = page;
+        // 筛选条件
+        var filter = extend(true, {}, this.search, {
+          page: page + "",
+          pagesize: this.pagesize + "",
+        });
+        var diff = objectDiff.diff(filter, this.$route.query);
+        if (diff.changed != "equal") {
+          // 筛选的条件不一致则更新链接
+          this.$router.push({
+            // 更新query
+            path: this.$route.path,
+            query: filter,
+          });
+        }
+        this.$post(api.kaoshijieguo.list, filter)
+          .then((res) => {
+            this.loading = false;
+            if (res.code == api.code.OK) {
+              extend(this, res.data);
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
+      // 删除某行方法
+      deleteItem(row) {
+        this.$confirm("确定删除数据？", "提示", {
+            // 弹出 确认框提示是否要删除
+            type: "warning",
+          })
+          .then(() => {
+            // 确定操作
+
+            this.loading = true; // 滚动条
+            this.$post(api.kaoshijieguo.delete, {
+                // 提交后台
+                id: row.id,
+              })
+              .then((res) => {
+                this.loading = false;
+                if (res.code != api.code.OK) {
+                  this.$message.error(res.msg);
+                } else {
+                  remove(this.list, row);
+                }
+              })
+              .catch((err) => {
+                // 访问网络错误
+                this.loading = false;
+                this.$message.error(err.message);
+              });
+          })
+          .catch(() => {
+            // 取消操作
+          });
+      },
     },
-  },
-  beforeRouteUpdate(to, form, next) {
-    extend(this.search, to.query);
-    this.loadList(1);
-    next();
-  },
-  created() {
-    var search = extend(this.search, this.$route.query);
-    if (search.page) {
-      this.page = Math.floor(this.$route.query.page);
-      delete search.page;
-    }
-    if (search.pagesize) {
-      this.pagesize = Math.floor(this.$route.query.pagesize);
-      delete search.pagesize;
-    }
-    this.initKecheng();
-    this.loadList(1);
-  },
-  mounted() {},
-  destroyed() {},
-};
+    beforeRouteUpdate(to, form, next) {
+      extend(this.search, to.query);
+      this.loadList(1);
+      next();
+    },
+    created() {
+      var search = extend(this.search, this.$route.query);
+      if (search.page) {
+        this.page = Math.floor(this.$route.query.page);
+        delete search.page;
+      }
+      if (search.pagesize) {
+        this.pagesize = Math.floor(this.$route.query.pagesize);
+        delete search.pagesize;
+      }
+      this.initKecheng();
+      this.loadList(1);
+    },
+    mounted() {},
+    destroyed() {},
+  };
 </script>

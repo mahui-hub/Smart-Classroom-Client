@@ -54,6 +54,10 @@ export default [
         label: "课程信息管理",
         to: "/end/kecheng",
       },
+      {
+        label: "课程评价查询",
+        to: "/end/pinglun",
+      },
     ],
   },
   {
@@ -248,49 +252,41 @@ export default [
       },
     ],
   },
-
-  {
-    label: "课前考勤管理",
-    to: "",
-    children: [
-      {
-        label: "课程考勤添加",
-        to: "/end/keqiankaoqinadd",
-      },
-      {
-        label: "课前考勤查询",
-        to: "/end/keqiankaoqin",
-      },
-      {
-        label: "签到查询",
-        to: "/end/qiandao",
-      },
-    ],
-  },
+  // {
+  //   label: "课前考勤管理",
+  //   to: "",
+  //   children: [
+  //     {
+  //       label: "课程考勤添加",
+  //       to: "/end/keqiankaoqinadd",
+  //     },
+  //     {
+  //       label: "课前考勤查询",
+  //       to: "/end/keqiankaoqin",
+  //     },
+  //     {
+  //       label: "签到查询",
+  //       to: "/end/qiandao",
+  //     },
+  //   ],
+  // },
   {
     label: "系统管理",
     to: "",
     children: [
       {
-        label: "友情链接添加",
-        to: "/end/youqinglianjieadd",
-      },
-      {
-        label: "友情链接查询",
+        label: "友情链接",
         to: "/end/youqinglianjie",
       },
+      // {
+      //   label: "轮播图添加",
+      //   to: "/end/lunbotuadd",
+      // },
       {
-        label: "轮播图添加",
-        to: "/end/lunbotuadd",
-      },
-      {
-        label: "轮播图查询",
+        label: "轮播图",
         to: "/end/lunbotu",
       },
-      {
-        label: "评论查询",
-        to: "/end/pinglun",
-      },
+
     ],
   },
 ];

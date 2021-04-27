@@ -128,41 +128,41 @@ export default [
   {
     path: "youqinglianjie",
     name: "AdminyouqinglianjieList",
-    component: () => import("@/views/end/youqinglianjie/list"),
+    component: () => import("@/views/end/youqinglianjie/index"),
     meta: { title: "友情链接列表", authLogin: true },
   },
-  {
-    path: "youqinglianjieadd",
-    name: "AdminyouqinglianjieAdd",
-    component: () => import("@/views/end/youqinglianjie/add"),
-    meta: { title: "添加友情链接", authLogin: true },
-  },
-  {
-    path: "youqinglianjieupdt",
-    name: "AdminyouqinglianjieUpdt",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/end/youqinglianjie/updt"),
-    meta: { title: "编辑友情链接", authLogin: true },
-  },
+  // {
+  //   path: "youqinglianjieadd",
+  //   name: "AdminyouqinglianjieAdd",
+  //   component: () => import("@/views/end/youqinglianjie/add"),
+  //   meta: { title: "添加友情链接", authLogin: true },
+  // },
+  // {
+  //   path: "youqinglianjieupdt",
+  //   name: "AdminyouqinglianjieUpdt",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/end/youqinglianjie/updt"),
+  //   meta: { title: "编辑友情链接", authLogin: true },
+  // },
   {
     path: "lunbotu",
     name: "AdminlunbotuList",
-    component: () => import("@/views/end/lunbotu/list"),
+    component: () => import("@/views/end/lunbotu/index"),
     meta: { title: "轮播图列表", authLogin: true },
   },
-  {
-    path: "lunbotuadd",
-    name: "AdminlunbotuAdd",
-    component: () => import("@/views/end/lunbotu/add"),
-    meta: { title: "添加轮播图", authLogin: true },
-  },
-  {
-    path: "lunbotuupdt",
-    name: "AdminlunbotuUpdt",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/end/lunbotu/updt"),
-    meta: { title: "编辑轮播图", authLogin: true },
-  },
+  // {
+  //   path: "lunbotuadd",
+  //   name: "AdminlunbotuAdd",
+  //   component: () => import("@/views/end/lunbotu/add"),
+  //   meta: { title: "添加轮播图", authLogin: true },
+  // },
+  // {
+  //   path: "lunbotuupdt",
+  //   name: "AdminlunbotuUpdt",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/end/lunbotu/updt"),
+  //   meta: { title: "编辑轮播图", authLogin: true },
+  // },
 
   {
     path: "dianzan",
@@ -259,6 +259,12 @@ export default [
     name: "AdminchengjiList",
     component: () => import("@/views/end/chengji/list"),
     meta: { title: "成绩列表", authLogin: true },
+  },
+  {
+    path: "chengjibili",
+    name: "AdminchengjiList",
+    component: () => import("@/views/end/chengji/biliindex"),
+    meta: { title: "成绩比例列表", authLogin: true },
   },
   {
     path: "chengji_xuehao",
@@ -606,13 +612,13 @@ export default [
     component: () => import("@/views/end/shiti/add"),
     meta: { title: "添加试题", authLogin: true },
   },
-  {
-    path: "shitiupdt",
-    name: "AdminshitiUpdt",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/end/shiti/updt"),
-    meta: { title: "编辑试题", authLogin: true },
-  },
+  // {
+  //   path: "shitiupdt",
+  //   name: "AdminshitiUpdt",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/end/shiti/updt"),
+  //   meta: { title: "编辑试题", authLogin: true },
+  // },
   {
     path: "shitidetail",
     props: (route) => ({ id: route.query.id }),
