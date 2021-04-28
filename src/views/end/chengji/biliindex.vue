@@ -1,0 +1,423 @@
+<template>
+    <!-- 成绩比例页面 -->
+    <div class="v-list" v-loading="loading" element-loading-text="加载中">
+        <div class="form-search">
+            <el-form :model="search" :inline="true" size="mini">
+                <el-form-item label="课程名称">
+                    <el-select v-model="search.kechengid" style="width: 100%" clearable>
+                        <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id"
+                            :label="m.kechengmingcheng"></el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="addSubmit" icon="el-icon-plus">新增课程比例</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+
+        <el-table border :data="list" highlight-current-row stripe>
+            <el-table-column type="index" align="center"></el-table-column>
+            <!-- 序号 -->
+            <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
+            </el-table-column>
+            <el-table-column label="成绩比例构成" align="center" style="color: black;font-size: 14px;">
+                <el-table-column label="考勤" align="center" prop="kaoqinchengji">
+                    <!-- <template slot-scope="{ row }"> {{ row.kaoqinchengji }} </template> -->
+                </el-table-column>
+                <el-table-column label="学生互评" align="center">
+                    <template slot-scope="{ row }"> {{ row.shenghupingchengji }} </template>
+                </el-table-column>
+                <el-table-column label="教师评价" align="center">
+                    <template slot-scope="{ row }"> {{ row.jiaoshipingjiachengji }} </template>
+                </el-table-column>
+                <el-table-column label="抢答问题" align="center">
+                    <template slot-scope="{ row }"> {{ row.qiangdawentichengji }} </template>
+                </el-table-column>
+                <el-table-column label="随堂测试" align="center">
+                    <template slot-scope="{ row }"> {{ row.suitangceshichengji }} </template>
+                </el-table-column>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template slot-scope="{ row }">
+                    <el-button @click="edit(row)" type="text">编辑</el-button>
+                    <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="e-pages" style="margin-top: 10px;text-align: center">
+            <el-pagination @current-change="loadList" :current-page="page" :page-size="pagesize"
+                @size-change="sizeChange" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+            </el-pagination>
+        </div>
+        <el-dialog :title="headerTitle" :visible.sync="dialogVisible" size="mini">
+            <div class="form-database-form">
+                <el-form :model="form" ref="formModel" label-width="120px" :rules="rules">
+                    <el-form-item label="课程名称" required>
+                        <el-select v-model="form.kechengid" style="width: 100%" clearable>
+                            <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id"
+                                :label="m.kechengmingcheng"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="考勤成绩比例" prop="kaoqinchengji">
+                        <el-input placeholder="请输入成绩比例" v-model="form.kaoqinchengji" />
+                    </el-form-item>
+                    <el-form-item label="随堂测试成绩" prop="suitangceshichengji">
+                        <el-input placeholder="请输入成绩比例" v-model="form.suitangceshichengji" />
+                    </el-form-item>
+                    <el-form-item label="抢答问题成绩" prop="qiangdawentichengji">
+                        <el-input placeholder="请输入成绩比例" v-model="form.qiangdawentichengji" />
+                    </el-form-item>
+                    <el-form-item label="学生互评成绩" prop="shenghupingchengji">
+                        <el-input placeholder="请输入成绩比例" v-model="form.shenghupingchengji" />
+                    </el-form-item>
+                    <el-form-item label="教师评价成绩" prop="jiaoshipingjiachengji">
+                        <el-input placeholder="请输入成绩比例" v-model="form.jiaoshipingjiachengji" />
+                    </el-form-item>
+                </el-form>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submit" v-if="oper=='add'">确 定</el-button>
+                <el-button type="primary" @click="submit1" v-if="oper=='edit'">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+<style type="text/scss" scoped lang="scss"></style>
+<script>
+    import api from "@/api";
+    import {
+        remove,
+        checkIssh
+    } from "@/utils/utils";
+    import {
+        extend
+    } from "@/utils/extend";
+    import objectDiff from "objectdiff";
+
+    // 验证是否是[0-1]的小数
+    export function isDecimal(rule, value, callback) {
+        if (!value) {
+            return callback(new Error('输入不可以为空'));
+        }
+        setTimeout(() => {
+            // if (!Number(value)) {
+            //     callback(new Error('请输入[0,1]之间的数字'));
+            // } else {
+            if (value < 0 || value > 1) {
+                callback(new Error('请输入[0,1]之间的数字'));
+            } else {
+                callback();
+            }
+            // }
+        }, 100);
+    }
+    export default {
+        data() {
+            return {
+                kechengmingchengList: [],
+                oper: "",
+                headerTitle: "",
+                dialogVisible: false,
+                form: {
+                    kechengid: '',
+                    shenghupingchengji: '',
+                    kaoqinchengji: '',
+                    suitangceshichengji: '',
+                    qiangdawentichengji: '',
+                    jiaoshipingjiachengji: ''
+                },
+                loading: false,
+                list: [],
+                search: {
+                    kechengid: ''
+                },
+                total: {},
+                page: 1, // 当前页
+                pagesize: 10, // 页大小
+                totalCount: 0, // 总行数
+                zhuanyeList: [],
+                rules: {
+                    kaoqinchengji: [{
+                        required: true,
+                        message: "请输入成绩比例",
+                        trigger: "blur"
+                    }, {
+                        validator: isDecimal,
+                        trigger: 'blur'
+                    }],
+                    suitangceshichengji: [{
+                        required: true,
+                        message: "请输入成绩比例",
+                        trigger: "blur"
+                    }, {
+                        validator: isDecimal,
+                        trigger: 'blur'
+                    }],
+                    qiangdawentichengji: [{
+                        required: true,
+                        message: "请输入成绩比例",
+                        trigger: "blur"
+                    }, {
+                        validator: isDecimal,
+                        trigger: 'blur'
+                    }],
+                    shenghupingchengji: [{
+                        required: true,
+                        message: "请输入成绩比例",
+                        trigger: "blur"
+                    }, {
+                        validator: isDecimal,
+                        trigger: 'blur'
+                    }],
+                    jiaoshipingjiachengji: [{
+                        required: true,
+                        message: "请输入成绩比例",
+                        trigger: "blur"
+                    }, {
+                        validator: isDecimal,
+                        trigger: 'blur'
+                    }],
+                },
+            };
+        },
+        methods: {
+            kechengFormatter(row) {
+                var name = "";
+                this.kechengmingchengList.forEach(function (item) {
+                    if (row.kechengid == item.id) {
+                        name = item.kechengmingcheng;
+                    }
+                });
+                return name;
+            },
+            initKecheng() {
+                // 防止重新点加载列表
+                // 筛选条件
+                var filter = extend(true, {}, {
+                    jiaoshiid: localStorage.getItem("jiaoshiid"),
+                    page: 1,
+                    pagesize: 10,
+                });
+                this.$post(api.kecheng.list, filter)
+                    .then((res) => {
+                        if (res.code == api.code.OK) {
+                            this.kechengmingchengList = res.data.list;
+                        } else {
+                            this.$message.error(res.msg);
+                        }
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        this.$message.error(err.message);
+                    });
+            },
+            operChange() {
+                if (this.oper == "add") {
+                    this.headerTitle = "设置成绩比例构成";
+                } else {
+                    this.headerTitle = "编辑成绩比例构成";
+                }
+            },
+            edit(row) {
+                this.form = row;
+                this.oper = "edit";
+                this.dialogVisible = true;
+                this.operChange();
+            },
+            addSubmit() {
+                this.oper = "add";
+                this.dialogVisible = true;
+                this.operChange();
+            },
+            submit() {
+
+                var a = parseFloat(this.form.kaoqinchengji)
+                var b = parseFloat(this.form.suitangceshichengji)
+                var c = parseFloat(this.form.qiangdawentichengji)
+                var d = parseFloat(this.form.shenghupingchengji)
+                var e = parseFloat(this.form.jiaoshipingjiachengji)
+                var zong = a + b + c + d + e
+                this.$refs.formModel
+                    .validate()
+                    .then((res) => {
+                        if (zong != 1) {
+                            this.$message.error('请检查各成绩比例相加是否等于1');
+                            return
+                        }
+                        if (this.loading) return;
+                        this.loading = true;
+                        var form = this.form;
+                        this.$post("/chengjibiliinsert", form)
+                            .then((res) => {
+                                this.loading = false;
+                                if (res.code == api.code.OK) {
+                                    this.$message.success("设置成绩比例成功");
+                                    this.loadList(1);
+                                    this.dialogVisible = false;
+                                    this.$refs.formModel.resetFields();
+                                    this.loadInfo();
+                                } else {
+                                    this.$message.error(res.msg);
+                                }
+                            })
+                            .catch((err) => {
+                                this.loading = false;
+                                this.$message.error(err.message);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+            },
+            submit1() {
+                this.$refs.formModel
+                    .validate()
+                    .then((res) => {
+                        if (this.loading) return;
+                        this.loading = true;
+                        var form = this.form;
+                        this.$post("/chengjibiliupdate", form)
+                            .then((res) => {
+                                this.loading = false;
+                                if (res.code == api.code.OK) {
+                                    this.$message.success("修改成绩比例成功");
+                                    this.loadList(1);
+                                    this.dialogVisible = false;
+                                    this.$refs.formModel.resetFields();
+                                    this.loadInfo();
+                                } else {
+                                    this.$message.error(res.msg);
+                                }
+                            })
+                            .catch((err) => {
+                                this.loading = false;
+                                this.$message.error(err.message);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+            },
+            loadInfo() {
+                var form = this.form;
+                // 获取模块得数据
+                this.loading = true;
+                this.$post('/chengjibili_add', {
+                        id: this.$route.query.id,
+                    })
+                    .then((res) => {
+                        this.loading = false;
+                        if (res.code == api.code.OK) {
+                            extend(this, res.data);
+                        } else {
+                            this.$message.error(res.msg);
+                            this.$router.go(-1);
+                        }
+                    })
+                    .catch((err) => {
+                        this.$message.error(err.message);
+                        this.$router.go(-1);
+                    });
+            },
+            searchSubmit() {
+                this.loadList(1);
+            },
+            sizeChange(e) {
+                this.pagesize = e;
+                this.loadList(1);
+            },
+            checkIssh,
+
+            loadList(page) {
+                // 防止重新点加载列表
+                if (this.loading) return;
+                this.loading = true;
+                this.page = page;
+                // 筛选条件
+                var filter = extend(true, {}, this.search, {
+                    page: page + "",
+                    pagesize: this.pagesize + "",
+                });
+                var diff = objectDiff.diff(filter, this.$route.query);
+                if (diff.changed != "equal") {
+                    // 筛选的条件不一致则更新链接
+                    this.$router.push({
+                        // 更新query
+                        path: this.$route.path,
+                        query: filter,
+                    });
+                }
+                this.$post("/chengjibili_list", filter)
+                    .then((res) => {
+                        this.loading = false;
+                        if (res.code == api.code.OK) {
+                            extend(this, res.data);
+                        } else {
+                            this.$message.error(res.msg);
+                        }
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        this.$message.error(err.message);
+                    });
+            },
+            // 删除某行方法
+            deleteItem(row) {
+                this.$confirm("确定删除数据？", "提示", {
+                        // 弹出 确认框提示是否要删除
+                        type: "warning",
+                    })
+                    .then(() => {
+                        // 确定操作
+
+                        this.loading = true; // 滚动条
+                        this.$post('/chengjibili_delete', {
+                                // 提交后台
+                                id: row.id,
+                            })
+                            .then((res) => {
+                                this.loading = false;
+                                if (res.code != api.code.OK) {
+                                    this.$message.error(res.msg);
+                                } else {
+                                    remove(this.list, row);
+                                }
+                            })
+                            .catch((err) => {
+                                // 访问网络错误
+                                this.loading = false;
+                                this.$message.error(err.message);
+                            });
+                    })
+                    .catch(() => {
+                        // 取消操作
+                    });
+            },
+        },
+        beforeRouteUpdate(to, form, next) {
+            extend(this.search, to.query);
+            this.loadList(1);
+            next();
+        },
+        created() {
+            var search = extend(this.search, this.$route.query);
+            if (search.page) {
+                this.page = Math.floor(this.$route.query.page);
+                delete search.page;
+            }
+            if (search.pagesize) {
+                this.pagesize = Math.floor(this.$route.query.pagesize);
+                delete search.pagesize;
+            }
+            this.initKecheng()
+            this.loadList(1);
+        },
+        mounted() {},
+        destroyed() {},
+    };
+</script>
