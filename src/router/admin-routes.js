@@ -714,19 +714,19 @@ export default [
     component: () => import("@/views/end/keqiankaoqin/list-faburen"),
     meta: { title: "课前考勤列表", authLogin: true },
   },
-  {
-    path: "keqiankaoqinadd",
-    name: "AdminkeqiankaoqinAdd",
-    component: () => import("@/views/end/keqiankaoqin/add"),
-    meta: { title: "添加课前考勤", authLogin: true },
-  },
-  {
-    path: "keqiankaoqinupdt",
-    name: "AdminkeqiankaoqinUpdt",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/end/keqiankaoqin/updt"),
-    meta: { title: "编辑课前考勤", authLogin: true },
-  },
+  // {
+  //   path: "keqiankaoqinadd",
+  //   name: "AdminkeqiankaoqinAdd",
+  //   component: () => import("@/views/end/keqiankaoqin/add"),
+  //   meta: { title: "添加课前考勤", authLogin: true },
+  // },
+  // {
+  //   path: "keqiankaoqinupdt",
+  //   name: "AdminkeqiankaoqinUpdt",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/end/keqiankaoqin/updt"),
+  //   meta: { title: "编辑课前考勤", authLogin: true },
+  // },
   {
     path: "keqiankaoqindetail",
     props: (route) => ({ id: route.query.id }),
@@ -752,12 +752,12 @@ export default [
     component: () => import("@/views/end/qiandao/list-qiandaoren"),
     meta: { title: "签到列表", authLogin: true },
   },
-  {
-    path: "qiandaoadd",
-    name: "AdminqiandaoAdd",
-    component: () => import("@/views/end/qiandao/add"),
-    meta: { title: "添加签到", authLogin: true },
-  },
+  // {
+  //   path: "qiandaoadd",
+  //   name: "AdminqiandaoAdd",
+  //   component: () => import("@/views/end/qiandao/add"),
+  //   meta: { title: "添加签到", authLogin: true },
+  // },
   {
     path: "qiandaoupdt",
     name: "AdminqiandaoUpdt",

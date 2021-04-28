@@ -120,16 +120,16 @@ export default [
     label: "课前考勤管理",
     to: "",
     children: [
+      // {
+      //   label: "课前考勤添加",
+      //   to: "/end/keqiankaoqinadd",
+      // },
       {
-        label: "课前考勤添加",
-        to: "/end/keqiankaoqinadd",
-      },
-      {
-        label: "课前考勤查询",
+        label: "课前考勤管理",
         to: "/end/keqiankaoqin",
       },
       {
-        label: "签到查询",
+        label: "学生签到情况",
         to: "/end/qiandao",
       },
     ],
