@@ -41,8 +41,10 @@
       <el-table-column label="班级" align="center">
         <template slot-scope="{ row }"> {{ row.banji }} </template>
       </el-table-column>
-      <el-table-column label="专业" align="center">
+      <!-- <el-table-column label="专业" align="center">
         <template slot-scope="{ row }"> {{ row.zhuanye }} </template>
+      </el-table-column> -->
+      <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
       </el-table-column>
       <el-table-column label="成绩比例" align="center">
         <el-table-column label="考勤" align="center">
@@ -139,7 +141,7 @@
         page: 1, // 当前页
         pagesize: 10, // 页大小
         totalCount: 0, // 总行数
-
+        kechengmingchengList: [],
         banjiList: [],
         zhuanyeList: [],
       };
@@ -147,6 +149,36 @@
     watch: {},
     computed: {},
     methods: {
+      initKecheng() {
+        // 防止重新点加载列表
+        // 筛选条件
+        var filter = extend(true, {}, {
+          jiaoshiid: localStorage.getItem("jiaoshiid"),
+          page: 1,
+          pagesize: 10,
+        });
+        this.$post(api.kecheng.list, filter)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.kechengmingchengList = res.data.list;
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
+      kechengFormatter(row) {
+        var name = "";
+        this.kechengmingchengList.forEach(function (item) {
+          if (row.kechengid == item.id) {
+            name = item.kechengmingcheng;
+          }
+        });
+        return name;
+      },
       searchSubmit() {
         this.loadList(1);
       },
@@ -237,7 +269,7 @@
         this.pagesize = Math.floor(this.$route.query.pagesize);
         delete search.pagesize;
       }
-
+      this.initKecheng()
       this.loadList(1);
     },
     mounted() {},

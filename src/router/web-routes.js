@@ -126,13 +126,13 @@ export default [
     component: () => import("@/views/first/wentisousuo/index"),
     meta: { title: "问题搜索列表", authLogin: true },
   },
-  {
-    path: "wentisousuodetail",
-    name: "IndexwentisousuoDetail",
-    props: (route) => ({ id: route.query.id }),
-    component: () => import("@/views/first/wentisousuo/webdetail"),
-    meta: { title: "问题搜索详情", authLogin: true },
-  },
+  // {
+  //   path: "wentisousuowebdetail",
+  //   name: "IndexwentisousuoDetail",
+  //   props: (route) => ({ id: route.query.id }),
+  //   component: () => import("@/views/first/wentisousuo/webdetail"),
+  //   meta: { title: "问题搜索详情", authLogin: true },
+  // },
   {
     path: "qiuzhujiaoshi",
     name: "IndexqiuzhujiaoshiList",

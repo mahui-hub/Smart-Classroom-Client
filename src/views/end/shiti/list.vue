@@ -132,7 +132,6 @@
           daan: '',
           faburen: this.$store.state.user.session.username,
           tikuid: 0,
-
         },
         dialogVisible: false,
         loading: false,
@@ -142,6 +141,7 @@
           tikumingcheng: "",
           shititimu: "",
           leixing: "",
+          faburen: ''
         },
         total: {},
         page: 1, // 当前页
@@ -217,6 +217,9 @@
         if (this.loading) return;
         this.loading = true;
         this.page = page;
+        if (localStorage.getItem('role') == '教师') {
+          this.search.faburen = localStorage.getItem('username')
+        }
         // 筛选条件
         var filter = extend(true, {}, this.search, {
           page: page + "",

@@ -2,9 +2,7 @@
   <div class="tiku-detail" v-loading="loading">
     <div>
       <e-container>
-        <div
-          style="margin:15px 0 0 0;background-color:#FFFFFF;box-shadow:0px 0px 2px 2px #DDDDDD"
-        >
+        <div style="margin:15px 0 0 0;background-color:#FFFFFF;box-shadow:0px 0px 2px 2px #DDDDDD">
           <e-module-widget-title title="题库详情">
             <div>
               <div class="common-title" style="margin-top: 4em;">
@@ -23,14 +21,8 @@
                 </span>
                 <div v-html="map.tikumingcheng"></div>
 
-                <e-paper-form
-                  @submit="postPaper"
-                  :list="webda"
-                  danxuanti="单选题"
-                  duoxuanti="多选题"
-                  timu="shititimu"
-                  type="leixing"
-                ></e-paper-form>
+                <e-paper-form @submit="postPaper" :list="webda" danxuanti="单选题" duoxuanti="多选题" timu="shititimu"
+                  type="leixing"></e-paper-form>
 
                 <!--   <div class="s_x clearfix">
 
@@ -65,85 +57,87 @@
 </template>
 <style type="text/scss" scoped lang="scss"></style>
 <script>
-import api from "@/api";
-import { extend } from "@/utils/extend";
+  import api from "@/api";
+  import {
+    extend
+  } from "@/utils/extend";
 
-export default {
-  data() {
-    return {
-      loading: false, // 加载
-      map: {
-        tikubianhao: "",
-        tikumingcheng: "",
-        jiaoshi: "",
-        faburen: "",
+  export default {
+    data() {
+      return {
+        loading: false, // 加载
+        map: {
+          tikubianhao: "",
+          tikumingcheng: "",
+          jiaoshi: "",
+          faburen: "",
+        },
+        prev: {},
+        next: {},
+        webda: [],
+      };
+    },
+    props: {
+      id: {
+        type: [String, Number],
+        required: true,
       },
-      prev: {},
-      next: {},
-      webda: [],
-    };
-  },
-  props: {
-    id: {
-      type: [String, Number],
-      required: true,
     },
-  },
-  watch: {
-    id: {
-      handler() {
-        this.loadDetail();
+    watch: {
+      id: {
+        handler() {
+          this.loadDetail();
+        },
+        immediate: true,
       },
-      immediate: true,
     },
-  },
-  computed: {},
-  methods: {
-    postPaper(paperList, time) {
-      if (this.loading) return;
-      this.loading = true;
-      this.$post("/savePoper", {
-        id: this.id,
-        JSON: JSON.stringify(paperList),
-        time: time,
-      })
-        .then((res) => {
-          this.loading = false;
-          if (res.code == api.code.OK) {
-            this.$message.success("评价课程完成");
-            // this.$goto("/index");
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message.error(err.message);
-        });
-      console.log(paperList);
-    }, //001
-    loadDetail() {
-      if (this.loading) return;
-      this.loading = true;
-      this.$get(api.tiku.webdetail, {
-        id: this.id,
-      })
-        .then((res) => {
-          this.loading = false;
-          if (res.code == api.code.OK) {
-            extend(this, res.data);
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message.error(err.message);
-        });
+    computed: {},
+    methods: {
+      postPaper(paperList, time) {
+        if (this.loading) return;
+        this.loading = true;
+        this.$post("/savePoper", {
+            id: this.id,
+            JSON: JSON.stringify(paperList),
+            time: time,
+          })
+          .then((res) => {
+            this.loading = false;
+            if (res.code == api.code.OK) {
+              this.$message.success("评价课程完成");
+              this.$router.go(-1)
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+        console.log(paperList);
+      }, //001
+      loadDetail() {
+        if (this.loading) return;
+        this.loading = true;
+        this.$get(api.tiku.webdetail, {
+            id: this.id,
+          })
+          .then((res) => {
+            this.loading = false;
+            if (res.code == api.code.OK) {
+              extend(this, res.data);
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
     },
-  },
-  created() {},
-  mounted() {},
-  destroyed() {},
-};
+    created() {},
+    mounted() {},
+    destroyed() {},
+  };
 </script>

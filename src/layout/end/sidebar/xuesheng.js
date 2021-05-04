@@ -53,20 +53,20 @@ export default [
       },
     ],
   },
-  {
-    label: "随堂测试管理",
-    to: "",
-    children: [
-      {
-        label: "回答查询",
-        to: "/end/dati_huidaren",
-      },
-      {
-        label: "答题评阅查询",
-        to: "/end/datipingyue_huidaren",
-      },
-    ],
-  },
+  // {
+  //   label: "随堂测试管理",
+  //   to: "",
+  //   children: [
+  //     {
+  //       label: "回答查询",
+  //       to: "/end/dati_huidaren",
+  //     },
+  //     {
+  //       label: "答题评阅查询",
+  //       to: "/end/datipingyue_huidaren",
+  //     },
+  //   ],
+  // },
 
   {
     label: "成绩管理",

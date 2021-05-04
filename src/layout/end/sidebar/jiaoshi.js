@@ -51,6 +51,28 @@ export default [
       // },
     ],
   },
+  {
+    label: "题库信息管理",
+    to: "",
+    children: [
+      {
+        label: "题库信息添加",
+        to: "/end/tiku_faburen",
+      },
+      {
+        label: "题库试题查询",
+        to: "/end/shiti",
+      },
+      // {
+      //   label: "结果查询",
+      //   to: "/end/jieguo",
+      // },
+      // {
+      //   label: "评价结果查询",
+      //   to: "/end/kaoshijieguo",
+      // },
+    ],
+  },
   // {
   //   label: "答疑内容管理",
   //   to: "",
@@ -88,7 +110,7 @@ export default [
     ],
   },
   {
-    label: "资源管理",
+    label: "资源信息管理",
     to: "",
     children: [
       // {
@@ -96,7 +118,7 @@ export default [
       //   to: "/end/ziyuanadd",
       // },
       {
-        label: "资源列表",
+        label: "资源信息列表",
         to: "/end/ziyuan",
       },
     ],
@@ -105,12 +127,16 @@ export default [
     label: "成绩信息管理",
     to: "",
     children: [
+      //    {
+      //   label: "成绩添加",
+      //   to: "/end/chengjiadd",
+      // },
       {
         label: "成绩比例设置",
         to: "/end/chengjibili",
       },
       {
-        label: "成绩查询",
+        label: "学生成绩查询",
         to: "/end/chengji",
       },
     ],
@@ -132,27 +158,39 @@ export default [
         label: "学生签到情况",
         to: "/end/qiandao",
       },
+      {
+        label: "学生考勤成绩",
+        to: "/end/kaoqinchengji",
+      },
     ],
   },
   {
     label: "随堂测试管理",
     to: "",
     children: [
+      // {
+      //   label: "随堂测试添加",
+      //   to: "/end/suitangceshiadd",
+      // },
+      // {
+      //   label: "随堂测试查询",
+      //   to: "/end/suitangceshi_faburen",
+      // },
+      // {
+      //   label: "答题查询",
+      //   to: "/end/dati",
+      // },
+      // {
+      //   label: "答题评阅查询",
+      //   to: "/end/datipingyue",
+      // },
       {
-        label: "随堂测试添加",
-        to: "/end/suitangceshiadd",
+        label: "测试结果查询",
+        to: "/end/jieguo",
       },
       {
-        label: "随堂测试查询",
-        to: "/end/suitangceshi_faburen",
-      },
-      {
-        label: "答题查询",
-        to: "/end/dati",
-      },
-      {
-        label: "答题评阅查询",
-        to: "/end/datipingyue",
+        label: "测试分数查询",
+        to: "/end/kaoshijieguo",
       },
     ],
   },

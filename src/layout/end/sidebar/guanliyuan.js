@@ -209,28 +209,28 @@ export default [
       },
     ],
   },
-  {
-    label: "随堂测试管理",
-    to: "",
-    children: [
-      /*  {
-                label: '随堂测试添加',
-                to: '/end/suitangceshiadd',
-            },*/
-      {
-        label: "随堂测试查询",
-        to: "/end/suitangceshi",
-      },
-      {
-        label: "答题查询",
-        to: "/end/dati",
-      },
-      {
-        label: "答题评阅查询",
-        to: "/end/datipingyue",
-      },
-    ],
-  },
+  // {
+  //   label: "随堂测试管理",
+  //   to: "",
+  //   children: [
+  //     /*  {
+  //               label: '随堂测试添加',
+  //               to: '/end/suitangceshiadd',
+  //           },*/
+  //     {
+  //       label: "随堂测试查询",
+  //       to: "/end/suitangceshi",
+  //     },
+  //     {
+  //       label: "答题查询",
+  //       to: "/end/dati",
+  //     },
+  //     {
+  //       label: "答题评阅查询",
+  //       to: "/end/datipingyue",
+  //     },
+  //   ],
+  // },
 
   {
     label: "成绩管理",

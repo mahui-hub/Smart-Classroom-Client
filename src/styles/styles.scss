@@ -12,12 +12,19 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 @import "~normalize.css/normalize.css";
 @import "~element-ui/packages/theme-chalk/src/index";
 
-.form-search{
+.form-search {
   padding: 10px;
 }
-.el-menu-item{
-  padding:0 10px;
+
+.el-menu-item {
+  padding: 0 10px;
 }
+
+.app {
+  padding: 40px 80px;
+  background: #ecf7e1;
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
@@ -127,7 +134,7 @@ div:focus {
 aside {
   background: #eef1f6;
   padding: 8px 10px;
-  
+
   border-radius: 2px;
   display: block;
   line-height: 32px;
@@ -302,7 +309,7 @@ aside {
 }
 
 // table 通用样式
-.el-table:not(.el-table--border)  {
+.el-table:not(.el-table--border) {
 
   .el-table__header-wrapper,
   .el-table__fixed-right .el-table__fixed-header-wrapper,
@@ -347,6 +354,7 @@ aside {
 }
 
 .el-table--border {
+
   .el-table__header-wrapper,
   .el-table__fixed-right .el-table__fixed-header-wrapper,
   .el-table__fixed .el-table__fixed-header-wrapper {
@@ -355,11 +363,13 @@ aside {
       background-color: #f5f7fb;
       color: #262C33;
     }
+
     th.el-table-column--selection>.cell {
       padding-left: 14px;
       padding-right: 14px;
     }
   }
+
   .el-table__body-wrapper,
   .el-table__fixed-right .el-table__fixed-body-wrapper,
   .el-table__fixed .el-table__fixed-body-wrapper {
@@ -376,37 +386,44 @@ aside {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+
   .tool-bar-search {
     width: 250px;
   }
 
-  > * {
+  >* {
     margin-right: 10px;
   }
 }
+
 // 阿里字体图标设置
-.icon, .iconfont {
-  font-family:"iconfont" !important;
-  font-size:16px;
-  font-style:normal;
+.icon,
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
+
 //树形控件
 .el-tree {
   border: 1px solid #e2e8f1;
   border-radius: 2px;
   border-bottom: none;
+
   .el-tree-node__content {
     height: 34px;
     border-bottom: 1px solid #e2e8f1;
   }
 }
-.el-menu.el-menu--horizontal{
-  border-bottom:none;
+
+.el-menu.el-menu--horizontal {
+  border-bottom: none;
 }
-.el-main{
+
+.el-main {
   padding: 0;
   background: #ffffff;
 }

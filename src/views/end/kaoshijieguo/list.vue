@@ -6,22 +6,12 @@
         <el-form-item label="题库名称">
           <el-input v-model="search.tikumingcheng"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="评价编号">
-          <el-input v-model="search.kaoshibianhao"></el-input>
-        </el-form-item> -->
-        <!-- <el-form-item label="单选题得分">
-          <el-input
-            type="text"
-            style="width: 100px"
-            v-model="search.danxuantidefen_start"
-          ></el-input>
-          -
-          <el-input
-            type="text"
-            style="width: 100px"
-            v-model="search.danxuantidefen_end"
-          ></el-input>
-        </el-form-item> -->
+        <el-form-item label="课程名称" prop="kechengid">
+          <el-select v-model="search.kechengid" style="width: 100%" clearable>
+            <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
@@ -30,10 +20,6 @@
 
     <el-table border :data="list" style="width: 100%" highlight-current-row stripe>
       <el-table-column type="index" align="center"></el-table-column>
-      <!-- 序号 -->
-      <!-- <el-table-column label="评价编号" align="center">
-        <template slot-scope="{ row }"> {{ row.kaoshibianhao }} </template>
-      </el-table-column> -->
       <el-table-column label="评价人" align="center">
         <template slot-scope="{ row }"> {{ row.kaoshiren }} </template>
       </el-table-column>
@@ -49,13 +35,6 @@
         <template slot-scope="{ row }"> {{ row.faburen }} </template>
       </el-table-column>
 
-      <!-- <el-table-column label="单选题得分" align="center">
-          <template slot-scope="{ row }"> {{ row.danxuantidefen }} </template>
-        </el-table-column>
-        <el-table-column label="多选题得分" align="center">
-          <template slot-scope="{ row }"> {{ row.duoxuantidefen }} </template>
-        </el-table-column> -->
-
       <el-table-column label="总得分" align="center">
         <template slot-scope="{ row }"> {{ row.zongdefen }} </template>
       </el-table-column>
@@ -69,19 +48,13 @@
               })
             " type="text">详情</el-button>
 
-          <!-- <el-tooltip content="编辑" placement="top">
-                <el-button
-                  icon="el-icon-edit"
-                  @click="
+          <el-button @click="
                     $goto({
-                      path: '/admin/kaoshijieguoupdt',
+                      path: '/end/kaoshijieguoupdt',
                       query: { id: row.id },
                     })
-                  "
-                  type="warning"
-                  size="mini"
-                ></el-button>
-              </el-tooltip> -->
+                  " type="text">编辑</el-button>
+
 
           <el-button type="text" @click="deleteItem(row)">删除 </el-button>
         </template>
@@ -133,9 +106,6 @@
           tikumingcheng: "",
           kechengid: "",
           tikutype: "评价题库",
-          kaoshibianhao: "",
-          danxuantidefen_start: "",
-          danxuantidefen_end: "",
         },
         total: {},
         page: 1, // 当前页
@@ -153,7 +123,6 @@
         params.kechengleixing = "";
         params.pagesize = 10;
         params.page = 1;
-
         this.$post(api.kecheng.list, params)
           .then((res) => {
             if (res.code == api.code.OK) {
@@ -192,6 +161,9 @@
         this.loading = true;
         this.page = page;
         // 筛选条件
+        if (localStorage.getItem('role') == '教师') {
+          this.search.tikutype = "测验题库"
+        }
         var filter = extend(true, {}, this.search, {
           page: page + "",
           pagesize: this.pagesize + "",

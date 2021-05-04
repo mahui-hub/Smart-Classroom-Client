@@ -568,12 +568,12 @@ export default [
     component: () => import("@/views/end/tiku/index"),
     meta: { title: "题库列表", authLogin: true },
   },
-  // {
-  //   path: "tiku_faburen",
-  //   name: "AdmintikuListfaburen",
-  //   component: () => import("@/views/end/tiku/list-faburen"),
-  //   meta: { title: "题库列表", authLogin: true },
-  // },
+  {
+    path: "tiku_faburen",
+    name: "AdmintikuListfaburen",
+    component: () => import("@/views/end/tiku/list-faburen"),
+    meta: { title: "题库列表", authLogin: true },
+  },
   {
     path: "tikuadd",
     name: "AdmintikuAdd",
@@ -606,12 +606,12 @@ export default [
     component: () => import("@/views/end/shiti/list-faburen"),
     meta: { title: "试题列表", authLogin: true },
   },
-  {
-    path: "shitiadd",
-    name: "AdminshitiAdd",
-    component: () => import("@/views/end/shiti/add"),
-    meta: { title: "添加试题", authLogin: true },
-  },
+  // {
+  //   path: "shitiadd",
+  //   name: "AdminshitiAdd",
+  //   component: () => import("@/views/end/shiti/add"),
+  //   meta: { title: "添加试题", authLogin: true },
+  // },
   // {
   //   path: "shitiupdt",
   //   name: "AdminshitiUpdt",
@@ -619,13 +619,13 @@ export default [
   //   component: () => import("@/views/end/shiti/updt"),
   //   meta: { title: "编辑试题", authLogin: true },
   // },
-  {
-    path: "shitidetail",
-    props: (route) => ({ id: route.query.id }),
-    name: "AdminshitiDetail",
-    component: () => import("@/views/end/shiti/detail"),
-    meta: { title: "试题详情" },
-  },
+  // {
+  //   path: "shitidetail",
+  //   props: (route) => ({ id: route.query.id }),
+  //   name: "AdminshitiDetail",
+  //   component: () => import("@/views/end/shiti/detail"),
+  //   meta: { title: "试题详情" },
+  // },
   {
     path: "jieguo",
     name: "AdminjieguoList",
@@ -707,6 +707,12 @@ export default [
     name: "AdminkeqiankaoqinList",
     component: () => import("@/views/end/keqiankaoqin/list"),
     meta: { title: "课前考勤列表", authLogin: true },
+  },
+  {
+    path: "kaoqinchengji",
+    name: "AdminkeqiankaoqinList",
+    component: () => import("@/views/end/keqiankaoqin/chengji"),
+    meta: { title: "考勤成绩", authLogin: true },
   },
   {
     path: "keqiankaoqin_faburen",
@@ -813,6 +819,7 @@ export default [
   {
     path: "xueshenghuping",
     name: "AdminxueshenghupingList",
+    props: (route) => ({ xuehao: route.query.xuehao }),
     component: () => import("@/views/end/xueshenghuping/list"),
     meta: { title: "学生互评列表", authLogin: true },
   },

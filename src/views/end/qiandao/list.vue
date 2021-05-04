@@ -18,10 +18,6 @@
     <el-table border :data="list" style="width: 100%" highlight-current-row>
       <el-table-column type="index" label=" "></el-table-column>
       <!-- 序号 -->
-
-      <el-table-column label="课程编号" align="center">
-        <template slot-scope="{ row }"> {{ row.kechengbianhao }} </template>
-      </el-table-column>
       <el-table-column label="课程名称" align="center">
         <template slot-scope="{ row }"> {{ row.kechengmingcheng }} </template>
       </el-table-column>

@@ -153,7 +153,8 @@
                 return new Promise((resolve, reject) => {
                     this.$post(api.search.select, {
                         table: this.module,
-                        where: JSON.stringify(where)
+                        where: JSON.stringify(where),
+                        jiaoshiid: localStorage.getItem('jiaoshiid')
                     }).then(res => {
                         if (isEmit) {
                             this.$emit('input', 0);

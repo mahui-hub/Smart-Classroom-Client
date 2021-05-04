@@ -8,60 +8,55 @@
         <el-form-item label="姓名">
           <el-input v-model="search.xingming"></el-input>
         </el-form-item>
-        <el-form-item label="互评分数">
+        <!-- <el-form-item label="互评分数">
           <el-input type="text" style="width: 80px" v-model="search.hupingfenshu_start"></el-input>
           -<el-input type="text" style="width: 80px" v-model="search.hupingfenshu_end"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
-    <el-table border :data="list" style="width: 100%" highlight-current-row>
+    <el-table border :data="list" stripe highlight-current-row>
       <el-table-column type="index" label="#"></el-table-column>
       <!-- 序号 -->
 
-      <el-table-column label="学号" width="130">
+      <el-table-column label="学号" align="center">
         <template slot-scope="{ row }"> {{ row.xuehao }} </template>
       </el-table-column>
-      <el-table-column label="姓名" width="130">
+      <el-table-column label="姓名" align="center">
         <template slot-scope="{ row }"> {{ row.xingming }} </template>
       </el-table-column>
-      <el-table-column label="互评内容">
+      <el-table-column label="互评内容" align="center">
         <template slot-scope="{ row }"> {{ row.hupingneirong }} </template>
       </el-table-column>
-      <el-table-column label="互评分数" width="80">
+      <el-table-column label="互评分数" align="center">
         <template slot-scope="{ row }"> {{ row.hupingfenshu }} </template>
       </el-table-column>
-      <el-table-column label="互评人" width="80">
+      <el-table-column label="互评人" align="center">
         <template slot-scope="{ row }"> {{ row.hupingren }} </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button-group>
-            <el-tooltip content="详情" placement="top">
-              <el-button @click="
+          <el-button @click="
                     $goto({
                       path: '/admin/xueshenghupingdetail',
                       query: { id: row.id },
                     })
-                  " icon="el-icon-info" type="info" size="mini"></el-button>
-            </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
-              <el-button icon="el-icon-edit" @click="
+                  " type="text">详情</el-button>
+
+
+          <!-- <el-button @click="
                     $goto({
-                      path: '/admin/xueshenghupingupdt',
+                      path: '/end/xueshenghupingupdt',
                       query: { id: row.id },
                     })
-                  " type="warning" size="mini"></el-button>
-            </el-tooltip>
-            <el-tooltip content="删除" placement="top">
-              <el-button icon="el-icon-delete" type="danger" size="mini" @click="deleteItem(row)">
-              </el-button>
-            </el-tooltip>
-          </el-button-group>
+                  " type="text">编辑</el-button> -->
+
+          <el-button type="text" @click="deleteItem(row)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,7 +91,7 @@
         search: {
           xuehao: "",
           xingming: "",
-          kechengid: 6,
+          kechengid: "",
           hupingfenshu_start: "",
           hupingfenshu_end: "",
         },
@@ -199,7 +194,6 @@
         this.pagesize = Math.floor(this.$route.query.pagesize);
         delete search.pagesize;
       }
-
       this.loadList(1);
     },
     mounted() {},
