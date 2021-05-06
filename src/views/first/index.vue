@@ -2,6 +2,9 @@
   <div class="loginPage">
     <!-- 导航栏头部 -->
     <div class="loginPage-box w">
+      <el-row>
+        <span class="time"> {{week}} {{nowDate}} {{nowTime}}</span>
+      </el-row>
       <el-row :gutter="10">
         <el-col :span="7">
           <div class="baseInfo">
@@ -10,21 +13,18 @@
                 <span v-if="role != '管理员'">欢迎您， <b>{{ $session.xingming }}</b></span>
                 <span v-if="role == '管理员'">欢迎您， <b>{{ $session.cx }}</b></span>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '教师'"
-                  @click.native="$router.push('/admin/jiaoshiupdtself')">修改资料</el-button>
+                  @click.native="$router.push('/end/jiaoshiupdtself')">修改资料</el-button>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '管理员'"
                   @click.native="$router.push('/end/mod')">修改密码</el-button>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '学生'"
                   @click.native="$router.push('/end/xueshengupdtself')">修改资料</el-button>
+
               </div>
               <div v-if="role == '学生'">
                 <div class="box">
                   <span class="boxtitle">学号：</span>
                   <span>{{ $session.xuehao }}</span>
                 </div>
-                <!-- <div class="box">
-                  <span class="boxtitle">姓名：</span>
-                  <span>{{ $session.xingming }}</span>
-                </div> -->
                 <div class="box">
                   <span class="boxtitle">性别：</span>
                   <span>{{ $session.xingbie }}</span>
@@ -52,15 +52,15 @@
               </div>
               <div v-if="role == '管理员'">
                 <div class="text">
-                  <span>用户角色：</span>
+                  <span class="boxtitle">用户角色：</span>
                   <span>{{ $session.cx }}</span>
                 </div>
                 <div class="text">
-                  <span>用户账号：</span>
+                  <span class="boxtitle">用户账号：</span>
                   <span>{{ $session.username }}</span>
                 </div>
                 <div class="text">
-                  <span>创建时间：</span>
+                  <span class="boxtitle">创建时间：</span>
                   <span>{{ $session.addtime }}</span>
                 </div>
               </div>
@@ -70,32 +70,28 @@
                   <span>{{ $session.gonghao }}</span>
                 </div>
                 <div class="box">
-                  <span>姓名：</span>
+                  <span class="boxtitle">姓名：</span>
                   <span>{{ $session.xingming }}</span>
                 </div>
                 <div class="box">
-                  <span>性别：</span>
+                  <span class="boxtitle">性别：</span>
                   <span>{{ $session.xingbie }}</span>
                 </div>
                 <div class="box">
-                  <span>学院：</span>
+                  <span class="boxtitle">学院：</span>
                   <span>{{ $session.xueyuan }}</span>
                 </div>
                 <div class="box">
-                  <span>所教班级：</span>
-                  <span>{{ $session.suojiaobanji }}</span>
+                  <span class="boxtitle">职称：</span>
+                  <span>{{ $session.zhicheng }}</span>
                 </div>
                 <div class="box">
-                  <span>QQ号：</span>
+                  <span class="boxtitle">QQ号：</span>
                   <span>{{ $session.qqhao }}</span>
                 </div>
                 <div class="box">
-                  <span>联系电话：</span>
+                  <span class="boxtitle">联系电话：</span>
                   <span>{{ $session.lianxidianhua }}</span>
-                </div>
-                <div class="box">
-                  <span>详情：</span>
-                  <span>{{ $session.xiangqing }}</span>
                 </div>
               </div>
             </el-card>
@@ -177,6 +173,10 @@
   export default {
     data() {
       return {
+        week: '',
+        nowDate: '',
+        nowTime: "",
+        // updateTime: "1",
         token: "",
         activeName: "first",
         role: "",
@@ -207,8 +207,56 @@
       this.role = localStorage.getItem("role");
       this.token = localStorage.getItem("token");
       this.panduan();
+      this.nowTimes();
     },
     methods: {
+      nowTimes() {
+        this.timeFormate(new Date());
+        setInterval(this.nowTimes, 30 * 1000);
+      },
+      timeFormate(timeStamp) {
+        let year = new Date(timeStamp).getFullYear();
+        let month = new Date(timeStamp).getMonth() + 1 < 10 ? 0 + (new Date(timeStamp).getMonth() + 1) : new Date(
+          timeStamp).getMonth() + 1;
+        let date = new Date(timeStamp).getDate() < 10 ? 0 + new Date(timeStamp).getDate() : new Date(timeStamp)
+          .getDate();
+        let hh = new Date(timeStamp).getHours() < 10 ? 0 + new Date(timeStamp).getHours() : new Date(timeStamp)
+          .getHours();
+        let mm = new Date(timeStamp).getMinutes() < 10 ? 0 + new Date(timeStamp).getMinutes() : new Date(timeStamp)
+          .getMinutes();
+        let ss = new Date(timeStamp).getSeconds() < 10 ? 0 + new Date(timeStamp).getSeconds() : new Date(timeStamp)
+          .getSeconds();
+        // return year + “年” + month + “月” + date +“日”+" “+hh+”:"+mm ;
+        // this.nowDate = year + “-” + month + “-” + date +" “+” “+hh+”:"+mm ;
+        this.nowDate = year + "-" + month + "-" + date;
+        this.nowTime = hh + ":" + mm + ":" + ss;
+        // console.log(this.nowTime);
+        var dateString = this.nowDate;
+        var dateObject = new Date(dateString);
+        this.week = dateObject.getDay()
+        if (this.week == 1) {
+          this.week = "星期一"
+        }
+        if (this.week == 2) {
+          this.week = "星期二"
+        }
+        if (this.week == 3) {
+          this.week = "星期三"
+        }
+        if (this.week == 4) {
+          this.week = "星期四"
+        }
+        if (this.week == 5) {
+          this.week = "星期五"
+        }
+        if (this.week == 6) {
+          this.week = "星期六"
+        }
+        if (this.week == 0) {
+          this.week = "星期日"
+        }
+      },
+
       panduan() {
         if (localStorage.getItem("role") == "管理员") {
           this.initKengcheng();
@@ -303,6 +351,13 @@
       background-color: #ecf7e1;
     }
 
+    .time {
+      color: #5a9c15;
+      font-size: 20px;
+      font-weight: bold;
+      float: right;
+    }
+
     .loginPage-box {
       padding: 20px 60px;
     }
@@ -330,7 +385,7 @@
     }
 
     .box {
-      padding: 5px 0;
+      padding-bottom: 8px;
 
       .boxtitle {
         font-weight: bolder;
