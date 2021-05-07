@@ -64,8 +64,8 @@ const api = {
     insert: "youqinglianjieinsert.do",
     update: "youqinglianjieupdate.do",
     delete: "youqinglianjie_delete.do",
-    detail: "youqinglianjie_detail.do",
-    create: "youqinglianjie_add.do",
+    // detail: "youqinglianjie_detail.do",
+    // create: "youqinglianjie_add.do",
     edit: "youqinglianjie_updt.do",
   },
   lunbotu: {
@@ -73,7 +73,7 @@ const api = {
     insert: "lunbotuinsert.do",
     update: "lunbotuupdate.do",
     delete: "lunbotu_delete.do",
-    detail: "lunbotu_detail.do",
+    // detail: "lunbotu_detail.do",
     create: "lunbotu_add.do",
     edit: "lunbotu_updt.do",
   },
@@ -171,7 +171,7 @@ const api = {
     detail: "chengji_detail.do",
     create: "chengji_add.do",
     edit: "chengji_updt.do",
-    listxuehao: "chengji_list_xuehao.do",
+    // listxuehao: "chengji_list_xuehao.do",
     listtianjiaren: "chengji_list_tianjiaren.do",
   },
   tiezi: {

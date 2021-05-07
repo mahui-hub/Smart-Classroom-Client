@@ -18,12 +18,12 @@ export default [
     component: () => import("@/views/first/xuesheng/index"),
     meta: { title: "学生列表", authLogin: true },
   },
-  {
-    path: "xueshengadd",
-    name: "IndexxueshengAdd",
-    component: () => import("@/views/first/xuesheng/webadd"),
-    meta: { title: "学生添加", authLogin: true },
-  },
+  // {
+  //   path: "xueshengadd",
+  //   name: "IndexxueshengAdd",
+  //   component: () => import("@/views/first/xuesheng/webadd"),
+  //   meta: { title: "学生添加", authLogin: true },
+  // },
 
   {
     path: "gonggao",

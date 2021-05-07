@@ -1,27 +1,20 @@
 <template>
-  <div class="gonggao-detail" v-loading="loading">
+  <div class="app">
     <div>
       <e-container>
-        <div style="margin:15px 0 0 0;box-shadow:0px 0px 3px 3px #BBBBBB">
-          <div>
-            <div class="common-title" style="margin-top: 4em;">
-              <p>
-                <i></i>
-                <i></i>
-              </p>
-            </div>
+        <div style="box-shadow:0px 0px 3px 3px #BBBBBB;background-color: rgb(255, 255, 255);">
+          <div style="padding:20px">
             <div class="news_show">
-              <span class="show_t" v-html="map.biaoti"> </span>
-              <span class="fa_time">
-                发布人:{{ map.faburen }} &nbsp;&nbsp;
-              </span>
+              <div class="show_t" v-html="map.biaoti"> </div>
+              <div style="text-align:center">
+                <span class="fa_time">
+                  发布人:{{ map.faburen }} &nbsp;&nbsp;
+                </span>
+              </div>
               <div v-html="map.neirong"></div>
               <div class="s_x clearfix">
                 <template v-if="prev.id">
-                  <router-link
-                    :to="'gonggaodetail?id=' + prev.id"
-                    class="s_prev"
-                  >
+                  <router-link :to="'gonggaodetail?id=' + prev.id" class="s_prev">
                     上一篇：<span v-html="prev.biaoti"></span>
                   </router-link>
                 </template>
@@ -30,10 +23,7 @@
                 </template>
 
                 <template v-if="next.id">
-                  <router-link
-                    :to="'/gonggaodetail?id=' + next.id"
-                    class="x_next"
-                  >
+                  <router-link :to="'/gonggaodetail?id=' + next.id" class="x_next">
                     下一篇：<span v-html="next.biaoti"></span>
                   </router-link>
                 </template>
@@ -50,61 +40,63 @@
 </template>
 <style type="text/scss" scoped lang="scss"></style>
 <script>
-import api from "@/api";
-import { extend } from "@/utils/extend";
-export default {
-  data() {
-    return {
-      loading: false, // 加载
-      map: {
-        bianhao: "",
-        biaoti: "",
-        tupian: "",
-        neirong: "",
-        faburen: "",
+  import api from "@/api";
+  import {
+    extend
+  } from "@/utils/extend";
+  export default {
+    data() {
+      return {
+        loading: false, // 加载
+        map: {
+          bianhao: "",
+          biaoti: "",
+          tupian: "",
+          neirong: "",
+          faburen: "",
+        },
+        prev: {},
+        next: {},
+      };
+    },
+    props: {
+      id: {
+        type: [String, Number],
+        required: true,
       },
-      prev: {},
-      next: {},
-    };
-  },
-  props: {
-    id: {
-      type: [String, Number],
-      required: true,
     },
-  },
-  watch: {
-    id: {
-      handler() {
-        this.loadDetail();
+    watch: {
+      id: {
+        handler() {
+          this.loadDetail();
+        },
+        immediate: true,
       },
-      immediate: true,
     },
-  },
-  computed: {},
-  methods: {
-    loadDetail() {
-      if (this.loading) return;
-      this.loading = true;
-      this.$get(api.gonggao.webdetail, {
-        id: this.id,
-      })
-        .then((res) => {
-          this.loading = false;
-          if (res.code == api.code.OK) {
-            extend(this, res.data);
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message.error(err.message);
-        });
+    computed: {},
+    methods: {
+      loadDetail() {
+        if (this.loading) return;
+        this.loading = true;
+        this.$get(api.gonggao.webdetail, {
+            id: this.id,
+          })
+          .then((res) => {
+            this.loading = false;
+            if (res.code == api.code.OK) {
+              extend(this, res.data);
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
     },
-  },
-  created() {},
-  mounted() {},
-  destroyed() {},
-};
+    created() {},
+    mounted() {},
+    destroyed() {},
+  };
 </script>

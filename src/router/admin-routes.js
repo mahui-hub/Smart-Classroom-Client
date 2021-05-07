@@ -98,13 +98,13 @@ export default [
     component: () => import("@/views/end/gonggao/detail"),
     meta: { title: "公告详情" },
   },
-  // {
-  //   path: "xueshengupdtself",
-  //   name: "AdminxueshengUpdtSelf",
-  //   props: (route) => ({ id: store.state.user.session.id }),
-  //   component: () => import("@/views/end/xuesheng/updt"),
-  //   meta: { title: "编辑学生", authLogin: true },
-  // },
+  {
+    path: "xueshengupdtself",
+    name: "AdminxueshengUpdtSelf",
+    props: (route) => ({ id: store.state.user.session.id }),
+    component: () => import("@/views/end/xuesheng/updt"),
+    meta: { title: "修改学生资料", authLogin: true },
+  },
   // {
   //   path: "gonggao_faburen",
   //   name: "AdmingonggaoListfaburen",
@@ -272,12 +272,12 @@ export default [
     component: () => import("@/views/end/chengji/list-xuehao"),
     meta: { title: "成绩列表", authLogin: true },
   },
-  {
-    path: "chengji_tianjiaren",
-    name: "AdminchengjiListtianjiaren",
-    component: () => import("@/views/end/chengji/list-tianjiaren"),
-    meta: { title: "成绩列表", authLogin: true },
-  },
+  // {
+  //   path: "chengji_tianjiaren",
+  //   name: "AdminchengjiListtianjiaren",
+  //   component: () => import("@/views/end/chengji/list-tianjiaren"),
+  //   meta: { title: "成绩列表", authLogin: true },
+  // },
   {
     path: "chengjiadd",
     name: "AdminchengjiAdd",
@@ -542,12 +542,12 @@ export default [
     component: () => import("@/views/end/qiuzhujiaoshi/list"),
     meta: { title: "求助教师列表", authLogin: true },
   },
-  {
-    path: "qiuzhujiaoshiadd",
-    name: "AdminqiuzhujiaoshiAdd",
-    component: () => import("@/views/end/qiuzhujiaoshi/add"),
-    meta: { title: "添加求助教师", authLogin: true },
-  },
+  // {
+  //   path: "qiuzhujiaoshiadd",
+  //   name: "AdminqiuzhujiaoshiAdd",
+  //   component: () => import("@/views/end/qiuzhujiaoshi/add"),
+  //   meta: { title: "添加求助教师", authLogin: true },
+  // },
   {
     path: "qiuzhujiaoshiupdt",
     name: "AdminqiuzhujiaoshiUpdt",

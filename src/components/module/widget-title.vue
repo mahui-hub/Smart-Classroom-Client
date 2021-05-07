@@ -12,18 +12,15 @@
 </template>
 <style type="text/scss" scoped lang="scss">
     .section_title {
-        text-align: center;
-        margin-bottom: 30px;
+        text-align: center;  
         position: relative;
-        padding-bottom: 27px;
         h2{
             font-size: 36px;
             line-height: 36px;
             font-weight: 400;
             display: inline-block;
-            margin-bottom: 18px;
-            text-transform: capitalize;
-            .section_title h2 span {
+            margin-top: 18px;
+           span {
                 font-weight: 600;
             }
         }
@@ -52,7 +49,6 @@
 
 </style>
 <script>
-
     export default {
         name: "e-module-widget-title",
         data() {
@@ -60,16 +56,13 @@
 
             }
         },
-        props:{
-            title:String
+        props: {
+            title: String
         },
         watch: {},
         methods: {},
-        created() {
-        },
-        mounted() {
-        },
-        destroyed() {
-        }
+        created() {},
+        mounted() {},
+        destroyed() {}
     }
 </script>

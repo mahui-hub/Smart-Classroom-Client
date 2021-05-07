@@ -76,11 +76,6 @@
           {{ row.qqhao }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="头像" align="center">
-          <template slot-scope="{ row }">
-            <e-img :src="row.touxiang" style="max-width:120px" />
-          </template>
-        </el-table-column> -->
       <el-table-column label="操作" align="center" min-width="150">
         <template slot-scope="{ row }">
           <!-- @click="$goto('/admin/chengjiadd?id=' + row.id)" -->

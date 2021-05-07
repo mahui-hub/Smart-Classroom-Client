@@ -1,15 +1,11 @@
 <template>
-  <div v-loading="loading">
+  <div class="app">
     <div>
       <e-container>
         <div style="margin:15px 0 0 0;box-shadow:0px 0px 2px 2px #DDDDDD">
           <e-module-widget-title title="资源列表">
             <div class="list-table">
-              <table
-                width="100%"
-                border="1"
-                class="table table-list table-bordered table-hover"
-              >
+              <table width="100%" border="1" class="table table-list table-bordered table-hover">
                 <thead>
                   <tr align="center">
                     <th>编号</th>
@@ -48,13 +44,8 @@
             </div>
 
             <div style="margin-top: 10px;text-align: center">
-              <el-pagination
-                @current-change="loadList"
-                :current-page="page"
-                :page-size="15"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
-              >
+              <el-pagination @current-change="loadList" :current-page="page" :page-size="15"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
               </el-pagination>
             </div>
           </e-module-widget-title>
@@ -65,105 +56,107 @@
 </template>
 <style type="text/scss" scoped lang="scss"></style>
 <script>
-import api from "@/api";
-import { extend } from "@/utils/extend";
-import objectDiff from "objectdiff";
+  import api from "@/api";
+  import {
+    extend
+  } from "@/utils/extend";
+  import objectDiff from "objectdiff";
 
-/**
- * 后台列表页面
- */
-export default {
-  data() {
-    return {
-      loading: false,
-      list: [],
-      search: {
-        bianhao: "",
+  /**
+   * 后台列表页面
+   */
+  export default {
+    data() {
+      return {
+        loading: false,
+        list: [],
+        search: {
+          bianhao: "",
 
-        biaoti: "",
+          biaoti: "",
 
-        fenlei: "",
+          fenlei: "",
 
-        tupian: "",
+          tupian: "",
 
-        fujian: "",
+          fujian: "",
 
-        xiangqing: "",
+          xiangqing: "",
 
-        faburen: "",
+          faburen: "",
+        },
+        page: 1, // 当前页
+        pagesize: 12, // 页大小
+        totalCount: 0, // 总行数
+        total: {},
+      };
+    },
+    watch: {},
+    computed: {},
+    methods: {
+      searchSubmit() {
+        this.loadList(1);
       },
-      page: 1, // 当前页
-      pagesize: 12, // 页大小
-      totalCount: 0, // 总行数
-      total: {},
-    };
-  },
-  watch: {},
-  computed: {},
-  methods: {
-    searchSubmit() {
-      this.loadList(1);
-    },
-    loadList(page) {
-      // 防止重新点加载列表
-      if (this.loading) return;
-      this.loading = true;
-      this.page = page;
-      // 筛选条件
-      var filter = extend(true, {}, this.search, {
-        page: page + "",
-        pagesize: this.pagesize + "",
-      });
-      var diff = objectDiff.diff(filter, this.$route.query);
-      if (diff.changed != "equal") {
-        // 筛选的条件不一致则更新链接
-        this.$router.replace({
-          // 更新query
-          path: this.$route.path,
-          query: filter,
+      loadList(page) {
+        // 防止重新点加载列表
+        if (this.loading) return;
+        this.loading = true;
+        this.page = page;
+        // 筛选条件
+        var filter = extend(true, {}, this.search, {
+          page: page + "",
+          pagesize: this.pagesize + "",
         });
+        var diff = objectDiff.diff(filter, this.$route.query);
+        if (diff.changed != "equal") {
+          // 筛选的条件不一致则更新链接
+          this.$router.replace({
+            // 更新query
+            path: this.$route.path,
+            query: filter,
+          });
+        }
+        this.$post(api.ziyuan.weblist, filter)
+          .then((res) => {
+            this.loading = false;
+            if (res.code == api.code.OK) {
+              extend(this, res.data);
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
+    },
+    beforeRouteUpdate(to, form, next) {
+      var search = extend(this.search, to.query);
+      if (search.page) {
+        this.page = Math.floor(to.query.page);
+        delete search.page;
       }
-      this.$post(api.ziyuan.weblist, filter)
-        .then((res) => {
-          this.loading = false;
-          if (res.code == api.code.OK) {
-            extend(this, res.data);
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message.error(err.message);
-        });
+      if (search.pagesize) {
+        this.pagesize = Math.floor(to.query.pagesize);
+        delete search.pagesize;
+      }
+      this.loadList(1);
+      next();
     },
-  },
-  beforeRouteUpdate(to, form, next) {
-    var search = extend(this.search, to.query);
-    if (search.page) {
-      this.page = Math.floor(to.query.page);
-      delete search.page;
-    }
-    if (search.pagesize) {
-      this.pagesize = Math.floor(to.query.pagesize);
-      delete search.pagesize;
-    }
-    this.loadList(1);
-    next();
-  },
-  created() {
-    var search = extend(this.search, this.$route.query);
-    if (search.page) {
-      this.page = Math.floor(this.$route.query.page);
-      delete search.page;
-    }
-    if (search.pagesize) {
-      this.pagesize = Math.floor(this.$route.query.pagesize);
-      delete search.pagesize;
-    }
-    this.loadList(this.page);
-  },
-  mounted() {},
-  destroyed() {},
-};
+    created() {
+      var search = extend(this.search, this.$route.query);
+      if (search.page) {
+        this.page = Math.floor(this.$route.query.page);
+        delete search.page;
+      }
+      if (search.pagesize) {
+        this.pagesize = Math.floor(this.$route.query.pagesize);
+        delete search.pagesize;
+      }
+      this.loadList(this.page);
+    },
+    mounted() {},
+    destroyed() {},
+  };
 </script>

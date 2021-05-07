@@ -1,67 +1,74 @@
 <template>
-    
+
     <div class="huidawenti-detail" v-loading="loading" ref="print">
         <el-page-header @back="goBack" content="详情页面"></el-page-header>
         <div class="admin-detail">
 
-                        <div class="detail detail-text">
+            <div class="detail detail-text">
                 <div class="detail-title">
                     编号：
                 </div>
                 <div class="detail-content">
                     {{ map.bianhao }}
                 </div>
-            </div><div class="detail detail-text">
+            </div>
+            <div class="detail detail-text">
                 <div class="detail-title">
                     标题：
                 </div>
                 <div class="detail-content">
                     {{ map.biaoti }}
                 </div>
-            </div>                        <div class="detail detail-image">
+            </div>
+            <div class="detail detail-image">
                 <div class="detail-title">
                     图片：
                 </div>
                 <div class="detail-content">
                     <e-img :src="map.tupian" style="max-width:120px" />
                 </div>
-            </div>                        <div class="detail detail-textuser">
+            </div>
+            <div class="detail detail-textuser">
                 <div class="detail-title">
                     发布人：
                 </div>
                 <div class="detail-content">
                     {{ map.faburen }}
                 </div>
-            </div><div class="detail detail-textuser">
+            </div>
+            <div class="detail detail-textuser">
                 <div class="detail-title">
                     抢答人：
                 </div>
                 <div class="detail-content">
                     {{ map.qiangdaren }}
                 </div>
-            </div>                        <div class="detail detail-file">
+            </div>
+            <div class="detail detail-file">
                 <div class="detail-title">
                     回答附件：
                 </div>
                 <div class="detail-content">
                     <e-file-list v-model="map.huidafujian"></e-file-list>
                 </div>
-            </div>                        <div class="detail detail-money">
+            </div>
+            <div class="detail detail-money">
                 <div class="detail-title">
                     分数：
                 </div>
                 <div class="detail-content">
                     {{ map.fenshu }}
                 </div>
-            </div>                        <div class="detail detail-textarea">
+            </div>
+            <div class="detail detail-textarea">
                 <div class="detail-title">
                     备注：
                 </div>
                 <div class="detail-content">
                     {{ map.beizhu }}
                 </div>
-            </div>            
-                                                            
+            </div>
+
         </div>
         <div class="mt10">
             <el-button type="default" class="hidePrint" @click="$router.go(-1)">
@@ -74,7 +81,7 @@
     </div>
 </template>
 <style type="text/scss" scoped lang="scss">
-.huidawenti-detail{
+    .huidawenti-detail{
     .admin-detail {
         display: flex;
         flex-wrap: wrap;
@@ -126,60 +133,58 @@
 </style>
 <script>
     import api from '@/api';
-    import { extend } from '@/utils/extend';
+    import {
+        extend
+    } from '@/utils/extend';
 
-    
+
     export default {
         data() {
             return {
-                loading:false,
-                map:{},
+                loading: false,
+                map: {},
 
-                            }
-        },
-                props:{
-            id:{
-                type:[String,Number],
-                required:true
-            },
-                    },
-        watch: {
-            id:{
-                handler(){
-                    this.loadDetail();
-                },
-                immediate:true
             }
         },
-        computed: {
-                    },
+        props: {
+            id: {
+                type: [String, Number],
+                required: true
+            },
+        },
+        watch: {
+            id: {
+                handler() {
+                    this.loadDetail();
+                },
+                immediate: true
+            }
+        },
+        computed: {},
         methods: {
             goBack() {
                 this.$router.go(-1)
             },
-            loadDetail(){
-                if(this.loading) return;
+            loadDetail() {
+                if (this.loading) return;
                 this.loading = true;
-                this.$get(api.huidawenti.detail , {
-                    id:this.id
-                }).then(res=>{
+                this.$get(api.huidawenti.detail, {
+                    id: this.id
+                }).then(res => {
                     this.loading = false;
-                    if(res.code == api.code.OK){
-                        extend(this , res.data);
-                    }else{
+                    if (res.code == api.code.OK) {
+                        extend(this, res.data);
+                    } else {
                         this.$message.error(res.msg);
                     }
-                }).catch(err=>{
+                }).catch(err => {
                     this.loading = false;
                     this.$message.error(err.message);
                 });
             },
-                    },
-        created() {
-                    },
-        mounted() {
-                    },
-        destroyed() {
-                    }
+        },
+        created() {},
+        mounted() {},
+        destroyed() {}
     }
 </script>

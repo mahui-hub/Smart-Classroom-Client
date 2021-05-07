@@ -201,7 +201,7 @@ export default [
     children: [
       {
         label: "修改个人资料",
-        to: "/end/jiaoshiupdtself",
+        to: "/end/jiaoshiupdt",
       },
       {
         label: "修改密码",
