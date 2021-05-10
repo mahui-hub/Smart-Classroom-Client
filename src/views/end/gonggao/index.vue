@@ -74,32 +74,32 @@
             <el-input placeholder="请输入编号" v-model="form.bianhao" disabled />
           </el-form-item>
 
-          <el-form-item label="公告标题" prop="biaoti">
+          <el-form-item label="公告标题" prop="biaoti" required>
             <el-input placeholder="请输入公告标题" v-model="form.biaoti" required
               :rules="[{ required: true, message: '请填写公告标题' }]" />
           </el-form-item>
-          <el-form-item label="公告类型" prop="gonggaotype">
+          <el-form-item label="公告类型" prop="gonggaotype" required>
             <el-select v-model="form.gonggaotype" style="width: 100%">
               <el-option v-for="m in gonggaotypeList" :key="m.gonggaotype" :value="m.gonggaotype"
                 :label="m.gonggaotype"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="课程名称" prop="kechengid" v-if="form.gonggaotype == '课程公告'">
+          <el-form-item label="课程名称" prop="kechengid" v-if="form.gonggaotype == '课程公告'" required>
             <el-select v-model="form.kechengid" style="width: 100%">
               <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="发布人" prop="faburen">
+          <el-form-item label="发布人" prop="faburen" required>
             <el-input v-model="form.faburen" readonly disabled></el-input>
           </el-form-item>
 
-          <el-form-item label="公告图片" prop="tupian">
+          <el-form-item label="公告图片" prop="tupian" required>
             <e-upload-image v-model="form.tupian"></e-upload-image>
           </el-form-item>
 
-          <el-form-item label="公告内容" prop="neirong">
-            <e-editor v-model="form.neirong"></e-editor>
+          <el-form-item label="公告内容" prop="neirong" required>
+            <u-editor :content="form.neirong" @returnValue="returnValue"></u-editor>
           </el-form-item>
         </el-form>
       </div>
@@ -123,10 +123,14 @@
   } from "@/utils/extend";
   import objectDiff from "objectdiff";
   import rule from "@/utils/rule";
+  import uEditor from '@/components/ueditor/index'
   /**
    * 后台列表页面
    */
   export default {
+    components: {
+      uEditor
+    },
     data() {
       return {
         role: "",
@@ -169,6 +173,9 @@
     watch: {},
     computed: {},
     methods: {
+      returnValue(value) {
+        this.form.neirong = value
+      },
       panduan() {
         if (localStorage.getItem("role") == "教师") {
           this.search.faburen = localStorage.getItem("username");

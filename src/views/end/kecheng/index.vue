@@ -134,7 +134,8 @@
           </el-form-item>
 
           <el-form-item label="课程介绍" prop="kechengjieshao">
-            <e-editor v-model="form.kechengjieshao"></e-editor>
+            <u-editor :content="form.kechengjieshao" @returnValue="returnValue"></u-editor>
+            <!-- <e-editor v-model="form.kechengjieshao"></e-editor> -->
           </el-form-item>
           <el-form-item label="课程文档" prop="kechengwendang" required :rules="[{ required: true, message: '请填写课程文档' }]">
             <e-upload-file v-model="form.kechengwendang"></e-upload-file>
@@ -206,7 +207,8 @@
           </el-form-item>
 
           <el-form-item label="课程介绍" prop="kechengjieshao">
-            <e-editor v-model="form1.kechengjieshao"></e-editor>
+            <u-editor :content="form1.kechengjieshao" @returnValue="returnValue"></u-editor>
+            <!-- <e-editor v-model="form1.kechengjieshao"></e-editor> -->
           </el-form-item>
           <el-form-item label="课程文档" prop="kechengwendang" required :rules="[{ required: true, message: '请提交课程文档' }]">
             <e-upload-file v-model="form1.kechengwendang"></e-upload-file>
@@ -236,11 +238,11 @@
   } from "@/utils/extend";
   import objectDiff from "objectdiff";
   import rule from "@/utils/rule";
-
-  /**
-   * 后台列表页面
-   */
+  import uEditor from '@/components/ueditor/index'
   export default {
+    components: {
+      uEditor
+    },
     data() {
       return {
         username: '',
@@ -314,6 +316,10 @@
       };
     },
     methods: {
+      returnValue(value) {
+        this.form.kechengjieshao = value
+        this.form1.kechengjieshao = value
+      },
       panduan() {
         if (localStorage.getItem("role") == "管理员") {
           this.loadList1();

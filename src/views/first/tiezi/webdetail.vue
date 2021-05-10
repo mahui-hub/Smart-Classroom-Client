@@ -62,7 +62,7 @@
             <e-upload-image v-model="form.tupian"></e-upload-image>
           </el-form-item>
           <el-form-item label="帖子内容" prop="neirong" required>
-            <e-editor v-model="form.neirong"></e-editor>
+            <u-editor :content="form.neirong" @returnValue="returnValue"></u-editor>
           </el-form-item>
           <el-form-item label="附件" prop="fujian">
             <e-upload-file v-model="form.fujian"></e-upload-file>
@@ -85,7 +85,6 @@
           <el-form-item label="帖子标题" prop="biaoti">
             <el-input v-model="form2.biaoti" disabled> </el-input>
           </el-form-item>
-
           <el-form-item label="帖子类型" prop="fenlei">
             <e-select-view module="tiezifenlei" :value="form2.fenlei" select="id" show="fenleimingcheng">
             </e-select-view>
@@ -94,7 +93,8 @@
             <el-input v-model="form2.huifuren" readonly disabled></el-input>
           </el-form-item>
           <el-form-item label="评论内容" prop="huifuneirong" required>
-            <e-editor v-model="form2.huifuneirong"></e-editor>
+            <el-input v-model="form2.huifuneirong" type="textarea" :rows="3"></el-input>
+            <!-- <e-editor v-model="form2.huifuneirong"></e-editor> -->
           </el-form-item>
         </el-form>
       </div>
@@ -116,7 +116,11 @@
     remove,
     checkIssh
   } from "@/utils/utils";
+  import uEditor from '@/components/ueditor/index'
   export default {
+    components: {
+      uEditor
+    },
     data() {
       return {
         rule,
@@ -184,6 +188,9 @@
     },
     computed: {},
     methods: {
+      returnValue(value) {
+        this.form.neirong = value
+      },
       deleteItem(row) {
         this.$confirm("确定删除数据？", "提示", {
             // 弹出 确认框提示是否要删除
@@ -332,9 +339,8 @@
                   this.dialogVisible = false;
                   location.reload();
                   this.$router.go(0);
-                  // this.$emit("success", res.data);
                   this.$refs.formModel.resetFields();
-                  this.loadInfo();
+                  this.loadInfo(this.id);
                 } else {
                   this.$message.error(res.msg);
                 }
@@ -360,6 +366,7 @@
             if (res.code == api.code.OK) {
               extend(this, res.data);
               this.form = res.data.mmm;
+              console.log(this.form.neirong)
             } else {
               this.$message.error(res.msg);
               this.$router.go(-1);
@@ -371,8 +378,6 @@
           });
       },
       edit(id) {
-        this.loadInfo(id);
-
         this.dialogVisible = true;
       },
       loadDetail() {
@@ -385,6 +390,7 @@
             this.loading = false;
             if (res.code == api.code.OK) {
               extend(this, res.data);
+              this.loadInfo(this.id);
             } else {
               this.$message.error(res.msg);
             }

@@ -43,27 +43,23 @@
         </tr>
       </tbody>
     </table>
-    <el-dialog title="编辑回复内容" :visible.sync="dialogVisible" size="mini">
+    <el-dialog title="编辑评论内容" :visible.sync="dialogVisible" size="mini">
       <div class="form-database-form">
         <el-form :model="form" ref="formModel" label-width="100px" status-icon validate-on-rule-change>
           <el-form-item label="帖子编号" prop="tiezibianhao">
             <el-input v-model="form.tiezibianhao" disabled> </el-input>
           </el-form-item>
-
           <el-form-item label="帖子标题" prop="biaoti">
             <el-input v-model="form.biaoti" disabled> </el-input>
           </el-form-item>
-
           <el-form-item label="帖子分类" prop="fenlei">
             <e-select-view module="tiezifenlei" :value="form.fenlei" select="id" show="fenleimingcheng"></e-select-view>
           </el-form-item>
-
-          <el-form-item label="回复内容" prop="huifuneirong">
-            <e-editor v-model="form.huifuneirong"></e-editor>
-          </el-form-item>
-
-          <el-form-item label="回复人" prop="huifuren">
+          <el-form-item label="评论人" prop="huifuren">
             <el-input disabled v-model="form.huifuren" readonly></el-input>
+          </el-form-item>
+          <el-form-item label="评论内容" prop="huifuneirong">
+            <el-input v-model="form.huifuneirong" type="textarea" :rows="3"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -203,7 +199,6 @@
             if (this.loading) return;
             this.loading = true;
             var form = this.form;
-
             this.$post(api.tiezihuifu.update, form)
               .then((res) => {
                 this.loading = false;

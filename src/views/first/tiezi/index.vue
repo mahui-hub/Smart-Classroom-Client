@@ -68,7 +68,8 @@
             <e-upload-image v-model="form.tupian"></e-upload-image>
           </el-form-item>
           <el-form-item label="内容" prop="neirong" required>
-            <e-editor v-model="form.neirong"></e-editor>
+            <!-- <e-editor v-model="form.neirong"></e-editor> -->
+            <u-editor :content="form.neirong" @returnValue="returnValue"></u-editor>
           </el-form-item>
           <el-form-item label="附件" prop="fujian">
             <e-upload-file v-model="form.fujian"></e-upload-file>
@@ -91,7 +92,11 @@
     extend
   } from "@/utils/extend";
   import objectDiff from "objectdiff";
+  import uEditor from '@/components/ueditor/index'
   export default {
+    components: {
+      uEditor
+    },
     data() {
       return {
         role: "",
@@ -128,6 +133,9 @@
       };
     },
     methods: {
+      returnValue(value) {
+        this.form.neirong = value
+      },
       loadInfo() {
         var form = this.form;
         // 获取模块得数据

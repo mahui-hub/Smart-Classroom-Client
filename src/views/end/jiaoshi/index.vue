@@ -136,7 +136,8 @@
           </el-form-item> -->
 
             <el-form-item label="教师简介" prop="xiangqing">
-              <e-editor v-model="form.xiangqing"></e-editor>
+              <el-input v-model="form.xiangqing" type="textarea" :rows="3"></el-input>
+              <!-- <e-editor v-model="form.xiangqing"></e-editor> -->
             </el-form-item>
           </el-form>
         </div>
