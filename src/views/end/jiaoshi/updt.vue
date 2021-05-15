@@ -104,7 +104,6 @@
           suojiaobanji: [],
           xiangqing: "",
         },
-
         banjiList: [],
       };
     },

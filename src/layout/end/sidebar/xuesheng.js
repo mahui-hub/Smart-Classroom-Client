@@ -24,8 +24,7 @@ export default [
   {
     label: "抢答问题管理",
     to: "",
-    children: [
-      {
+    children: [{
         label: "抢答问题查询",
         to: "/end/qiangdawenti_qiangdaren",
       },
@@ -71,29 +70,32 @@ export default [
   {
     label: "成绩管理",
     to: "",
-    children: [
-      {
-        label: "成绩查询",
-        to: "/end/chengji_xuehao",
-      },
-    ],
+    children: [{
+      label: "成绩查询",
+      to: "/end/chengji_xuehao",
+    }, ],
   },
   {
     label: "互评管理",
     to: "",
-    children: [
-      {
-        label: "互评查询",
-        to: "/end/xueshenghuping_hupingren",
-      },
-    ],
+    children: [{
+      label: "互评查询",
+      to: "/end/xueshenghuping_hupingren",
+    }, ],
   },
 
+  // {
+  //   label: "互评管理",
+  //   to: "",
+  //   children: [{
+  //     label: "互评查询",
+  //     to: "/end/xueshenghuping",
+  //   }, ],
+  // },
   {
     label: "个人中心",
     to: "",
-    children: [
-      {
+    children: [{
         label: "修改个人资料",
         to: "/end/xueshengupdtself",
       },

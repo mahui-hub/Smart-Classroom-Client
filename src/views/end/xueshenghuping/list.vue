@@ -42,7 +42,7 @@
         <template slot-scope="{ row }">
           <el-button @click="
                     $goto({
-                      path: '/admin/xueshenghupingdetail',
+                      path: '/end/xueshenghupingdetail',
                       query: { id: row.id },
                     })
                   " type="text">详情</el-button>

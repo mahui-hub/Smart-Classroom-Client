@@ -1,13 +1,10 @@
-export default [
-  {
+export default [{
     label: "学生信息管理",
     to: "",
-    children: [
-      {
-        label: "学生信息管理",
-        to: "/end/xuesheng",
-      },
-    ],
+    children: [{
+      label: "学生信息管理",
+      to: "/end/xuesheng",
+    }, ],
   },
   {
     label: "课程信息管理",
@@ -26,12 +23,10 @@ export default [
   {
     label: "公告信息管理",
     to: "",
-    children: [
-      {
-        label: "公告信息管理",
-        to: "/end/gonggao",
-      },
-    ],
+    children: [{
+      label: "公告信息管理",
+      to: "/end/gonggao",
+    }, ],
   },
   {
     label: "答疑内容管理",
@@ -54,8 +49,7 @@ export default [
   {
     label: "题库信息管理",
     to: "",
-    children: [
-      {
+    children: [{
         label: "题库信息添加",
         to: "/end/tiku_faburen",
       },
@@ -63,14 +57,6 @@ export default [
         label: "题库试题查询",
         to: "/end/shiti",
       },
-      // {
-      //   label: "结果查询",
-      //   to: "/end/jieguo",
-      // },
-      // {
-      //   label: "评价结果查询",
-      //   to: "/end/kaoshijieguo",
-      // },
     ],
   },
   // {
@@ -198,8 +184,7 @@ export default [
   {
     label: "个人中心",
     to: "",
-    children: [
-      {
+    children: [{
         label: "修改个人资料",
         to: "/end/jiaoshiupdt",
       },

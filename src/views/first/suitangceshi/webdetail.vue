@@ -13,14 +13,15 @@
                                     </p>
                                 </div>
                                 <div class="news_show">
-            <span class="show_t" v-html="map.timu">
-            </span>
+                                    <span class="show_t" v-html="map.timu">
+                                    </span>
                                     <span class="fa_time">
-                                    编号:{{ map.bianhao }} &nbsp;&nbsp;
-                                    附件:<e-file-list v-model="map.fujian"></e-file-list> &nbsp;&nbsp;
-                                    发布人:{{ map.faburen }} &nbsp;&nbsp;
-                                           <el-button type="success" @click="$router.push('/datiadd?id='+map.id)">答题 </el-button>
-                                </span>
+                                        编号:{{ map.bianhao }} &nbsp;&nbsp;
+                                        附件:<e-file-list v-model="map.fujian"></e-file-list> &nbsp;&nbsp;
+                                        发布人:{{ map.faburen }} &nbsp;&nbsp;
+                                        <el-button type="success" @click="$router.push('/datiadd?id='+map.id)">答题
+                                        </el-button>
+                                    </span>
 
                                     <div v-html="map.xiangqing"></div>
                                     <div class="s_x clearfix">
@@ -59,12 +60,14 @@
 </style>
 <script>
     import api from '@/api';
-    import {extend} from '@/utils/extend';
+    import {
+        extend
+    } from '@/utils/extend';
 
     export default {
         data() {
             return {
-                loading: false,   // 加载
+                loading: false, // 加载
                 map: {
                     bianhao: '',
                     timu: '',
@@ -112,11 +115,8 @@
             },
 
         },
-        created() {
-        },
-        mounted() {
-        },
-        destroyed() {
-        }
+        created() {},
+        mounted() {},
+        destroyed() {}
     }
 </script>

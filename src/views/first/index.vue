@@ -13,7 +13,7 @@
                 <span v-if="role != '管理员'">欢迎您， <b>{{ $session.xingming }}</b></span>
                 <span v-if="role == '管理员'">欢迎您， <b>{{ $session.cx }}</b></span>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '教师'"
-                  @click.native="$router.push('/end/jiaoshiupdtself')">修改资料</el-button>
+                  @click.native="$router.push('/end/jiaoshiupdt')">修改资料</el-button>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '管理员'"
                   @click.native="$router.push('/end/mod')">修改密码</el-button>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '学生'"

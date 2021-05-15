@@ -1,19 +1,15 @@
-export default [
-  {
+export default [{
     label: "管理员信息管理",
     to: "",
-    children: [
-      {
-        label: "密码修改",
-        to: "/end/mod",
-      },
-    ],
+    children: [{
+      label: "密码修改",
+      to: "/end/mod",
+    }, ],
   },
   {
     label: "基础信息录入",
     to: "",
-    children: [
-      {
+    children: [{
         label: "专业信息管理",
         to: "/end/zhuanye",
       },
@@ -26,8 +22,7 @@ export default [
   {
     label: "人员信息录入",
     to: "",
-    children: [
-      {
+    children: [{
         label: "教师信息管理",
         to: "/end/jiaoshi",
       },
@@ -45,8 +40,7 @@ export default [
   {
     label: "课程信息管理",
     to: "",
-    children: [
-      {
+    children: [{
         label: "课程类型管理",
         to: "/end/kechengleixing",
       },
@@ -90,21 +84,12 @@ export default [
         label: "题库试题查询",
         to: "/end/shiti",
       },
-      // {
-      //   label: "结果查询",
-      //   to: "/end/jieguo",
-      // },
-      // {
-      //   label: "评价结果查询",
-      //   to: "/end/kaoshijieguo",
-      // },
     ],
   },
   {
     label: "教学评价管理",
     to: "",
-    children: [
-      {
+    children: [{
         label: "教学结果查询",
         to: "/end/jieguo",
       },
@@ -178,7 +163,7 @@ export default [
         label: "点赞查询",
         to: "/end/dianzan",
       },
-      
+
     ],
   },
   // {
@@ -195,20 +180,20 @@ export default [
   //     },
   //   ],
   // },
-  {
-    label: "屏蔽词管理",
-    to: "",
-    children: [
-      // {
-      //   label: "屏蔽词添加",
-      //   to: "/end/pingbiciadd",
-      // },
-      {
-        label: "屏蔽词查询",
-        to: "/end/pingbici",
-      },
-    ],
-  },
+  // {
+  //   label: "屏蔽词管理",
+  //   to: "",
+  //   children: [
+  //     // {
+  //     //   label: "屏蔽词添加",
+  //     //   to: "/end/pingbiciadd",
+  //     // },
+  //     {
+  //       label: "屏蔽词查询",
+  //       to: "/end/pingbici",
+  //     },
+  //   ],
+  // },
   // {
   //   label: "随堂测试管理",
   //   to: "",
@@ -235,22 +220,18 @@ export default [
   {
     label: "成绩管理",
     to: "",
-    children: [
-      {
-        label: "成绩查询",
-        to: "/end/chengji",
-      },
-    ],
+    children: [{
+      label: "成绩查询",
+      to: "/end/chengji",
+    }, ],
   },
   {
     label: "学生互评管理",
     to: "",
-    children: [
-      {
-        label: "学生互评查询",
-        to: "/end/xueshenghuping",
-      },
-    ],
+    children: [{
+      label: "学生互评查询",
+      to: "/end/xueshenghuping",
+    }, ],
   },
   // {
   //   label: "课前考勤管理",
@@ -273,8 +254,7 @@ export default [
   {
     label: "系统管理",
     to: "",
-    children: [
-      {
+    children: [{
         label: "友情链接",
         to: "/end/youqinglianjie",
       },

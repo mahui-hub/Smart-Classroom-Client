@@ -49,7 +49,7 @@
               })
             " type="text">详情</el-button>
           <el-button v-if="row.qiandaoren == username" @click="
-              $goto({ path: '/admin/qiandaoupdt', query: { id: row.id } })
+              $goto({ path: '/end/qiandaoupdt', query: { id: row.id } })
             " type="text">编辑</el-button>
 
           <el-button v-if="row.qiandaoren == username" type="text" @click="deleteItem(row)">删除 </el-button>

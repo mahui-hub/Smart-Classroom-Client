@@ -72,7 +72,7 @@
             " type="text">详情</el-button>
           <!-- <el-button
               @click="
-                $goto({ path: '/admin/jieguoupdt', query: { id: row.id } })
+                $goto({ path: '/end/jieguoupdt', query: { id: row.id } })
               "
               type="text"
               >编辑</el-button

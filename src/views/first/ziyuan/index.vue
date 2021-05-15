@@ -1,56 +1,55 @@
 <template>
   <div class="app">
     <div>
-      <e-container>
-        <div style="margin:15px 0 0 0;box-shadow:0px 0px 2px 2px #DDDDDD">
-          <e-module-widget-title title="资源列表">
-            <div class="list-table">
-              <table width="100%" border="1" class="table table-list table-bordered table-hover">
-                <thead>
-                  <tr align="center">
-                    <th>编号</th>
-                    <th>标题</th>
-                    <th>分类</th>
-                    <th>图片</th>
-                    <th>附件</th>
-                    <th>发布人</th>
-                    <th width="180" align="center">添加时间</th>
-                    <!--   <th width="80" align="center">操作</th>-->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(r, i) in list">
-                    <td>{{ r.bianhao }}</td>
-                    <td>{{ r.biaoti }}</td>
-                    <td>{{ r.fenlei }}</td>
-                    <td>
-                      <e-img :src="r.tupian" style="max-width:120px" />
-                    </td>
-                    <td>
-                      <e-file-list v-model="r.fujian"></e-file-list>
-                    </td>
-                    <td>{{ r.faburen }}</td>
+      <div style="margin:15px 0 0 0;box-shadow:0px 0px 2px 2px #DDDDDD">
+        <e-module-widget-title title="资源列表">
+          <div class="list-table">
+            <table width="100%" border="1" class="table table-list table-bordered table-hover">
+              <thead>
+                <tr align="center">
+                  <th>编号</th>
+                  <th>标题</th>
+                  <th>分类</th>
+                  <th>图片</th>
+                  <th>附件</th>
+                  <th>发布人</th>
+                  <th width="180" align="center">添加时间</th>
+                  <!--   <th width="80" align="center">操作</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(r, i) in list">
+                  <td>{{ r.bianhao }}</td>
+                  <td>{{ r.biaoti }}</td>
+                  <td>{{ r.fenlei }}</td>
+                  <td>
+                    <e-img :src="r.tupian" style="max-width:120px" />
+                  </td>
+                  <td>
+                    <e-file-list v-model="r.fujian"></e-file-list>
+                  </td>
+                  <td>{{ r.faburen }}</td>
 
-                    <td align="center" v-text="r.addtime"></td>
+                  <td align="center" v-text="r.addtime"></td>
 
-                    <!--      <td align="center">
+                  <!--      <td align="center">
                                         <el-button @click="$goto('/ziyuandetail?id='+r.id)">
                                             详细
                                         </el-button>
                                     </td>-->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div style="margin-top: 10px;text-align: center">
-              <el-pagination @current-change="loadList" :current-page="page" :page-size="15"
-                layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
-              </el-pagination>
-            </div>
-          </e-module-widget-title>
-        </div>
-      </e-container>
+          <div style="margin-top: 10px;text-align: center">
+            <el-pagination @current-change="loadList" :current-page="page" :page-size="15"
+              layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+            </el-pagination>
+          </div>
+        </e-module-widget-title>
+      </div>
+
     </div>
   </div>
 </template>
@@ -72,17 +71,11 @@
         list: [],
         search: {
           bianhao: "",
-
           biaoti: "",
-
           fenlei: "",
-
           tupian: "",
-
           fujian: "",
-
           xiangqing: "",
-
           faburen: "",
         },
         page: 1, // 当前页
