@@ -18,7 +18,7 @@
                     <el-table-column label="操作" align="center">
                         <template slot-scope="{ row }">
                             <el-button type="text" @click="qiandao(row)"
-                                v-if="currentTime<= new Date(row.jieshushijian)">
+                                v-if="currentTime<= new Date(row.jieshushijian)&&currentTime>= new Date(row.kaishishijian)&&qiandaorenpanduan==username">
                                 签到
                             </el-button>
                         </template>
@@ -68,6 +68,7 @@
                 dialogVisible: false,
                 loading: false,
                 list: [],
+                qiandaorenlist: [],
                 search: {
                     kechengbianhao: '',
                     kechengmingcheng: '',
@@ -92,14 +93,48 @@
                     faburen: this.$store.state.user.session.username,
                     qiandaoshijian: "",
                     qiandaoren: this.$store.state.user.session.username,
-                    keqiankaoqinid: 0,
+                    keqiankaoqinid: '',
                 },
-                currentTime: new Date()
+                currentTime: new Date(),
+                qiandaorenpanduan: '',
+                username: ''
             }
         },
         watch: {},
         computed: {},
         methods: {
+            panduanQiandao() {
+                var qiandaorenpanduan = ''
+                var array = this.qiandaorenlist
+                this.list.map(function (item) {
+                    array.map(function (a) {
+                        if (item.id == a.keqiankaoqinid) {
+                            qiandaorenpanduan = a.qiandaoren
+                        }
+                    })
+                })
+                this.qiandaorenpanduan = qiandaorenpanduan
+            },
+            loadList2() {
+                // 筛选条件
+                const params = {}
+                params.page = 1
+                params.pagesize = 12
+                this.$post(api.qiandao.list, params)
+                    .then((res) => {
+                        this.loading = false;
+                        if (res.code == api.code.OK) {
+                            this.qiandaorenlist = res.data.list
+                            this.panduanQiandao()
+                        } else {
+                            this.$message.error(res.msg);
+                        }
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        this.$message.error(err.message);
+                    })
+            },
             getYMDHMS(timestamp) {
                 let time = new Date(timestamp)
                 let year = time.getFullYear()
@@ -108,13 +143,14 @@
                 const hours = (time.getHours()).toString().padStart(2, '0')
                 const minute = (time.getMinutes()).toString().padStart(2, '0')
                 const second = (time.getSeconds()).toString().padStart(2, '0')
-
                 return year + '-' + month + '-' + date + ' ' + hours + ':' + minute + ':' + second
             },
             qiandao(row) {
                 this.form = row
+                this.form.keqiankaoqinid = row.id
                 this.dialogVisible = true
                 this.form.qiandaoren = localStorage.getItem('username')
+                this.username = localStorage.getItem('username')
             },
             submit() {
                 this.$refs.formModel.validate().then(res => {
@@ -217,9 +253,12 @@
             }
             console.log(this.currentTime)
             this.loadList1()
+            this.loadList2()
             // this.loadList(this.page);
         },
-        mounted() {},
+        mounted() {
+
+        },
         destroyed() {}
     }
 </script>

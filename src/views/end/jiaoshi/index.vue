@@ -256,7 +256,6 @@
         this.dialogVisible = true;
         this.headerTitle = "添加教师信息";
       },
-
       submit() {
         this.$refs.formModel
           .validate()

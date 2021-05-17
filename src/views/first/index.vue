@@ -3,7 +3,7 @@
     <!-- 导航栏头部 -->
     <div class="loginPage-box w">
       <el-row>
-        <span class="time"> {{week}} {{nowDate}} {{nowTime}}</span>
+        <span class="time"> {{week}} {{nowTime}}</span>
       </el-row>
       <el-row :gutter="10">
         <el-col :span="7">
@@ -102,11 +102,12 @@
             <el-col :span="12">
               <el-carousel indicator-position="outside" height="300px">
                 <el-carousel-item v-for="item in bhtList" :key="item.id">
-                  <div style="background-size: cover" @click="$goto(item.url)" :style="{
+                  <div style="background-size:cover;" @click="$goto(item.url)" :style="{
                       'background-image': 'url(' + item.image + ')',
+                      'background-size':'50% 50% no-repeat',
                       width: '100%',
                       height: '300px',
-                    }"></div>
+                     }"></div>
                 </el-carousel-item>
               </el-carousel>
             </el-col>
@@ -141,7 +142,7 @@
               <el-radio-group v-model="search.kechengleixing">
                 <el-radio label="" @click.native="selectRadio('kechengleixing', '')">全部</el-radio>
                 <el-radio v-for="m in mapkechengleixing2" :key="m.kechengleixing" :label="m.kechengleixing"
-                  @click.native="
+                  @click.native=" 
                     selectRadio('kechengleixing', m.kechengleixing)
                   ">{{ m.kechengleixing }}</el-radio>
               </el-radio-group>
@@ -176,6 +177,7 @@
         week: '',
         nowDate: '',
         nowTime: "",
+        timer: "",
         // updateTime: "1",
         token: "",
         activeName: "first",
@@ -208,8 +210,18 @@
       this.token = localStorage.getItem("token");
       this.panduan();
       this.nowTimes();
+
+    },
+    mounted() {
+      this.shishi()
     },
     methods: {
+      shishi() {
+        var _this = this;
+        this.timer = setInterval(function () {
+          _this.nowTime = new Date().toLocaleString();
+        });
+      },
       nowTimes() {
         this.timeFormate(new Date());
         setInterval(this.nowTimes, 30 * 1000);
