@@ -9,9 +9,6 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" :inline="true" size="mini">
-        <!-- <el-form-item label="编号">
-            <el-input v-model="search.bianhao"></el-input>
-          </el-form-item> -->
         <el-form-item label="问题标题">
           <el-input v-model="search.biaoti"></el-input>
         </el-form-item>
@@ -21,9 +18,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="发布人">
-            <el-input v-model="search.faburen"></el-input>
-          </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
@@ -49,11 +43,6 @@
       </el-table-column>
       <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
       </el-table-column>
-      <!-- <el-table-column label="图片" align="center">
-          <template slot-scope="{ row }">
-            <e-img :src="row.tupian" style="max-width:120px" />
-          </template>
-        </el-table-column> -->
       <el-table-column label="抢答人数" align="center">
         <template slot-scope="{ row }">
           {{ row.qiangdarenshu }}
@@ -121,7 +110,7 @@
           <el-form-item label="问题标题" prop="biaoti" required>
             <el-input placeholder="请输入问题标题" v-model="form.biaoti" />
           </el-form-item>
-          <el-form-item label="课程名称" prop="kechengmingcheng">
+          <el-form-item label="课程名称" prop="kechengmingcheng" required>
             <el-select v-model="form.kechengid" style="width: 100%" clearable>
               <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
               </el-option>
@@ -383,6 +372,7 @@
         this.page = page;
         // 筛选条件
         var filter = extend(true, {}, this.search, {
+          faburen: localStorage.getItem("username"),
           page: page + "",
           pagesize: this.pagesize + "",
         });

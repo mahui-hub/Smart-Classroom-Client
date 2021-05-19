@@ -44,11 +44,21 @@
           </el-table-column>
 
           <el-table-column label="操作" align="center">
-            <template slot-scope="{ row }">
-              <!-- @click="$goto('/qiangdawentiadd?id=' + row.id)" -->
-              <el-button type="text" v-if="row.qiangdarenshu > row.yiqiangrenshu && isQiang" @click="qiangda(row)">
-                问题抢答
-              </el-button>
+            <template slot-scope="{ row }" v-if="row.qiangdarenshu > row.yiqiangrenshu && isQiang">
+              <div v-if="row.qiangdarens!=''">
+                <div v-if="row.qiangdarens.indexOf(username)==-1">
+                  <el-button type="text" @click="qiangda(row)">
+                    问题抢答
+                  </el-button>
+                </div>
+              </div>
+              <div v-else>
+                <el-button type="text" @click="qiangda(row)">
+                  问题抢答
+                </el-button>
+              </div>
+
+
             </template>
           </el-table-column>
         </el-table>
@@ -104,6 +114,7 @@
   export default {
     data() {
       return {
+        username: '',
         isQiang: true,
         dialogVisible: false,
         loading: false,
@@ -152,7 +163,6 @@
             if (this.loading) return;
             this.loading = true;
             var form = this.form;
-
             this.$post(api.qiangdawenti.insert, form)
               .then((res) => {
                 this.loading = false;
@@ -240,7 +250,6 @@
       },
       loadList(page, id) {
         // 防止重新点加载列表
-        // if (this.loading) return;
         this.loading = true;
         this.page = page;
         // 筛选条件
@@ -257,6 +266,7 @@
               // extend(this, res.data);
               var array1 = res.data.list;
               var array = [];
+              this.list = []
               array1.forEach((item) => {
                 array.push(item);
               });
@@ -300,6 +310,7 @@
         delete search.pagesize;
       }
       this.initKecheng(1);
+      this.username = localStorage.getItem('username')
       // this.loadList(this.page);
     },
     mounted() {},

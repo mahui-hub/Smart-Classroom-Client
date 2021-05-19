@@ -1,28 +1,3 @@
- // {
- //   path: "qiangdawentiadd",
- //   name: "IndexqiangdawentiAdd",
- //   component: () => import("@/views/first/qiangdawenti/webadd"),
- //   meta: { title: "抢答问题添加", authLogin: true, msg: true },
- // },
- // {
- //   path: "jiaoshi",
- //   name: "IndexjiaoshiList",
- //   component: () => import("@/views/first/jiaoshi/index"),
- //   meta: { title: "教师列表", authLogin: true },
- // },
- // {
- //   path: "jiaoshiadd",
- //   name: "IndexjiaoshiAdd",
- //   component: () => import("@/views/first/jiaoshi/webadd"),
- //   meta: { title: "教师添加" },
- // },
- // {
- //   path: "jiaoshidetail",
- //   name: "IndexjiaoshiDetail",
- //   props: (route) => ({ id: route.query.id }),
- //   component: () => import("@/views/first/jiaoshi/webdetail"),
- //   meta: { title: "教师详情", authLogin: true },
- // },
  export default [{
      path: "kecheng",
      name: "IndexkechengList",
@@ -53,13 +28,6 @@
        authLogin: true
      },
    },
-   // {
-   //   path: "xueshengadd",
-   //   name: "IndexxueshengAdd",
-   //   component: () => import("@/views/first/xuesheng/webadd"),
-   //   meta: { title: "学生添加", authLogin: true },
-   // },
-
    {
      path: "gonggao",
      name: "IndexgonggaoList",
@@ -81,16 +49,6 @@
        authLogin: true
      },
    },
-   //  {
-   //    path: "dianzanadd",
-   //    name: "IndexdianzanAdd",
-   //    component: () => import("@/views/first/dianzan/webadd"),
-   //    meta: {
-   //      title: "点赞添加",
-   //      authLogin: true,
-   //      msg: true
-   //    },
-   //  },
    {
      path: "suitangceshi",
      name: "IndexsuitangceshiList",
@@ -112,16 +70,6 @@
        authLogin: true
      },
    },
-   //  {
-   //    path: "datiadd",
-   //    name: "IndexdatiAdd",
-   //    component: () => import("@/views/first/dati/webadd"),
-   //    meta: {
-   //      title: "答题添加",
-   //      authLogin: true,
-   //      msg: true
-   //    },
-   //  },
    {
      path: "tiezi",
      name: "IndextieziList",
@@ -143,16 +91,6 @@
        authLogin: true
      },
    },
-   //  {
-   //    path: "tiezihuifuadd",
-   //    name: "IndextiezihuifuAdd",
-   //    component: () => import("@/views/first/tiezihuifu/webadd"),
-   //    meta: {
-   //      title: "帖子回复添加",
-   //      authLogin: true,
-   //      msg: true
-   //    },
-   //  },
    {
      path: "wentiqiangda",
      name: "IndexwentiqiangdaList",
@@ -184,13 +122,6 @@
        authLogin: true
      },
    },
-   // {
-   //   path: "wentisousuowebdetail",
-   //   name: "IndexwentisousuoDetail",
-   //   props: (route) => ({ id: route.query.id }),
-   //   component: () => import("@/views/first/wentisousuo/webdetail"),
-   //   meta: { title: "问题搜索详情", authLogin: true },
-   // },
    {
      path: "qiuzhujiaoshi",
      name: "IndexqiuzhujiaoshiList",
@@ -242,33 +173,6 @@
        authLogin: true
      },
    },
-   // {
-   //   path: "keqiankaoqindetail",
-   //   name: "IndexkeqiankaoqinDetail",
-   //   props: (route) => ({ id: route.query.id }),
-   //   component: () => import("@/views/first/keqiankaoqin/webdetail"),
-   //   meta: { title: "课前考勤详情", authLogin: true },
-   // },
-   //  {
-   //    path: "qiandaoadd",
-   //    name: "IndexqiandaoAdd",
-   //    component: () => import("@/views/first/qiandao/webadd"),
-   //    meta: {
-   //      title: "签到添加",
-   //      authLogin: true,
-   //      msg: true
-   //    },
-   //  },
-   //  {
-   //    path: "xueshenghupingadd",
-   //    name: "IndexxueshenghupingAdd",
-   //    component: () => import("@/views/first/xueshenghuping/webadd"),
-   //    meta: {
-   //      title: "学生互评添加",
-   //      authLogin: true,
-   //      msg: true
-   //    },
-   //  },
    {
      path: "ziyuan",
      name: "IndexziyuanList",

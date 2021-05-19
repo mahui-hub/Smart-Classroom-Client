@@ -9,16 +9,10 @@ export default [{
   {
     label: "课程信息管理",
     to: "",
-    children: [
-      // {
-      //   label: "课程添加",
-      //   to: "/end/kechengadd",
-      // },
-      {
-        label: "课程管理",
-        to: "/end/kecheng",
-      },
-    ],
+    children: [{
+      label: "课程管理",
+      to: "/end/kecheng",
+    }, ],
   },
   {
     label: "公告信息管理",
@@ -31,20 +25,10 @@ export default [{
   {
     label: "答疑内容管理",
     to: "",
-    children: [
-      /*  {
-                label: '问题搜索添加',
-                to: '/end/wentisousuoadd',
-            },*/
-      {
-        label: "答疑问题管理",
-        to: "/end/wentisousuo",
-      },
-      // {
-      //   label: "答疑问题添加",
-      //   to: "/end/wentisousuo/add",
-      // },
-    ],
+    children: [{
+      label: "答疑问题管理",
+      to: "/end/wentisousuo",
+    }, ],
   },
   {
     label: "题库信息管理",
@@ -59,25 +43,10 @@ export default [{
       },
     ],
   },
-  // {
-  //   label: "答疑内容管理",
-  //   to: "",
-  //   children: [
-  //     {
-  //       label: "答疑内容管理",
-  //       to: "/end/wentisousuo_xuehao",
-  //     },
-  //   ],
-  // },
   {
     label: "抢答问题管理",
     to: "",
-    children: [
-      // {
-      //   label: "问题抢答添加",
-      //   to: "/end/wentiqiangdaadd",
-      // },
-      {
+    children: [{
         label: "抢答问题管理",
         to: "/end/wentiqiangda",
       },
@@ -85,10 +54,6 @@ export default [{
         label: "抢答问题查询",
         to: "/end/qiangdawenti",
       },
-      // {
-      //   label: "回答问题查询",
-      //   to: "/end/huidawenti",
-      // },
       {
         label: "评阅问题查询",
         to: "/end/pingyuewenti",
@@ -98,26 +63,15 @@ export default [{
   {
     label: "资源信息管理",
     to: "",
-    children: [
-      // {
-      //   label: "资源添加",
-      //   to: "/end/ziyuanadd",
-      // },
-      {
-        label: "资源信息列表",
-        to: "/end/ziyuan",
-      },
-    ],
+    children: [{
+      label: "资源信息列表",
+      to: "/end/ziyuan",
+    }, ],
   },
   {
     label: "成绩信息管理",
     to: "",
-    children: [
-      //    {
-      //   label: "成绩添加",
-      //   to: "/end/chengjiadd",
-      // },
-      {
+    children: [{
         label: "成绩比例设置",
         to: "/end/chengjibili",
       },
@@ -131,12 +85,7 @@ export default [{
   {
     label: "课前考勤管理",
     to: "",
-    children: [
-      // {
-      //   label: "课前考勤添加",
-      //   to: "/end/keqiankaoqinadd",
-      // },
-      {
+    children: [{
         label: "课前考勤管理",
         to: "/end/keqiankaoqin",
       },
@@ -153,24 +102,7 @@ export default [{
   {
     label: "随堂测试管理",
     to: "",
-    children: [
-      // {
-      //   label: "随堂测试添加",
-      //   to: "/end/suitangceshiadd",
-      // },
-      // {
-      //   label: "随堂测试查询",
-      //   to: "/end/suitangceshi_faburen",
-      // },
-      // {
-      //   label: "答题查询",
-      //   to: "/end/dati",
-      // },
-      // {
-      //   label: "答题评阅查询",
-      //   to: "/end/datipingyue",
-      // },
-      {
+    children: [{
         label: "测试结果查询",
         to: "/end/jieguo",
       },

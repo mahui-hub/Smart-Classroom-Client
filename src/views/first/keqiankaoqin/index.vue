@@ -16,17 +16,26 @@
                     <el-table-column label="发布人" align="center" prop="faburen">
                     </el-table-column>
                     <el-table-column label="操作" align="center">
-                        <template slot-scope="{ row }">
-                            <el-button type="text" @click="qiandao(row)"
-                                v-if="currentTime<= new Date(row.jieshushijian)&&currentTime>= new Date(row.kaishishijian)&&qiandaorenpanduan==username">
-                                签到
-                            </el-button>
+                        <template slot-scope="{ row }"
+                            v-if="currentTime<= new Date(row.jieshushijian)&&currentTime>= new Date(row.kaishishijian)">
+                            <div v-if="row.qiandaorens!=''">
+                                <div v-if="row.qiandaorens.indexOf(username)==-1">
+                                    <el-button type="text" @click="qiandao(row)">
+                                        签到
+                                    </el-button>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <el-button type="text" @click="qiandao(row)">
+                                    签到
+                                </el-button>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
             <div style="margin-top: 10px;text-align: center">
-                <el-pagination @current-change="loadList" :current-page="page" :page-size="15"
+                <el-pagination @current-change="initKecheng" :current-page="page" :page-size="15"
                     layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
                 </el-pagination>
             </div>
@@ -96,45 +105,12 @@
                     keqiankaoqinid: '',
                 },
                 currentTime: new Date(),
-                qiandaorenpanduan: '',
-                username: ''
+                username: '',
             }
         },
         watch: {},
         computed: {},
         methods: {
-            panduanQiandao() {
-                var qiandaorenpanduan = ''
-                var array = this.qiandaorenlist
-                this.list.map(function (item) {
-                    array.map(function (a) {
-                        if (item.id == a.keqiankaoqinid) {
-                            qiandaorenpanduan = a.qiandaoren
-                        }
-                    })
-                })
-                this.qiandaorenpanduan = qiandaorenpanduan
-            },
-            loadList2() {
-                // 筛选条件
-                const params = {}
-                params.page = 1
-                params.pagesize = 12
-                this.$post(api.qiandao.list, params)
-                    .then((res) => {
-                        this.loading = false;
-                        if (res.code == api.code.OK) {
-                            this.qiandaorenlist = res.data.list
-                            this.panduanQiandao()
-                        } else {
-                            this.$message.error(res.msg);
-                        }
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        this.$message.error(err.message);
-                    })
-            },
             getYMDHMS(timestamp) {
                 let time = new Date(timestamp)
                 let year = time.getFullYear()
@@ -150,7 +126,6 @@
                 this.form.keqiankaoqinid = row.id
                 this.dialogVisible = true
                 this.form.qiandaoren = localStorage.getItem('username')
-                this.username = localStorage.getItem('username')
             },
             submit() {
                 this.$refs.formModel.validate().then(res => {
@@ -161,7 +136,7 @@
                         if (res.code == api.code.OK) {
                             this.$message.success('签到成功');
                             this.dialogVisible = false
-                            this.loadList(1)
+                            this.initKecheng()
                             this.$refs.formModel.resetFields();
                         } else {
                             this.$message.error(res.msg);
@@ -176,49 +151,109 @@
                 })
 
             },
-            searchSubmit() {
-                this.loadList(1);
-            },
-            loadList(page) {
+            // searchSubmit() {
+            //     this.loadList(1);
+            // },
+            // loadList(page) {
+            //     // 防止重新点加载列表
+            //     if (this.loading) return;
+            //     this.loading = true;
+            //     this.page = page;
+            //     // 筛选条件
+            //     var filter = extend(true, {}, this.search, {
+            //         page: page + "",
+            //         pagesize: this.pagesize + ""
+            //     });
+            //     var diff = objectDiff.diff(filter, this.$route.query);
+            //     if (diff.changed != 'equal') { // 筛选的条件不一致则更新链接
+            //         this.$router.replace({ // 更新query
+            //             path: this.$route.path,
+            //             query: filter
+            //         });
+            //     }
+            //     this.$post(api.keqiankaoqin.weblist, filter).then(res => {
+            //         this.loading = false;
+            //         if (res.code == api.code.OK) {
+            //             extend(this, res.data);
+            //         } else {
+            //             this.$message.error(res.msg);
+            //         }
+            //     }).catch(err => {
+            //         this.loading = false;
+            //         this.$message.error(err.message);
+            //     });
+            // },
+            // loadList1() {
+            //     // 筛选条件
+            //     var filter = extend(true, {}, this.search, {
+            //         page: 1,
+            //         pagesize: 12
+            //     });
+            //     this.$post(api.keqiankaoqin.weblist, filter).then(res => {
+            //         this.loading = false;
+            //         if (res.code == api.code.OK) {
+            //             extend(this, res.data);
+            //             // this.list = res.data.list
+            //             this.qiandaorenlist = res.data.qiandaorenlist
+            //         } else {
+            //             this.$message.error(res.msg);
+            //         }
+            //     }).catch(err => {
+            //         this.loading = false;
+            //         this.$message.error(err.message);
+            //     });
+            // },
+            initKecheng() {
                 // 防止重新点加载列表
-                if (this.loading) return;
-                this.loading = true;
-                this.page = page;
                 // 筛选条件
-                var filter = extend(true, {}, this.search, {
-                    page: page + "",
-                    pagesize: this.pagesize + ""
+                var filter = extend(true, {}, {
+                    banjiid: localStorage.getItem("banjiId"),
+                    page: 1,
+                    pagesize: 10,
                 });
-                var diff = objectDiff.diff(filter, this.$route.query);
-                if (diff.changed != 'equal') { // 筛选的条件不一致则更新链接
-                    this.$router.replace({ // 更新query
-                        path: this.$route.path,
-                        query: filter
+                this.$post(api.kecheng.list, filter)
+                    .then((res) => {
+                        if (res.code == api.code.OK) {
+                            this.kechengmingchengList = res.data.list;
+                            for (var i in this.kechengmingchengList) {
+                                var id = this.kechengmingchengList[i].id
+                                this.loadList2(id)
+                            }
+                        } else {
+                            this.$message.error(res.msg);
+                        }
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        this.$message.error(err.message);
                     });
-                }
-                this.$post(api.keqiankaoqin.weblist, filter).then(res => {
-                    this.loading = false;
-                    if (res.code == api.code.OK) {
-                        extend(this, res.data);
-                    } else {
-                        this.$message.error(res.msg);
-                    }
-                }).catch(err => {
-                    this.loading = false;
-                    this.$message.error(err.message);
-                });
             },
-            loadList1() {
-
+            loadList2(id) {
                 // 筛选条件
+                this.list = []
                 var filter = extend(true, {}, this.search, {
+                    kechengxinxi: id,
                     page: 1,
                     pagesize: 12
                 });
                 this.$post(api.keqiankaoqin.weblist, filter).then(res => {
                     this.loading = false;
                     if (res.code == api.code.OK) {
-                        extend(this, res.data);
+                        // extend(this, res.data);
+                        // this.list = res.data.list
+                        this.totalCount = res.data.totalCount;
+                        var array1 = res.data.list;
+                        var array = [];
+                        if (this.totalCount != 0) {
+                            array1.forEach((item) => {
+                                array.push(item);
+                            });
+                            for (var i in array) {
+                                this.list.push(array[i]);
+                            }
+                            console.log(this.list)
+                        }
+                        this.qiandaorenlist = res.data.qiandaorenlist
                     } else {
                         this.$message.error(res.msg);
                     }
@@ -227,6 +262,7 @@
                     this.$message.error(err.message);
                 });
             },
+
         },
         beforeRouteUpdate(to, form, next) {
             var search = extend(this.search, to.query)
@@ -238,7 +274,7 @@
                 this.pagesize = Math.floor(to.query.pagesize)
                 delete search.pagesize
             }
-            this.loadList(1);
+            // this.loadList(1);
             next();
         },
         created() {
@@ -251,10 +287,9 @@
                 this.pagesize = Math.floor(this.$route.query.pagesize)
                 delete search.pagesize
             }
-            console.log(this.currentTime)
-            this.loadList1()
-            this.loadList2()
-            // this.loadList(this.page);
+            // this.loadList1()
+            this.initKecheng()
+            this.username = localStorage.getItem('username')
         },
         mounted() {
 

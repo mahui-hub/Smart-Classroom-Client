@@ -474,7 +474,6 @@
       this.panduan()
       this.initKecheng();
       this.username = localStorage.getItem("username");
-      // this.loadList(1);
     },
     mounted() {},
     destroyed() {},

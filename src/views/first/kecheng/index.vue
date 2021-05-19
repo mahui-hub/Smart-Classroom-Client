@@ -15,8 +15,9 @@
           </div>
           <div class="box">
             <span class="card-text">讲师：</span>
-            <span>——---</span>
-
+            <span>
+              <e-select-view module="jiaoshi" :value="o.jiaoshiid" select="id" show="xingming"></e-select-view>
+            </span>
             <el-button style="float: right; padding: 4px" type="text" @click="view(o.id)">开始学习</el-button>
           </div>
         </div>

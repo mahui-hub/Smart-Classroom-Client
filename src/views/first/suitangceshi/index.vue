@@ -22,7 +22,7 @@
 
                     <el-table-column label="操作" align="center">
                         <template slot-scope="{ row }">
-                            <el-button @click="xingxi(row)" type="text">
+                            <el-button @click="xingxi(row)" type="text" v-if="row.kaoshirens.indexOf(username)==-1">
                                 答题
                             </el-button>
                         </template>
@@ -77,6 +77,7 @@
     export default {
         data() {
             return {
+                username: "",
                 kechengmingchengList: [],
                 dialogVisible: false,
                 form1: {
@@ -206,6 +207,7 @@
                 delete search.pagesize;
             }
             this.initKecheng(1);
+            this.username = localStorage.getItem("username")
             // this.loadList(this.page);
         },
         mounted() {},

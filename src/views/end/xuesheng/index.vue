@@ -3,19 +3,19 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :inline="true" size="mini" :model="search">
-        <el-form-item label="学号">
+        <!-- <el-form-item label="学号">
           <el-input v-model="search.xuehao"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="姓名">
           <el-input v-model="search.xingming"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
+        <!-- <el-form-item label="性别">
           <el-select v-model="search.xingbie">
             <el-option label="请选择" value=""></el-option>
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="班级">
           <el-select v-model="search.banji">
             <el-option label="请选择" value=""></el-option>
@@ -78,7 +78,6 @@
       </el-table-column>
       <el-table-column label="操作" align="center" min-width="150">
         <template slot-scope="{ row }">
-          <!-- @click="$goto('/admin/chengjiadd?id=' + row.id)" -->
           <el-button @click="addScope(row)" type="text" v-if="role != '管理员'">
             成绩添加
           </el-button>
@@ -240,7 +239,7 @@
           </el-form-item>
           <!-- :rules="[{validator:rule.checkNumber, message:'输入一个有效数字'}, {validator:rule.checkMin, message:'最小不能小于1', value:1}, {validator:rule.checkMax, message:'最大不能超过100', value:100}]" -->
           <el-form-item label="考勤成绩" prop="kaoqinchengji" v-if="form3.kechengid"
-            :rules="[{validator:rule.checkNumber, message:'输入一个有效数字'}, {validator:rule.checkMin, message:'最小不能小于等于0', value:1}, {validator:rule.checkMax, message:'最大不能超过100', value:100}]">
+            :rules="[{validator:rule.checkMax, message:'最大不能超过100', value:100}]">
             <el-input v-model="form3.kaoqinchengji" disabled @input="input" />
           </el-form-item>
           <el-form-item label="随堂测试成绩" prop="suitangceshichengji" v-if="form3.kechengid"
@@ -489,7 +488,8 @@
         kaoqinchengjiList: [],
         suitangceshichengjiList: [],
         qiangdawentichengjiList: [],
-        jiaoshipingjiachengjiList: []
+        jiaoshipingjiachengjiList: [],
+        array: []
       };
     },
 
@@ -499,6 +499,9 @@
         this.dialogVisible3 = true;
         this.form4 = row;
         this.form4.hupingren = localStorage.getItem('username');
+        if (localStorage.getItem("role") == '教师') {
+          this.initKecheng1(row.banjiid)
+        }
       },
       submit4() {
         this.$refs.formModel4
@@ -531,11 +534,36 @@
         this.$forceUpdate()
       },
       addScope(row) {
+        if (localStorage.getItem("role") == '教师') {
+          this.initKecheng1(row.banjiid)
+        }
         this.xueshengid = row.id
         this.form3 = row
         this.dialogVisible2 = true;
         this.qiangdawentichengji(this.form3.xuehao)
         this.jiaoshipingjiachengji(this.form3.xuehao)
+      },
+      initKecheng1(banjiid) {
+        // 防止重新点加载列表
+        // 筛选条件
+        var filter = extend(true, {}, {
+          jiaoshiid: localStorage.getItem("jiaoshiid"),
+          banjiid: banjiid,
+          page: 1,
+          pagesize: 10,
+        });
+        this.$post(api.kecheng.list, filter)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.kechengmingchengList = res.data.list;
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
       },
       chengji() {
         //考勤成绩列表
@@ -561,8 +589,6 @@
               this.$message.error(res.msg);
             }
           })
-
-
       },
       handleChengji(val) {
         this.suitangceshichengji(val)
@@ -574,10 +600,6 @@
             this.kaoqinchengji(this.kechengmingchengList[i].kechengmingcheng)
           }
         }
-        // this.kaoqinchengji(val)
-        // this.kaoqinchengji(val)
-        // this.kaoqinchengji(val)
-        // this.kaoqinchengji(val)
       },
       kaoqinchengji(val) {
         var a = 0
@@ -672,6 +694,7 @@
             localStorage.getItem('username')) {
             array.push(this.jiaoshipingjiachengjiList[i].hupingfenshu)
           }
+          1
         }
         for (var j in array) {
           pingjun = pingjun + array[j]
@@ -691,12 +714,12 @@
           .then((res) => {
             if (res.code == api.code.OK) {
               this.kechengmingchengList = res.data.list;
-              // if (localStorage.getItem('role') == '教师') {
-              //   for (var i in this.kechengmingchengList) {
-              //     var banjiid = this.kechengmingchengList[i].banjiId
-              //     this.loadList1(banjiid, 1)
-              //   }
-              // }
+              if (localStorage.getItem('role') == '教师') {
+                for (var i in this.kechengmingchengList) {
+                  var banjiid = this.kechengmingchengList[i].banjiId
+                  this.loadList1(banjiid, 1)
+                }
+              }
             } else {
               this.$message.error(res.msg);
             }
@@ -772,7 +795,6 @@
             if (this.loading) return;
             this.loading = true;
             var form = this.form;
-
             this.$post(api.xuesheng.insert, form)
               .then((res) => {
                 this.loading = false;
@@ -780,7 +802,6 @@
                   this.$message.success("添加学生信息成功");
                   this.loadList(1);
                   this.dialogVisible = false;
-                  // this.$emit("success", res.data);
                   this.$refs.formModel.resetFields();
                   this.loadInfo();
                   // this.loadList();
@@ -869,7 +890,8 @@
       },
 
       searchSubmit() {
-        this.loadList(1);
+        this.initKecheng()
+        // this.loadList(1);
       },
       sizeChange(e) {
         this.pagesize = e;
@@ -878,17 +900,33 @@
       checkIssh,
       loadList1(banjiid, page) {
         this.page = page;
+        this.list = []
         // 筛选条件
         var filter = extend(true, {}, this.search, {
           banjiid: banjiid,
           page: page + "",
           pagesize: this.pagesize + "",
         });
+
         this.$post(api.xuesheng.list, filter)
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
-              extend(this, res.data);
+              this.banjiList = res.data.banjiList
+              this.zhuanyeList = res.data.zhuanyeList
+              this.totalCount = res.data.totalCount;
+              var array1 = res.data.list;
+              var array = [];
+              if (this.totalCount != 0) {
+                array1.forEach((item) => {
+                  array.push(item);
+                });
+                for (var i in array) {
+                  this.list.push(array[i]);
+                }
+                // console.log(this.list)
+              }
+              this.totalCount = this.list.length
             } else {
               this.$message.error(res.msg);
             }
@@ -968,8 +1006,12 @@
         delete search.pagesize;
       }
 
-      this.loadList(1);
-      this.initKecheng()
+
+      if (localStorage.getItem('role') == '教师') {
+        this.initKecheng()
+      } else {
+        this.loadList(1);
+      }
       this.chengji()
     },
     mounted() {},

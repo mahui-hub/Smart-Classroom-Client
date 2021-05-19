@@ -265,6 +265,7 @@
                 this.page = page;
                 // 筛选条件
                 var filter = extend(true, {}, this.search, {
+                    faburen: localStorage.getItem('username'),
                     page: page + "",
                     pagesize: this.pagesize
                 });
@@ -328,7 +329,6 @@
                     // 取消操作
                 })
             },
-
         },
         beforeRouteUpdate(to, form, next) {
             extend(this.search, to.query)
@@ -345,7 +345,6 @@
                 this.pagesize = Math.floor(this.$route.query.pagesize)
                 delete search.pagesize
             }
-
             this.loadList1();
         },
         mounted() {},

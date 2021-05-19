@@ -16,7 +16,7 @@
               <span class="fa_time">教师:{{ map.faburen}} </span>
               <span class="fa_time"> 发布人:{{ map.faburen }} </span>
             </div>
-            <e-paper-form @submit="postPaper" :list="webda" danxuanti="单选题" duoxuanti="多选题" timu="shititimu"
+            <e-paper-form ref="child" @submit="postPaper" :list="webda" danxuanti="单选题" duoxuanti="多选题" timu="shititimu"
               type="leixing"></e-paper-form>
 
             <!--   <div class="s_x clearfix">
@@ -99,7 +99,8 @@
             this.loading = false;
             if (res.code == api.code.OK) {
               this.$message.success("评价课程完成");
-              this.$router.go(-1)
+              this.$refs.child.defen()
+              // this.$router.go(-1)
             } else {
               this.$message.error(res.msg);
             }

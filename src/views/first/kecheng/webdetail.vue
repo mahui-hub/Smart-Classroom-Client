@@ -19,11 +19,13 @@
           </div>
           <div class="show_t w">
             <span>讲师：</span>
-            <span>——---</span>
+            <span>
+              <e-select-view module="jiaoshi" :value="map.jiaoshiid" select="id" show="xingming"></e-select-view>
+            </span>
           </div>
           <div class="show_t w">
             <span>发布人：</span>
-            <span v-html="map.faburen">——---</span>
+            <span v-html="map.faburen"></span>
           </div>
           <div class="show_t w">
             <span>课程类型:</span>
