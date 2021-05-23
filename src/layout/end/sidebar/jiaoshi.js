@@ -61,6 +61,14 @@ export default [{
     ],
   },
   {
+    label: "课件资源管理",
+    to: "",
+    children: [{
+      label: "课件资源管理",
+      to: "/end/kechengziyuan",
+    }, ],
+  },
+  {
     label: "资源信息管理",
     to: "",
     children: [{

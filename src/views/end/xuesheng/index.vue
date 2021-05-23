@@ -238,16 +238,16 @@
             </el-select>
           </el-form-item>
           <!-- :rules="[{validator:rule.checkNumber, message:'输入一个有效数字'}, {validator:rule.checkMin, message:'最小不能小于1', value:1}, {validator:rule.checkMax, message:'最大不能超过100', value:100}]" -->
-          <el-form-item label="考勤成绩" prop="kaoqinchengji" v-if="form3.kechengid"
+          <el-form-item label="期末成绩" prop="qimochengji" v-if="form3.kechengid"
             :rules="[{validator:rule.checkMax, message:'最大不能超过100', value:100}]">
-            <el-input v-model="form3.kaoqinchengji" disabled @input="input" />
+            <el-input v-model="form3.qimochengji" @input="input" />
           </el-form-item>
           <el-form-item label="随堂测试成绩" prop="suitangceshichengji" v-if="form3.kechengid"
             :rules="[{validator:rule.checkNumber, message:'输入一个有效数字'}, {validator:rule.checkMin, message:'最小不能小于等于0', value:1}, {validator:rule.checkMax, message:'最大不能超过100', value:100}]">
             <el-input v-model="form3.suitangceshichengji" disabled @input="input" />
           </el-form-item>
           <el-form-item label="抢答问题成绩" prop="qiangdawentichengji" v-if="form3.kechengid"
-            :rules="[{validator:rule.checkNumber, message:'输入一个有效数字'}, {validator:rule.checkMin, message:'最小不能小于等于0', value:1}, {validator:rule.checkMax, message:'最大不能超过100', value:100}]">
+            :rules="[{validator:rule.checkNumber, message:'输入一个有效数字'}, {validator:rule.checkMax, message:'最大不能超过100', value:100}]">
             <el-input v-model="form3.qiangdawentichengji" disabled @input="input" />
           </el-form-item>
           <el-form-item label="教师评价成绩" prop="jiaoshipingjiachengji" v-if="form3.kechengid"
@@ -474,7 +474,7 @@
           xingming: '',
           banji: '',
           zhuanye: '',
-          kaoqinchengji: '',
+          qimochengji: '',
           shenghupingchengji: '',
           jiaoshipingjiachengji: '',
           suitangceshichengji: '',
@@ -567,14 +567,14 @@
       },
       chengji() {
         //考勤成绩列表
-        this.$post(api.qiandao.list)
-          .then((res) => {
-            if (res.code == api.code.OK) {
-              this.kaoqinchengjiList = res.data.kaoqinCount
-            } else {
-              this.$message.error(res.msg);
-            }
-          })
+        // this.$post(api.qiandao.list)
+        //   .then((res) => {
+        //     if (res.code == api.code.OK) {
+        //       this.kaoqinchengjiList = res.data.kaoqinCount
+        //     } else {
+        //       this.$message.error(res.msg);
+        //     }
+        //   })
         //随堂测试列表
         const params = {}
         params.tikumingcheng = ''
@@ -595,32 +595,20 @@
         this.qiangdawentichengjihuoqu(val)
         this.jiaoshipingjiachengjihuoqu(val)
         this.shenghupingchengji(val)
-        for (var i in this.kechengmingchengList) {
-          if (this.kechengmingchengList[i].id == val) {
-            this.kaoqinchengji(this.kechengmingchengList[i].kechengmingcheng)
-          }
-        }
-      },
-      kaoqinchengji(val) {
-        var a = 0
-        for (var i in this.kaoqinchengjiList) {
-          if (val == this.kaoqinchengjiList[i].kecheng && this.form3.xuehao == this.kaoqinchengjiList[i].qiandaoren) {
-            a = this.kaoqinchengjiList[i].kaoqinchengji
-          }
-        }
-        this.form3.kaoqinchengji = a
       },
       suitangceshichengji(val) {
         //随堂测验成绩获取
         var a = 0
         var array = []
         var pingjun = 0
+        console.log(this.suitangceshichengjiList)
         for (var i in this.suitangceshichengjiList) {
           if (val == this.suitangceshichengjiList[i].kechengid && this.form3.xuehao == this.suitangceshichengjiList[i]
             .kaoshiren) {
             array.push(this.suitangceshichengjiList[i].zongdefen)
           }
         }
+        console.log(array)
         for (var j in array) {
           pingjun = pingjun + array[j]
           a = pingjun / array.length
@@ -900,16 +888,17 @@
       checkIssh,
       loadList1(banjiid, page) {
         this.page = page;
-        this.list = []
+
         // 筛选条件
         var filter = extend(true, {}, this.search, {
           banjiid: banjiid,
           page: page + "",
           pagesize: this.pagesize + "",
         });
-
+        this.list = []
         this.$post(api.xuesheng.list, filter)
           .then((res) => {
+
             this.loading = false;
             if (res.code == api.code.OK) {
               this.banjiList = res.data.banjiList
@@ -917,6 +906,7 @@
               this.totalCount = res.data.totalCount;
               var array1 = res.data.list;
               var array = [];
+
               if (this.totalCount != 0) {
                 array1.forEach((item) => {
                   array.push(item);

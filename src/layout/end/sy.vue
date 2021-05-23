@@ -21,9 +21,7 @@
         created() {
 
         },
-        mounted() {
-        },
-        destroyed() {
-        }
+        mounted() {},
+        destroyed() {}
     }
 </script>

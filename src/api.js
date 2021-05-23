@@ -1,5 +1,7 @@
 import http from "@/utils/ajax/http";
-import { extend } from "@/utils/extend";
+import {
+  extend
+} from "@/utils/extend";
 
 const api = {
   code: {
@@ -259,6 +261,33 @@ const api = {
     detail: "zhuanye_detail.do",
     create: "zhuanye_add.do",
     edit: "zhuanye_updt.do",
+  },
+  kechengziyuan: {
+    list: "kechengziyuan_list.do",
+    insert: "kechengziyuaninsert.do",
+    update: "kechengziyuanupdate.do",
+    delete: "kechengziyuan_delete.do",
+    detail: "kechengziyuan_detail.do",
+    create: "kechengziyuan_add.do",
+    edit: "kechengziyuan_updt.do",
+  },
+  zhicheng: {
+    list: "zhicheng_list.do",
+    insert: "zhichenginsert.do",
+    update: "zhichengupdate.do",
+    delete: "zhicheng_delete.do",
+    detail: "zhicheng_detail.do",
+    create: "zhicheng_add.do",
+    edit: "zhicheng_updt.do",
+  },
+  xueyuan: {
+    list: "xueyuan_list.do",
+    insert: "xueyuaninsert.do",
+    update: "xueyuanupdate.do",
+    delete: "xueyuan_delete.do",
+    detail: "xueyuan_detail.do",
+    create: "xueyuan_add.do",
+    edit: "xueyuan_updt.do",
   },
   jiaoshi: {
     list: "jiaoshi_list.do",

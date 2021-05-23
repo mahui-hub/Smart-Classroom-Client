@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column label="签到次数" align="center" prop="qiandaocount">
             </el-table-column>
-            <el-table-column label="考勤成绩" align="center" prop="kaoqinchengji">
+            <el-table-column label="期末成绩" align="center" prop="kaoqinchengji">
             </el-table-column>
         </el-table>
         <div class="e-pages" style="margin-top: 10px; text-align: center">

@@ -24,9 +24,19 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="{ row }">
-              <el-button type="text" @click="huping(row)">
-                互评
-              </el-button>
+              <div v-if="row.hupingrens!=''">
+                <div v-if="row.hupingrens.indexOf(username)==-1">
+                  <el-button type="text" @click="huping(row)">
+                    互评
+                  </el-button>
+                </div>
+              </div>
+              <div v-else>
+                <el-button type="text" @click="huping(row)">
+                  互评
+                </el-button>
+              </div>
+
             </template>
           </el-table-column>
         </el-table>
@@ -114,6 +124,7 @@
         banjiList: [],
         zhuanyeList: [],
         kechengmingchengList: [],
+        username: ""
       };
     },
     watch: {},
@@ -286,6 +297,7 @@
       }
       this.loadList(this.page);
       this.initKecheng();
+      this.username = localStorage.getItem("username")
     },
     mounted() {},
     destroyed() {},

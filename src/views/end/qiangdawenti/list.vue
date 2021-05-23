@@ -28,10 +28,6 @@
       </el-table-column>
       <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
       </el-table-column>
-      <!-- <el-table-column label="发布人" align="center">
-          <template slot-scope="{ row }"> {{ row.faburen }} </template>
-        </el-table-column> -->
-
       <el-table-column label="抢答人" align="center">
         <template slot-scope="{ row }"> {{ row.qiangdaren }} </template>
       </el-table-column>
@@ -40,7 +36,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button @click="pingyue(row)" type="text"> 评阅 </el-button>
+          <el-button @click="pingyue(row)" type="text" v-if="row.pingyueren.indexOf(username)==-1"> 评阅 </el-button>
           <el-button @click="
               $goto({
                 path: '/end/qiangdawentidetail',
@@ -159,9 +155,10 @@
           pingfen: "",
           pingyuejianjie: "",
           pingyueren: this.$store.state.user.session.username,
-          huidawentiid: 0,
+          huidawentiid: "",
         },
         kechengmingchengList: [],
+        username: ""
       };
     },
     watch: {},
@@ -212,6 +209,7 @@
           .then((res) => {
             if (this.loading) return;
             this.loading = true;
+
             var form = this.form;
 
             this.$post(api.pingyuewenti.insert, form)
@@ -239,6 +237,7 @@
       pingyue(row) {
         this.form = row;
         this.form.pingyueren = row.faburen;
+        this.form.huidawentiid = row.id
         this.dialogVisible = true;
         this.id = row.id;
         console.log(row.id);
@@ -368,6 +367,7 @@
       }
       this.initKecheng()
       this.panduan();
+      this.username = localStorage.getItem("username");
       // this.loadList();
     },
     mounted() {},

@@ -37,31 +37,6 @@
             </div>
         </e-module-widget-title>
     </div>
-
-    <!-- <el-dialog
-      title="选择课程进行评价"
-      :visible.sync="dialogVisible"
-      size="mini"
-    >
-      <div class="form-database-form">
-        <el-form :model="form1" ref="formModel" label-width="100px">
-          <el-form-item label="课程名称" prop="kechengmingcheng" required>
-            <el-select v-model="form1.kechengmingcheng" style="width:100%">
-              <el-option
-                v-for="m in kechengmingchengList"
-                :key="m.kechengmingcheng"
-                :value="m.kechengmingcheng"
-                :label="m.kechengmingcheng"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit2">确 定</el-button>
-      </span>
-    </el-dialog> -->
 </template>
 <style type="text/scss" scoped lang="scss"></style>
 <script>

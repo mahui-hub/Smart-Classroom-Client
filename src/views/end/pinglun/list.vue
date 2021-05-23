@@ -10,7 +10,7 @@
                 <template slot-scope="{row}">
                     {{  row.pingfen  }} </template>
             </el-table-column>
-            <el-table-column label="评论内容" align="center">
+            <el-table-column label="评论内容" align="center" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     {{  row.pinglunneirong  }} </template>
             </el-table-column>

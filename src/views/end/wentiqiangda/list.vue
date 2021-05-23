@@ -110,7 +110,7 @@
           <el-form-item label="问题标题" prop="biaoti" required>
             <el-input placeholder="请输入问题标题" v-model="form.biaoti" />
           </el-form-item>
-          <el-form-item label="课程名称" prop="kechengmingcheng" required>
+          <el-form-item label="课程名称" prop="kechengmingcheng">
             <el-select v-model="form.kechengid" style="width: 100%" clearable>
               <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
               </el-option>

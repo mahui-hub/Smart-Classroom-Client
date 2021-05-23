@@ -10,12 +10,20 @@ export default [{
     label: "基础信息录入",
     to: "",
     children: [{
+        label: "学院信息管理",
+        to: "/end/xueyuan",
+      },
+      {
         label: "专业信息管理",
         to: "/end/zhuanye",
       },
       {
         label: "班级信息管理",
         to: "/end/banji",
+      },
+      {
+        label: "职称信息管理",
+        to: "/end/zhicheng",
       },
     ],
   },

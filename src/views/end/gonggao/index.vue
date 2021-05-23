@@ -3,9 +3,6 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" :inline="true" size="mini">
-        <!-- <el-form-item label="公告编号">
-          <el-input v-model="search.bianhao"></el-input>
-        </el-form-item> -->
         <el-form-item label="课程名称" prop="kechengid">
           <el-select v-model="search.kechengid" style="width: 100%" clearable>
             <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
@@ -36,11 +33,6 @@
       </el-table-column>
       <el-table-column label="课程名称" align="center" show-overflow-tooltip :formatter="kechengType">
       </el-table-column>
-      <!-- <el-table-column label="图片" align="center">
-          <template slot-scope="{ row }">
-            <e-img :src="row.tupian" style="width:80pxheight:100px;" />
-          </template>
-        </el-table-column> -->
       <el-table-column label="发布人" align="center" min-width="100">
         <template slot-scope="{ row }"> {{ row.faburen }} </template>
       </el-table-column>
@@ -55,7 +47,6 @@
             " type="text">详情</el-button>
           <!-- @click="$goto({ path: '/end/gonggaoupdt', query: { id: row.id } })" -->
           <el-button v-if="row.faburen == username" @click="edit(row)" type="text">编辑</el-button>
-
           <el-button type="text" @click="deleteItem(row)">删除 </el-button>
         </template>
       </el-table-column>
@@ -80,8 +71,8 @@
           </el-form-item>
           <el-form-item label="公告类型" prop="gonggaotype" required>
             <el-select v-model="form.gonggaotype" style="width: 100%">
-              <el-option v-for="m in gonggaotypeList" :key="m.gonggaotype" :value="m.gonggaotype"
-                :label="m.gonggaotype"></el-option>
+              <el-option v-for="m in gonggaotypeList" :key="m.gonggaotype" :value="m.gonggaotype" :label="m.gonggaotype"
+                :disabled="m.disabled!=role"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="课程名称" prop="kechengid" v-if="form.gonggaotype == '课程公告'" required>
@@ -136,10 +127,12 @@
         role: "",
         username: "",
         gonggaotypeList: [{
-            gonggaotype: "系统公告"
+            gonggaotype: "系统公告",
+            disabled: "管理员"
           },
           {
-            gonggaotype: "课程公告"
+            gonggaotype: "课程公告",
+            disabled: "教师"
           },
         ],
         kechengmingchengList: [],
@@ -153,6 +146,9 @@
           biaoti: "",
           kechengid: "",
           faburen: ''
+        },
+        search1: {
+          jiaoshiid: ""
         },
         total: {},
         page: 1, // 当前页
@@ -187,16 +183,18 @@
       initKecheng() {
         // 防止重新点加载列表
         // 筛选条件
+        if (this.role == "教师") {
+          this.search1.jiaoshiid = localStorage.getItem("jiaoshiid")
+        }
+        console.log(this.search1.jiaoshiid)
         var filter = extend(true, {}, this.search1, {
           page: 1,
           pagesize: 10,
         });
-
         this.$post(api.kecheng.list, filter)
           .then((res) => {
             if (res.code == api.code.OK) {
               this.kechengmingchengList = res.data.list;
-              // extend(this, res.data);
             } else {
               this.$message.error(res.msg);
             }
@@ -472,6 +470,7 @@
         delete search.pagesize;
       }
       this.panduan()
+      this.role = localStorage.getItem("role")
       this.initKecheng();
       this.username = localStorage.getItem("username");
     },

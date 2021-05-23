@@ -42,7 +42,7 @@
           <template slot-scope="{ row }"> {{ row.zhuanye }} </template>
         </el-table-column> -->
       <el-table-column label="考勤成绩" align="center">
-        <template slot-scope="{ row }"> {{ row.kaoqinchengji }} </template>
+        <template slot-scope="{ row }"> {{ row.qimochengji }} </template>
       </el-table-column>
       <el-table-column label="学生互评成绩" align="center">
         <template slot-scope="{ row }">
@@ -99,11 +99,11 @@
       </el-pagination>
     </div>
 
-    <div>
+    <!-- <div>
       总分总和: {{ total.sum_zongfen }} 总分平均值:
       {{ total.avg_zongfen }} 总分最小值: {{ total.min_zongfen }} 总分最大值:
       {{ total.max_zongfen }}
-    </div>
+    </div> -->
   </div>
 </template>
 <style type="text/scss" scoped lang="scss">

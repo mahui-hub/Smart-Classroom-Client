@@ -9,7 +9,8 @@
 
         <el-form-item label="题库类型">
           <el-select v-model="search.tikutype" clearable>
-            <el-option v-for="m in tikuleixinglist" :value="m.label" :label="m.label" :key="m.label"></el-option>
+            <el-option v-for="m in tikuleixinglist" :value="m.label" :label="m.label" :key="m.label"
+              :disabled="m.disabled!=role"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="课程名称">
@@ -96,7 +97,8 @@
           <!-- 后续增加---先注释掉 -->
           <el-form-item label="题库类型" prop="tikuleixing">
             <el-select v-model="form.tikutype" clearable style="width: 100%">
-              <el-option v-for="m in tikuleixinglist" :value="m.label" :label="m.label" :key="m.label"></el-option>
+              <el-option v-for="m in tikuleixinglist" :value="m.label" :label="m.label" :key="m.label"
+                :disabled="m.disabled!=role"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="课程名称">
@@ -187,9 +189,11 @@
         username: "",
         kechengmingchengList: [],
         tikuleixinglist: [{
-          label: "评价题库"
+          label: "评价题库",
+          disabled: "管理员"
         }, {
-          label: "测验题库"
+          label: "测验题库",
+          disabled: "教师"
         }],
         oper: "",
         dialogVisible: false,
@@ -216,6 +220,7 @@
           kechengid: "",
         },
         jiaoshiList: [],
+        role: ""
       };
     },
     methods: {
@@ -528,6 +533,7 @@
       this.username = localStorage.getItem("username");
       this.loadList(1);
       this.initKecheng();
+      this.role = localStorage.getItem("role")
     },
     mounted() {},
     destroyed() {},

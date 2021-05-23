@@ -12,7 +12,7 @@
               :label="m.kechengleixing"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="教师姓名">
+        <el-form-item label="教师姓名" v-if="role=='管理员'">
           <el-select v-model="search.jiaoshiid" style="width: 100%" clearable>
             <el-option :key="m.id" v-for="m in jiaoshilist" :value="m.id" :label="m.xingming"></el-option>
           </el-select>

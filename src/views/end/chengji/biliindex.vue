@@ -25,8 +25,8 @@
             <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
             </el-table-column>
             <el-table-column label="成绩比例构成" align="center" style="color: black;font-size: 14px;">
-                <el-table-column label="考勤" align="center" prop="kaoqinchengji">
-                    <!-- <template slot-scope="{ row }"> {{ row.kaoqinchengji }} </template> -->
+                <el-table-column label="期末成绩" align="center" prop="qimochengji">
+
                 </el-table-column>
                 <el-table-column label="学生互评" align="center">
                     <template slot-scope="{ row }"> {{ row.shenghupingchengji }} </template>
@@ -49,7 +49,7 @@
             </el-table-column>
         </el-table>
         <div class="e-pages" style="margin-top: 10px;text-align: center">
-            <el-pagination @current-change="loadList" :current-page="page" :page-size="pagesize"
+            <el-pagination @current-change="initKecheng" :current-page="page" :page-size="pagesize"
                 @size-change="sizeChange" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
             </el-pagination>
         </div>
@@ -57,13 +57,13 @@
             <div class="form-database-form">
                 <el-form :model="form" ref="formModel" label-width="120px" :rules="rules">
                     <el-form-item label="课程名称" required>
-                        <el-select v-model="form.kechengid" style="width: 100%" clearable>
+                        <el-select v-model="form.kechengid" style="width: 100%" clearable :disabled="oper=='edit'">
                             <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id"
                                 :label="m.kechengmingcheng"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="考勤成绩比例" prop="kaoqinchengji">
-                        <el-input placeholder="请输入成绩比例" v-model="form.kaoqinchengji" />
+                    <el-form-item label="期末成绩比例" prop="qimochengji">
+                        <el-input placeholder="请输入成绩比例" v-model="form.qimochengji" />
                     </el-form-item>
                     <el-form-item label="随堂测试成绩" prop="suitangceshichengji">
                         <el-input placeholder="请输入成绩比例" v-model="form.suitangceshichengji" />
@@ -126,7 +126,7 @@
                 form: {
                     kechengid: '',
                     shenghupingchengji: '',
-                    kaoqinchengji: '',
+                    qimochengji: '',
                     suitangceshichengji: '',
                     qiangdawentichengji: '',
                     jiaoshipingjiachengji: ''
@@ -142,7 +142,7 @@
                 totalCount: 0, // 总行数
                 zhuanyeList: [],
                 rules: {
-                    kaoqinchengji: [{
+                    qimochengji: [{
                         required: true,
                         message: "请输入成绩比例",
                         trigger: "blur"
@@ -207,6 +207,11 @@
                     .then((res) => {
                         if (res.code == api.code.OK) {
                             this.kechengmingchengList = res.data.list;
+                            var id = ""
+                            this.kechengmingchengList.map(function (item) {
+                                id = item.id
+                            })
+                            this.loadList3(id)
                         } else {
                             this.$message.error(res.msg);
                         }
@@ -235,15 +240,13 @@
                 this.operChange();
             },
             submit() {
-
-                var a = parseFloat(this.form.kaoqinchengji)
+                var a = parseFloat(this.form.qimochengji)
                 var b = parseFloat(this.form.suitangceshichengji)
                 var c = parseFloat(this.form.qiangdawentichengji)
                 var d = parseFloat(this.form.shenghupingchengji)
                 var e = parseFloat(this.form.jiaoshipingjiachengji)
                 var zong = a + b + c + d + e
-                this.$refs.formModel
-                    .validate()
+                this.$refs.formModel.validate()
                     .then((res) => {
                         if (zong != 1) {
                             this.$message.error('请检查各成绩比例相加是否等于1');
@@ -257,7 +260,8 @@
                                 this.loading = false;
                                 if (res.code == api.code.OK) {
                                     this.$message.success("设置成绩比例成功");
-                                    this.loadList(1);
+                                    // this.loadList(1);
+                                    this.initKecheng()
                                     this.dialogVisible = false;
                                     this.$refs.formModel.resetFields();
                                     this.loadInfo();
@@ -275,9 +279,19 @@
                     });
             },
             submit1() {
+                var a = parseFloat(this.form.qimochengji)
+                var b = parseFloat(this.form.suitangceshichengji)
+                var c = parseFloat(this.form.qiangdawentichengji)
+                var d = parseFloat(this.form.shenghupingchengji)
+                var e = parseFloat(this.form.jiaoshipingjiachengji)
+                var zong = a + b + c + d + e
                 this.$refs.formModel
                     .validate()
                     .then((res) => {
+                        if (zong != 1) {
+                            this.$message.error('请检查各成绩比例相加是否等于1');
+                            return
+                        }
                         if (this.loading) return;
                         this.loading = true;
                         var form = this.form;
@@ -286,7 +300,8 @@
                                 this.loading = false;
                                 if (res.code == api.code.OK) {
                                     this.$message.success("修改成绩比例成功");
-                                    this.loadList(1);
+                                    // this.loadList(1);
+                                    this.initKecheng()
                                     this.dialogVisible = false;
                                     this.$refs.formModel.resetFields();
                                     this.loadInfo();
@@ -325,14 +340,51 @@
                     });
             },
             searchSubmit() {
-                this.loadList(1);
+                this.initKecheng()
+                // this.loadList(1);
             },
             sizeChange(e) {
                 this.pagesize = e;
-                this.loadList(1);
+                this.initKecheng()
+                // this.loadList(1);
             },
             checkIssh,
-
+            loadList3(id) {
+                // 筛选条件
+                var filter = extend(true, {}, this.search, {
+                    kechengid: id,
+                    page: 1,
+                    pagesize: 10,
+                });
+                this.list = []
+                this.$post("/chengjibili_list", filter)
+                    .then((res) => {
+                        this.totalCount = this.list.length
+                        this.loading = false;
+                        if (res.code == api.code.OK) {
+                            this.totalCount = res.data.totalCount;
+                            var array1 = res.data.list;
+                            var array = [];
+                            if (this.totalCount != 0) {
+                                array1.forEach((item) => {
+                                    array.push(item);
+                                });
+                                for (var i in array) {
+                                    this.list.push(array[i]);
+                                }
+                                // console.log(this.list)
+                            }
+                            this.totalCount = this.list.length
+                            // extend(this, res.data);
+                        } else {
+                            this.$message.error(res.msg);
+                        }
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        this.$message.error(err.message);
+                    });
+            },
             loadList(page) {
                 // 防止重新点加载列表
                 if (this.loading) return;
@@ -401,7 +453,7 @@
         },
         beforeRouteUpdate(to, form, next) {
             extend(this.search, to.query);
-            this.loadList(1);
+            // this.loadList(1);
             next();
         },
         created() {
@@ -415,7 +467,7 @@
                 delete search.pagesize;
             }
             this.initKecheng()
-            this.loadList(1);
+            // this.loadList(1);
         },
         mounted() {},
         destroyed() {},

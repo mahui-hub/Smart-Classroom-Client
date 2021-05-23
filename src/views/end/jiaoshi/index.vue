@@ -3,29 +3,14 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" :inline="true" size="mini" :rules="rules">
-        <!-- <el-form-item label="教师工号">
-          <el-input v-model="search.gonghao"></el-input>
-        </el-form-item> -->
         <el-form-item label="教师姓名">
           <el-input v-model="search.xingming"></el-input>
         </el-form-item>
         <el-form-item label="所属学院">
-          <el-input v-model="search.xueyuan"></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="所教班级">
-          <el-select
-            v-model="search.suojiaobanji"
-            style="width:100%;"
-            clearable
-          >
-            <el-option
-              v-for="m in banjiList"
-              :key="m.banjimingcheng"
-              :value="m.banjimingcheng"
-              :label="m.banjimingcheng"
-            ></el-option>
+          <el-select v-model="search.xueyuan" style="width:100%;">
+            <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
           </el-select>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
@@ -37,7 +22,6 @@
 
     <el-table border :data="list" stripe highlight-current-row>
       <el-table-column type="index" align="center"></el-table-column>
-      <!-- 序号 -->
       <el-table-column label="教师工号" align="center">
         <template slot-scope="{ row }"> {{ row.gonghao }} </template>
       </el-table-column>
@@ -53,9 +37,6 @@
       <el-table-column label="所属学院" align="center">
         <template slot-scope="{ row }"> {{ row.xueyuan }} </template>
       </el-table-column>
-      <!-- <el-table-column label="所教班级" align="center" min-width="100">
-        <template slot-scope="{ row }"> {{ row.suojiaobanji }} </template>
-      </el-table-column> -->
       <el-table-column label="QQ号" align="center">
         <template slot-scope="{ row }"> {{ row.qqhao }} </template>
       </el-table-column>
@@ -71,7 +52,6 @@
                 query: { id: row.id },
               })
             " type="text">详情</el-button>
-
           <el-button @click="$goto({ path: '/end/jiaoshiupdt', query: { id: row.id } })" type="text">编辑</el-button>
           <el-button type="text" @click="deleteItem(row)">删除</el-button>
         </template>
@@ -88,21 +68,21 @@
             <el-form-item label="教师工号" prop="gonghao">
               <el-input placeholder="请输入工号" v-model="form.gonghao" />
             </el-form-item>
-
             <el-form-item label="密码" prop="mima" required>
               <el-input placeholder="请输入密码" type="password" v-model="form.mima" />
             </el-form-item>
-
             <el-form-item label="教师姓名" prop="xingming" required>
               <el-input placeholder="请输入教师姓名" v-model="form.xingming" />
             </el-form-item>
-
             <el-form-item label="所属学院" prop="xueyuan" required>
-              <el-input placeholder="请输入教师所属学院" v-model="form.xueyuan" />
+              <el-select v-model="form.xueyuan" style="width:100%;">
+                <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
+              </el-select>
             </el-form-item>
-
-            <el-form-item label="教师职称" prop="xingming" required>
-              <el-input placeholder="请输入教师职称" v-model="form.zhicheng" />
+            <el-form-item label="教师职称" prop="zhicheng" required>
+              <el-select v-model="form.zhicheng" filterable style="width:100%;">
+                <el-option :value="v.zhicheng" :label="v.zhicheng" v-for="v in zhichenglist" :key="v.id"></el-option>
+              </el-select>
             </el-form-item>
 
             <el-form-item label="性别" prop="xingbie" required>
@@ -120,24 +100,8 @@
               <el-input placeholder="请输入联系方式" v-model="form.shouji" />
             </el-form-item>
 
-            <!-- <el-form-item label="所教班级" prop="suojiaobanji" required>
-            <el-select
-              v-model="form.suojiaobanji"
-              multiple="multiple"
-              style="width:100%;"
-            >
-              <el-option
-                v-for="m in banjiList"
-                :key="m.banjimingcheng"
-                :value="m.banjimingcheng"
-                :label="m.banjimingcheng"
-              ></el-option>
-            </el-select>
-          </el-form-item> -->
-
             <el-form-item label="教师简介" prop="xiangqing">
               <el-input v-model="form.xiangqing" type="textarea" :rows="3"></el-input>
-              <!-- <e-editor v-model="form.xiangqing"></e-editor> -->
             </el-form-item>
           </el-form>
         </div>
@@ -168,6 +132,8 @@
   export default {
     data() {
       return {
+        zhichenglist: [],
+        xueyuanlist: [],
         rules1: {
           gonghao: [{
               required: true,
@@ -252,6 +218,41 @@
       };
     },
     methods: {
+      initZhicheng() {
+        const params = {}
+        params.page = 1
+        params.pagesize = 10
+        this.$post(api.zhicheng.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.zhichenglist = res.data.list
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+
+      },
+      initXueyuan() {
+        const params = {}
+        params.page = 1
+        params.pagesize = 10
+        this.$post(api.xueyuan.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.xueyuanlist = res.data.list
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
       addSubmit() {
         this.dialogVisible = true;
         this.headerTitle = "添加教师信息";
@@ -447,7 +448,8 @@
         this.pagesize = Math.floor(this.$route.query.pagesize);
         delete search.pagesize;
       }
-
+      this.initZhicheng()
+      this.initXueyuan()
       this.loadList(1);
     },
     mounted() {},

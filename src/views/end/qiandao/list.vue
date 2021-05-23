@@ -87,20 +87,8 @@
         list: [],
         search: {
           kechengbianhao: "",
-
           kechengmingcheng: "",
-
           kechengleixing: "",
-
-          kaishishijian_start: "",
-          kaishishijian_end: "",
-
-          jieshushijian_start: "",
-          jieshushijian_end: "",
-
-          qiandaoshijian_start: "",
-          qiandaoshijian_end: "",
-
           qiandaoren: "",
         },
         total: {},
@@ -130,6 +118,7 @@
         this.page = page;
         // 筛选条件
         var filter = extend(true, {}, this.search, {
+          faburen: localStorage.getItem("username"),
           page: page + "",
           pagesize: this.pagesize + "",
         });

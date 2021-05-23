@@ -3,7 +3,7 @@
     <div class="courseType">
       <span class="title">课程类型：</span>
       <span v-for="m in mapkechengleixing2" :key="m.id" v-html="m.kechengleixing"
-        @click="selectRadio('kechengleixing', m.kechengleixing)"></span>
+        @click="selectRadio('kechengleixing', m.id)"></span>
     </div>
     <div class="course">
       <el-card class="box-card" v-for="o in kechenglist" :key="o.id">

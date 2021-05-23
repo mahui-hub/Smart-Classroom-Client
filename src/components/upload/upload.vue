@@ -1,6 +1,6 @@
 <template>
     <el-upload v-loading="loading" class="upload-file" element-loading-text="上传中" drag action="https://127.0.0.1"
-        :before-upload="beforeUpload" :multiple="multiple" :show-file-list="true">
+        :before-upload="beforeUpload" :multiple="multiple" :show-file-list="false">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__text success" v-if="value!=''"><i class="el-icon-success"></i>已上传</div>
@@ -8,7 +8,6 @@
 </template>
 <style type="text/scss" lang="scss">
     .upload-file{
-
     .success{
         color: #108210!important;
         font-size: 18px!important;
@@ -19,7 +18,7 @@
     import api from "@/api";
 
     export default {
-        name: "e-upload-file",
+        name: "e-upload",
         data() {
             return {
                 loading: false
@@ -48,7 +47,7 @@
             }
         },
         created() {
-            console.log(this.value)
+
         },
         mounted() {},
         destroyed() {}

@@ -1,17 +1,5 @@
 import store from "@/store";
-// {
-//   path: "wentisousuoadd",
-//   name: "AdminwentisousuoAdd",
-//   component: () => import("@/views/end/wentisousuo/add"),
-//   meta: { title: "添加问题搜索", authLogin: true },
-// },
-// {
-//   path: "wentisousuoupdt",
-//   name: "AdminwentisousuoUpdt",
-//   props: (route) => ({ id: route.query.id }),
-//   component: () => import("@/views/end/wentisousuo/updt"),
-//   meta: { title: "编辑问题搜索", authLogin: true },
-// },
+
 export default [{
     path: "qiangdawentiupdt",
     name: "AdminqiangdawentiUpdt",
@@ -33,23 +21,6 @@ export default [{
       authLogin: true
     },
   },
-  // {
-  //   path: "qiangdawenti_faburen",
-  //   name: "AdminqiangdawentiListfaburen",
-  //   component: () => import("@/views/end/qiangdawenti/list-faburen"),
-  //   meta: {
-  //     title: "抢答问题列表",
-  //     authLogin: true
-  //   },
-  // },
-
-  // {
-  //   path: "qiangdawentiadd",
-  //   name: "AdminqiangdawentiAdd",
-  //   component: () => import("@/views/end/qiangdawenti/add"),
-  //   meta: { title: "添加抢答问题", authLogin: true },
-  // },
-
   {
     path: "qiangdawenti_qiangdaren",
     name: "AdminqiangdawentiListqiangdaren",
@@ -99,34 +70,7 @@ export default [{
       authLogin: true
     },
   },
-  // {
-  //   path: "pingyuewenti_faburen",
-  //   name: "AdminpingyuewentiListfaburen",
-  //   component: () => import("@/views/end/pingyuewenti/list-faburen"),
-  //   meta: {
-  //     title: "评阅问题列表",
-  //     authLogin: true
-  //   },
-  // },
 
-  // {
-  //   path: "pingyuewenti_pingyueren",
-  //   name: "AdminpingyuewentiListpingyueren",
-  //   component: () => import("@/views/end/pingyuewenti/list-pingyueren"),
-  //   meta: {
-  //     title: "评阅问题列表",
-  //     authLogin: true
-  //   },
-  // },
-  // {
-  //   path: "pingyuewentiadd",
-  //   name: "AdminpingyuewentiAdd",
-  //   component: () => import("@/views/end/pingyuewenti/add"),
-  //   meta: {
-  //     title: "添加评阅问题",
-  //     authLogin: true
-  //   },
-  // },
   {
     path: "pingyuewentiupdt",
     name: "AdminpingyuewentiUpdt",
@@ -168,21 +112,6 @@ export default [{
     },
   },
 
-  // {
-  //   path: "chengji_tianjiaren",
-  //   name: "AdminchengjiListtianjiaren",
-  //   component: () => import("@/views/end/chengji/list-tianjiaren"),
-  //   meta: { title: "成绩列表", authLogin: true },
-  // },
-  // {
-  //   path: "chengjiadd",
-  //   name: "AdminchengjiAdd",
-  //   component: () => import("@/views/end/chengji/add"),
-  //   meta: {
-  //     title: "添加成绩",
-  //     authLogin: true
-  //   },
-  // },
   {
     path: "chengjiupdt",
     name: "AdminchengjiUpdt",
@@ -228,15 +157,6 @@ export default [{
     },
   },
 
-  // {
-  //   path: "xueshenghupingadd",
-  //   name: "AdminxueshenghupingAdd",
-  //   component: () => import("@/views/end/xueshenghuping/add"),
-  //   meta: {
-  //     title: "添加学生互评",
-  //     authLogin: true
-  //   },
-  // },
   {
     path: "xueshenghupingupdt",
     name: "AdminxueshenghupingUpdt",
@@ -310,6 +230,24 @@ export default [{
     component: () => import("@/views/end/wentisousuo/detail"),
     meta: {
       title: "问题搜索详情"
+    },
+  },
+  {
+    path: "xueyuan",
+    name: "AdminxueyanList",
+    component: () => import("@/views/end/xueyuan/index"),
+    meta: {
+      title: "学院列表",
+      authLogin: true
+    },
+  },
+  {
+    path: "zhicheng",
+    name: "AdminzhichenList",
+    component: () => import("@/views/end/zhicheng/index"),
+    meta: {
+      title: "职称列表",
+      authLogin: true
     },
   },
   {
@@ -1102,6 +1040,15 @@ export default [{
     component: () => import("@/views/end/ziyuan/index"),
     meta: {
       title: "资源列表",
+      authLogin: true
+    },
+  },
+  {
+    path: "kechengziyuan",
+    name: "AdminkechengziyuanList",
+    component: () => import("@/views/end/kechengziyuan/index"),
+    meta: {
+      title: "课程资源管理",
       authLogin: true
     },
   },

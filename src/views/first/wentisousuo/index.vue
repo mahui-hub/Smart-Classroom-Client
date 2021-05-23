@@ -79,9 +79,7 @@
                   {{ row.qqhao }}
                 </span></template>
             </el-table-column>
-            <el-table-column prop="shouji" label="手机" align="center">
-            </el-table-column>
-            <el-table-column prop="suojiaobanji" label="所教班级" align="center">
+            <el-table-column prop="shouji" label="联系电话" align="center">
             </el-table-column>
           </el-table>
         </div>

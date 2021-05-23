@@ -43,42 +43,18 @@
         </div>
         <el-dialog title="考试结果" :visible.sync="dialogVisible" size="mini">
             <div class="form-database-form">
-                <div v-if="fenshu<60">
-                    <div>
-                        <div>
-                            <span class="title">您的等级为不合格，不要伤心哦!请再接再厉</span>
-                        </div>
-                        <div>
-                            <span>您的得分为</span>
-                            <span> {{ fenshu }} </span>
-                        </div>
-                    </div>
+                <div class="deji">
+                    <span v-if="fenshu<60">您的等级为不合格，不要伤心哦!请再接再厉</span>
+                    <span v-if="fenshu>=60&&fenshu<85">您的等级为良好，请继续努力哦</span>
+                    <span v-if="fenshu>=85">您的等级为优秀，不要骄傲哦</span>
                 </div>
-                <div v-if="fenshu>60&&fenshu<85">
-                    <div>
-                        <div>
-                            <span class="title">您的等级为良好，请继续努力哦</span>
-                        </div>
-                        <div>
-                            <span>您的得分为</span>
-                            <span> {{ fenshu }} </span>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="fenshu>85">
-                    <div>
-                        <div>
-                            <span class="title">您的等级为优秀，不要骄傲哦</span>
-                        </div>
-                        <div>
-                            <span>您的得分为</span>
-                            <span> {{ fenshu }} </span>
-                        </div>
-                    </div>
+                <div class="df">
+                    <span>您的得分为</span>
+                    <span> {{ fenshu }} </span>
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
                 <el-button type="primary" @click="submit">确 定</el-button>
             </span>
         </el-dialog>
@@ -171,7 +147,7 @@
                             each(result, (i, o) => {
                                 delete o.paper;
                             });
-                            this.$emit("submit", result, endtime - this.time);
+                            this.$emit("submit", result, endtime - this.time, this.tikuType);
                         } else {
                             var endtime = Math.floor(new Date().getTime() / 1000);
                             var result = extend(true, [], this.paperList);
@@ -190,13 +166,11 @@
                     });
             },
             defen() {
-
                 const params = {};
                 params.tikuid = this.tikuid;
                 params.kaoshiren = localStorage.getItem("username");
                 params.page = 1;
                 params.pagesize = 10;
-
                 this.$post(api.kaoshijieguo.list, params)
                     .then((res) => {
                         if (res.code == api.code.OK) {
@@ -204,7 +178,9 @@
                             this.fenshu = (list[0].danxuantidefen + list[0].duoxuantidefen + list[0]
                                 .tiankongtidefen) / list[0].zongfen * 100;
                             console.log(this.fenshu);
-                            this.dialogVisible = true;
+                            this.$nextTick(() => {
+                                this.dialogVisible = true;
+                            })
                         } else {
                             this.$message.error(res.msg);
                         }
@@ -293,30 +269,37 @@
     };
 </script>
 
-<style type="text/scss" lang="scss" scoped>
+<style lang="scss" scoped>
     .success-daan {
-  padding: 10px 0;
-  .form-database-form {
-      .el-dialog__body{
-     color: aqua;
-    font-size: 70px;
-    font-weight: 600;
-    text-align: center;
-    span{
-        color: red;
+        padding: 10px 0;
     }
-      }
-  
-  }
-}
 
-.jieshi {
-  padding: 10px;
-  background: #f2f2f2;
-}
-.ksTime {
-  padding: 8px;
-  background: #740909;
-  color: #ffffff;
-}
+    .el-dialog__body {
+        .form-database-form {
+            font-size: 30px;
+            font-weight: 600;
+            text-align: center;
+
+            .deji {
+                color: aqua;
+            }
+
+            .df {
+                color: red;
+            }
+
+        }
+
+    }
+
+    .jieshi {
+        padding: 10px;
+        background: #f2f2f2;
+    }
+
+    .ksTime {
+        padding: 8px;
+        background: #740909;
+        color: #ffffff;
+    }
 </style>

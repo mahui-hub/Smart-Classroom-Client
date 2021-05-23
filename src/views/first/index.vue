@@ -163,10 +163,14 @@
         </div>
       </el-card>
     </div>
+    <div class="loginPage-box w">
+      <div id="myChart" style="width: 100%; height: 400px;" ref="myChart"></div>
+    </div>
   </div>
 </template>
 
 <script>
+  let echarts = require('echarts');
   import api from "@/api";
   import {
     extend
@@ -178,6 +182,7 @@
         nowDate: '',
         nowTime: "",
         timer: "",
+        tiziEcharts: [],
         // updateTime: "1",
         token: "",
         activeName: "first",
@@ -201,6 +206,8 @@
           jiaoshiid: "",
         },
         mapkechengleixing2: [],
+        tieziEcharts: [],
+
       };
     },
     created() {
@@ -210,12 +217,62 @@
       this.token = localStorage.getItem("token");
       this.panduan();
       this.nowTimes();
-
     },
     mounted() {
       this.shishi()
+      this.getchart()
     },
     methods: {
+      getchart() {
+        this.$post("tiezi_list.do").then(result => {
+          this.tieziEcharts = result.data.tieziEcharts
+          this.$nextTick(function () {
+            //方法里面第一步// 基于准备好的dom，初始化echarts实例
+            let myChart = echarts.init(document.getElementById("myChart"));
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption({
+              title: {
+                text: '帖子数据资源分析',
+                left: 'right'
+              },
+              dataset: {
+                source: this.tieziEcharts
+              },
+              grid: {
+                containLabel: true
+              },
+              xAxis: {
+                name: 'amount'
+              },
+              yAxis: {
+                type: 'category',
+              },
+              visualMap: {
+                orient: 'horizontal',
+                left: 'center',
+                min: 10,
+                max: 100,
+                text: ['High Score', 'Low Score'],
+                // Map the score column to color
+                dimension: 0,
+                inRange: {
+                  color: ['#65B581', '#FFCE34', '#FD665F']
+                }
+              },
+              series: [{
+                type: 'bar',
+                encode: {
+                  // Map the "amount" column to X axis.
+                  x: 'amount',
+                  // Map the "product" column to Y axis
+                  y: 'fenlei'
+                }
+              }]
+
+            })
+          })
+        })
+      },
       shishi() {
         var _this = this;
         this.timer = setInterval(function () {

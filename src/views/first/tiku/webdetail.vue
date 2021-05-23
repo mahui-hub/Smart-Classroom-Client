@@ -87,7 +87,7 @@
     },
     computed: {},
     methods: {
-      postPaper(paperList, time) {
+      postPaper(paperList, time, tikuType) {
         if (this.loading) return;
         this.loading = true;
         this.$post("/savePoper", {
@@ -98,8 +98,13 @@
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
-              this.$message.success("评价课程完成");
-              this.$refs.child.defen()
+              if (tikuType == "测验题库") {
+                this.$refs.child.defen()
+                this.$message.success("考试完成");
+
+              } else {
+                this.$message.success("评价课程完成");
+              }
               // this.$router.go(-1)
             } else {
               this.$message.error(res.msg);

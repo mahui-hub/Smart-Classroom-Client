@@ -22,8 +22,8 @@
 
           <el-table-column label="操作" align="center">
             <template slot-scope="{ row }">
-              <el-button @click="xingxi(row)" type="text">
-                答题
+              <el-button @click="xingxi(row)" type="text" v-if="row.pingjiarens.indexOf(username)==-1">
+                评价课程
               </el-button>
             </template>
           </el-table-column>
@@ -69,6 +69,7 @@
         total: {},
         id: "",
         array: [],
+        username: ""
       };
     },
     watch: {},
@@ -125,6 +126,7 @@
         this.search.kechengid = id;
         // 筛选条件
         var filter = extend(true, {}, this.search, {
+          tikutype: "评价题库",
           page: page + "",
           pagesize: this.pagesize + "",
         });
@@ -132,6 +134,7 @@
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
+              this.list = []
               this.totalCount = res.data.totalCount;
               // extend(this, res.data);
               var array1 = res.data.list;
@@ -180,7 +183,7 @@
         delete search.pagesize;
       }
       this.initKecheng(1);
-      // this.loadList(this.page);
+      this.username = localStorage.getItem("username")
     },
     mounted() {},
     destroyed() {},

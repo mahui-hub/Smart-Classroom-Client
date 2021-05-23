@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column label="成绩比例" align="center">
         <el-table-column label="考勤" align="center">
-          <template slot-scope="{ row }"> {{ row.kaoqinchengji }} </template>
+          <template slot-scope="{ row }"> {{ row.qimochengji }} </template>
         </el-table-column>
         <el-table-column label="学生互评" align="center">
           <template slot-scope="{ row }">
@@ -100,11 +100,11 @@
       </el-pagination>
     </div>
 
-    <div>
+    <!-- <div>
       总分总和: {{ total.sum_zongfen }} 总分平均值:
       {{ total.avg_zongfen }} 总分最小值: {{ total.min_zongfen }} 总分最大值:
       {{ total.max_zongfen }}
-    </div>
+    </div> -->
   </div>
 </template>
 <style type="text/scss" scoped lang="scss">
@@ -130,12 +130,10 @@
         list: [],
         search: {
           xuehao: "",
-
           xingming: "",
-
           banji: "",
-
           zhuanye: "",
+          kechengid: ""
         },
         total: {},
         page: 1, // 当前页
@@ -149,7 +147,7 @@
     watch: {},
     computed: {},
     methods: {
-      initKecheng() {
+      initKecheng(page) {
         // 防止重新点加载列表
         // 筛选条件
         var filter = extend(true, {}, {
@@ -161,6 +159,11 @@
           .then((res) => {
             if (res.code == api.code.OK) {
               this.kechengmingchengList = res.data.list;
+              var id = ""
+              this.kechengmingchengList.map(function (item) {
+                id = item.id
+              })
+              this.loadList(1, id)
             } else {
               this.$message.error(res.msg);
             }
@@ -170,6 +173,7 @@
             this.$message.error(err.message);
           });
       },
+
       kechengFormatter(row) {
         var name = "";
         this.kechengmingchengList.forEach(function (item) {
@@ -188,30 +192,37 @@
       },
       checkIssh,
 
-      loadList(page) {
+      loadList(page, id) {
         // 防止重新点加载列表
-        if (this.loading) return;
-        this.loading = true;
         this.page = page;
         // 筛选条件
+        if (localStorage.getItem("role") == "教师") {
+          this.search.kechengid = id
+        }
         var filter = extend(true, {}, this.search, {
           page: page + "",
           pagesize: this.pagesize + "",
         });
-        var diff = objectDiff.diff(filter, this.$route.query);
-        if (diff.changed != "equal") {
-          // 筛选的条件不一致则更新链接
-          this.$router.push({
-            // 更新query
-            path: this.$route.path,
-            query: filter,
-          });
-        }
+
         this.$post(api.chengji.list, filter)
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
-              extend(this, res.data);
+              this.list = []
+              this.totalCount = res.data.totalCount;
+              var array1 = res.data.list;
+              var array = [];
+
+              if (this.totalCount != 0) {
+                array1.forEach((item) => {
+                  array.push(item);
+                });
+                for (var i in array) {
+                  this.list.push(array[i]);
+                }
+                // console.log(this.list)
+              }
+              this.totalCount = this.list.length
             } else {
               this.$message.error(res.msg);
             }
@@ -270,7 +281,7 @@
         delete search.pagesize;
       }
       this.initKecheng()
-      this.loadList(1);
+      // this.loadList(1);
     },
     mounted() {},
     destroyed() {},

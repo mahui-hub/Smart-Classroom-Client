@@ -258,6 +258,7 @@
           page: page + "",
           pagesize: this.pagesize + "",
         });
+        this.list = []
         this.$post(api.wentiqiangda.weblist, filter)
           .then((res) => {
             this.loading = false;
@@ -266,7 +267,6 @@
               // extend(this, res.data);
               var array1 = res.data.list;
               var array = [];
-              this.list = []
               array1.forEach((item) => {
                 array.push(item);
               });

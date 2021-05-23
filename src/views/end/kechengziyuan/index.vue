@@ -1,70 +1,57 @@
 <template>
-    <div class="app">
-        <e-module-widget-title title="课件资源">
-            <el-row :gutter="20">
-                <!-- 数据分析 -->
-                <el-col :span="8">
-                    <div id="myChart" style="width: 100%; height: 400px;" ref="myChart"></div>
-                </el-col>
-                <el-col :span="16">
-                    <div class="form-search">
-                        <el-form :inline="true" size="mini" :label-suffix="':'">
-                            <el-form-item label="课程名称">
-                                <el-input v-model="search.kechengmingcheng"></el-input>
-                            </el-form-item>
-                            <el-form-item label="资源名称">
-                                <el-input v-model="search.ziyuanname"></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="addSubmit" icon="el-icon-plus">添加课件资源</el-button>
-                            </el-form-item>
-                        </el-form>
-                    </div>
+    <div class="v-list" v-loading="loading" element-loading-text="加载中">
+        <!-- 搜索 -->
+        <div class="form-search">
+            <el-form :inline="true" size="mini" :label-suffix="':'">
+                <el-form-item label="课程名称">
+                    <el-input v-model="search.kechengmingcheng"></el-input>
+                </el-form-item>
+                <el-form-item label="资源名称">
+                    <el-input v-model="search.ziyuanname"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="addSubmit" icon="el-icon-plus">添加课件资源</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
 
-                    <div class="list-table">
-                        <el-table border :data="list" style="width: 100%" highlight-current-row stripe>
-                            <el-table-column type="index" align="center"></el-table-column>
-                            <el-table-column type="expand">
-                                <template slot-scope="props">
-                                    <el-form label-position="left" class="demo-table-expand">
-                                        <el-form-item label="资源名称">
-                                            <span>{{ props.row.ziyuanname }}</span>
-                                        </el-form-item>
-                                        <el-form-item label="课件">
-                                            <span>
-                                                <e-file-list v-model="props.row.fujian"></e-file-list>
-                                            </span>
-                                        </el-form-item>
-                                    </el-form>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="课程名称" align="center" prop="kechengmingcheng">
-                            </el-table-column>
-                            <el-table-column label="发布人" align="center" prop="faburen">
-                            </el-table-column>
-                            <el-table-column label="添加时间" align="center" prop="addtime">
-                            </el-table-column>
-                            <el-table-column label="操作" align="center">
-                                <template slot-scope="{ row }">
-                                    <el-button @click="edit(row)" type="text">编辑</el-button>
-                                    <el-button type="text" @click="deleteItem(row)">删除 </el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </div>
-
-                    <div class="e-pages" style="margin-top: 10px;text-align: center">
-                        <el-pagination @current-change="loadList" :current-page="page" :page-size="pagesize"
-                            @size-change="sizeChange" layout="total, sizes, prev, pager, next, jumper"
-                            :total="totalCount">
-                        </el-pagination>
-                    </div>
-                </el-col>
-            </el-row>
-        </e-module-widget-title>
+        <el-table border :data="list" style="width: 100%" highlight-current-row stripe>
+            <el-table-column type="index" align="center"></el-table-column>
+            <el-table-column type="expand">
+                <template slot-scope="props">
+                    <el-form label-position="left" class="demo-table-expand">
+                        <el-form-item label="资源名称">
+                            <span>{{ props.row.ziyuanname }}</span>
+                        </el-form-item>
+                        <el-form-item label="课件">
+                            <span>
+                                <e-file-list v-model="props.row.fujian"></e-file-list>
+                            </span>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+            <el-table-column label="课程名称" align="center" prop="kechengmingcheng">
+            </el-table-column>
+            <el-table-column label="发布人" align="center" prop="faburen">
+            </el-table-column>
+            <el-table-column label="添加时间" align="center" prop="addtime">
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template slot-scope="{ row }">
+                    <el-button @click="edit(row)" type="text">编辑</el-button>
+                    <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="e-pages" style="margin-top: 10px;text-align: center">
+            <el-pagination @current-change="loadList" :current-page="page" :page-size="pagesize"
+                @size-change="sizeChange" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+            </el-pagination>
+        </div>
         <el-dialog title="添加课件资源" :visible.sync="dialogVisible" size="mini">
             <div class="form-database-form">
                 <el-form :model="form" ref="formModel" :rules="rules" label-width="100px">
@@ -120,9 +107,8 @@
         </el-dialog>
     </div>
 </template>
+
 <script>
-    // import echarts from 'echarts'
-    let echarts = require('echarts');
     import api from "@/api";
     import {
         remove,
@@ -136,7 +122,6 @@
     export default {
         data() {
             return {
-                echartList: [],
                 dialogVisible1: false,
                 dialogVisible: false,
                 loading: false,
@@ -175,43 +160,6 @@
             };
         },
         methods: {
-            getchart() {
-                this.$post("kechengziyuan_echart.do").then(result => {
-                    this.echartList = result.data.echartList
-                    this.$nextTick(function () {
-                        //方法里面第一步// 基于准备好的dom，初始化echarts实例
-                        let myChart = echarts.init(document.getElementById("myChart"));
-                        // 使用刚指定的配置项和数据显示图表。
-                        myChart.setOption({
-                            title: {
-                                text: '课件数据资源统计',
-                                left: 'right'
-                            },
-                            tooltip: {
-                                trigger: 'item'
-                            },
-                            legend: {
-                                orient: 'vertical',
-                                left: 'left',
-                            },
-                            series: [{
-                                type: 'pie',
-                                radius: '50%',
-                                data: this.echartList,
-                                emphasis: {
-                                    itemStyle: {
-                                        shadowBlur: 10,
-                                        shadowOffsetX: 0,
-                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
-                                }
-                            }]
-                        })
-                    })
-                }).catch(result => {
-
-                })
-            },
             handleChange(val) {
                 var a = ""
                 this.kechenglist.map(function (item) {
@@ -420,13 +368,9 @@
                 this.pagesize = Math.floor(this.$route.query.pagesize);
                 delete search.pagesize;
             }
-            this.getchart()
             this.initKengcheng();
             this.loadList(1);
         },
-        mounted() {
-            this.getchart()
-        }
     };
 </script>
 

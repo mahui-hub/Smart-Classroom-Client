@@ -36,7 +36,7 @@
       </el-table-column>
 
       <el-table-column label="总得分" align="center">
-        <template slot-scope="{ row }"> {{ row.zongdefen }} </template>
+        <template slot-scope="{ row }"> {{ row.danxuantidefen+row.duoxuantidefen}} </template>
       </el-table-column>
 
       <el-table-column label="操作" align="center">
@@ -66,19 +66,19 @@
       </el-pagination>
     </div>
 
-    <div>
+    <!-- <div>
       总得分总和: {{ total.sum_zongdefen }} 总得分平均值:
       {{ total.avg_zongdefen }} 总得分最小值:
       {{ total.min_zongdefen }} 总得分最大值: {{ total.max_zongdefen }}
     </div>
     <div>
-      <span>得出结论：</span>
-      <!-- <span v-if="(row.duoxuantidefen+row.danxuantidefen)/total.sum_zongdefen">该教师教学评价为及格</span> -->
-      <span v-if="0.85 < total.sum_zongdefen / 20 <= 1">该教师教学评价为优秀</span>
+      <span>得出结论：</span> -->
+    <!-- <span v-if="(row.duoxuantidefen+row.danxuantidefen)/total.sum_zongdefen">该教师教学评价为及格</span> -->
+    <!-- <span v-if="0.85 < total.sum_zongdefen / 20 <= 1">该教师教学评价为优秀</span>
       <span v-if="0.75 < total.sum_zongdefen / 20 <= 0.85">该教师教学评价为良好</span>
       <span v-if="0.6 < total.sum_zongdefen / 20 <= 0.75">该教师教学评价为合格</span>
       <span v-if="total.sum_zongdefen / 20 < 0.6">该教师教学评价为不合格</span>
-    </div>
+    </div> -->
   </div>
 </template>
 <style type="text/scss" scoped lang="scss"></style>
@@ -144,6 +144,7 @@
             name = item.kechengmingcheng;
           }
         });
+        console.log(name)
         return name;
       },
       searchSubmit() {
