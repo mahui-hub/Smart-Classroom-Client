@@ -19,7 +19,7 @@
     </div>
 
     <el-table border :data="list" stripe highlight-current-row>
-      <el-table-column type="index" label="#"></el-table-column>
+      <el-table-column type="index" label=" "></el-table-column>
       <!-- 序号 -->
 
       <el-table-column label="学号" align="center">

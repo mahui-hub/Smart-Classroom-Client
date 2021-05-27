@@ -106,6 +106,7 @@
                 },
                 currentTime: new Date(),
                 username: '',
+                array: []
             }
         },
         watch: {},
@@ -211,6 +212,7 @@
                     page: 1,
                     pagesize: 10,
                 });
+                this.array = []
                 this.$post(api.kecheng.list, filter)
                     .then((res) => {
                         if (res.code == api.code.OK) {
@@ -243,16 +245,13 @@
                         // this.list = res.data.list
                         this.totalCount = res.data.totalCount;
                         var array1 = res.data.list;
-                        var array = [];
                         if (this.totalCount != 0) {
                             array1.forEach((item) => {
-                                array.push(item);
-                            });
-                            for (var i in array) {
-                                this.list.push(array[i]);
-                            }
-                            console.log(this.list)
+                                this.array.push(item);
+                            })
                         }
+                        this.list = this.array;
+                        this.totalCount = this.list.length
                         this.qiandaorenlist = res.data.qiandaorenlist
                     } else {
                         this.$message.error(res.msg);

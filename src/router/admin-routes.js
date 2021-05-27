@@ -1023,32 +1023,12 @@ export default [{
       title: "签到详情"
     },
   },
-
-
-  // {
-  //   path: "pingbici",
-  //   name: "AdminpingbiciList",
-  //   component: () => import("@/views/end/pingbici/index"),
-  //   meta: {
-  //     title: "屏蔽词列表",
-  //     authLogin: true
-  //   },
-  // },
   {
     path: "ziyuan",
     name: "AdminziyuanList",
     component: () => import("@/views/end/ziyuan/index"),
     meta: {
       title: "资源列表",
-      authLogin: true
-    },
-  },
-  {
-    path: "kechengziyuan",
-    name: "AdminkechengziyuanList",
-    component: () => import("@/views/end/kechengziyuan/index"),
-    meta: {
-      title: "课程资源管理",
       authLogin: true
     },
   },

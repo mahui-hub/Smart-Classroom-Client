@@ -18,7 +18,7 @@
           <!-- 序号 -->
           <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
           </el-table-column>
-          <el-table-column label="问题内容" align="center">
+          <el-table-column label="问题内容" align="center" show-overflow-tooltip>
             <template slot-scope="{ row }"> {{ row.biaoti }} </template>
           </el-table-column>
           <el-table-column label="抢答人数" align="center">

@@ -134,21 +134,12 @@
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
-              this.list = []
-              this.totalCount = res.data.totalCount;
-              // extend(this, res.data);
               var array1 = res.data.list;
-              var array = [];
               array1.forEach((item) => {
-                array.push(item);
+                this.array.push(item);
               });
-              if (this.totalCount != 0) {
-                for (var i in array) {
-                  this.list.push(array[i]);
-                }
-              }
+              this.list = this.array;
               this.totalCount = this.list.length
-              // console.log(this.list)
             } else {
               this.$message.error(res.msg);
             }

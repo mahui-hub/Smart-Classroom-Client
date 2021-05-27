@@ -105,7 +105,7 @@ export default [{
     }, ],
   },
   {
-    label: "论坛管理",
+    label: "论坛信息管理",
     to: "",
     children: [{
         label: "帖子类型管理",
@@ -127,10 +127,10 @@ export default [{
     ],
   },
   {
-    label: "成绩管理",
+    label: "成绩信息管理",
     to: "",
     children: [{
-      label: "成绩查询",
+      label: "成绩信息查询",
       to: "/end/chengji",
     }, ],
   },

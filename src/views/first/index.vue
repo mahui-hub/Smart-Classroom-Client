@@ -13,7 +13,7 @@
                 <span v-if="role != '管理员'">欢迎您， <b>{{ $session.xingming }}</b></span>
                 <span v-if="role == '管理员'">欢迎您， <b>{{ $session.cx }}</b></span>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '教师'"
-                  @click.native="$router.push('/end/jiaoshiupdt')">修改资料</el-button>
+                  @click.native="edit($session)">修改资料</el-button>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '管理员'"
                   @click.native="$router.push('/end/mod')">修改密码</el-button>
                 <el-button style="float: right; padding: 3px 0" type="text" v-if="role == '学生'"
@@ -91,7 +91,7 @@
                 </div>
                 <div class="box">
                   <span class="boxtitle">联系电话：</span>
-                  <span>{{ $session.lianxidianhua }}</span>
+                  <span>{{ $session.shouji }}</span>
                 </div>
               </div>
             </el-card>
@@ -100,14 +100,9 @@
         <el-col :span="17">
           <el-row :gutter="10">
             <el-col :span="12">
-              <el-carousel indicator-position="outside" height="300px">
+              <el-carousel indicator-position="outside" :height="imgHeight+'px'">
                 <el-carousel-item v-for="item in bhtList" :key="item.id">
-                  <div style="background-size:cover;" @click="$goto(item.url)" :style="{
-                      'background-image': 'url(' + item.image + ')',
-                      'background-size':'50% 50% no-repeat',
-                      width: '100%',
-                      height: '300px',
-                     }"></div>
+                  <img :src="item.image" alt="轮播图" ref="image" style="height:100%" @click="dianji(item.url)">
                 </el-carousel-item>
               </el-carousel>
             </el-col>
@@ -166,24 +161,72 @@
     <div class="loginPage-box w">
       <div id="myChart" style="width: 100%; height: 400px;" ref="myChart"></div>
     </div>
+    <el-dialog title="修改资料" :visible.sync="dialogVisible" size="mini">
+      <div class="form-database-form">
+        <el-form :model="form" ref="formModel" label-width="100px">
+          <el-form-item label="教师工号" prop="gonghao" required>
+            <el-input placeholder="请输入工号" disabled v-model="form.gonghao" />
+          </el-form-item>
+
+          <el-form-item label="教师姓名" prop="xingming">
+            <el-input placeholder="请输入姓名" v-model="form.xingming" />
+          </el-form-item>
+
+          <el-form-item label="性别" prop="xingbie">
+            <el-select v-model="form.xingbie" style="width:100%;">
+              <el-option label="男" value="男"></el-option>
+              <el-option label="女" value="女"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所属学院" prop="xueyuan" required>
+            <el-select v-model="form.xueyuan" style="width:100%;">
+              <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="教师职称" prop="zhicheng" required>
+            <el-select v-model="form.zhicheng" filterable style="width:100%;">
+              <el-option :value="v.zhicheng" :label="v.zhicheng" v-for="v in zhichenglist" :key="v.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="QQ号" prop="qqhao" required>
+            <el-input placeholder="请输入QQ号" v-model="form.qqhao" />
+          </el-form-item>
+
+          <el-form-item label="联系方式" prop="shouji">
+            <el-input placeholder="请输入联系方式" v-model="form.shouji" />
+          </el-form-item>
+
+          <el-form-item label="教师简介" prop="xiangqing">
+            <el-input v-model="form.xiangqing" type="textarea" :rows="3"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="xinxisubmit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   let echarts = require('echarts');
   import api from "@/api";
+  import rule from "@/utils/rule";
   import {
     extend
   } from "@/utils/extend";
   export default {
     data() {
       return {
+        imgHeight: "",
+        dialogVisible: false,
         week: '',
         nowDate: '',
         nowTime: "",
         timer: "",
         tiziEcharts: [],
-        // updateTime: "1",
         token: "",
         activeName: "first",
         role: "",
@@ -207,6 +250,21 @@
         },
         mapkechengleixing2: [],
         tieziEcharts: [],
+        form: {
+          xueyuan: "",
+          zhicheng: "",
+          gonghao: "",
+          xingming: "",
+          xingbie: "",
+          qqhao: "",
+          shouji: "",
+          suojiaobanji: [],
+          xiangqing: "",
+        },
+        banjiList: [],
+        zhichenglist: [],
+        xueyuanlist: [],
+        rule,
 
       };
     },
@@ -217,12 +275,85 @@
       this.token = localStorage.getItem("token");
       this.panduan();
       this.nowTimes();
+      this.initZhicheng()
+      this.initXueyuan()
+      // 监听窗口变化，使得轮播图高度自适应图片高度
+      window.addEventListener("resize", () => {
+        this.imgHeight = this.$refs.image[0].height;
+      });
     },
     mounted() {
       this.shishi()
       this.getchart()
     },
     methods: {
+      dianji(url) {
+        this.$router.push(url)
+      },
+      edit(row) {
+        this.form = row
+        this.dialogVisible = true
+      },
+      initZhicheng() {
+        const params = {}
+        params.page = 1
+        params.pagesize = 10
+        this.$post(api.zhicheng.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.zhichenglist = res.data.list
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+
+      },
+      initXueyuan() {
+        const params = {}
+        params.page = 1
+        params.pagesize = 10
+        this.$post(api.xueyuan.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.xueyuanlist = res.data.list
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
+      xinxisubmit() {
+        this.$refs.formModel
+          .validate()
+          .then((res) => {
+            var form = this.form;
+            this.$post(api.jiaoshi.update, form)
+              .then((res) => {
+                this.loading = false;
+                if (res.code == api.code.OK) {
+                  this.$message.success("修改信息成功");
+                  this.$refs.formModel.resetFields();
+                  this.$router.go(0)
+                } else {
+                  this.$message.error(res.msg);
+                }
+              })
+              .catch((err) => {
+                this.loading = false;
+                this.$message.error(err.message);
+              });
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      },
       getchart() {
         this.$post("tiezi_list.do").then(result => {
           this.tieziEcharts = result.data.tieziEcharts
@@ -256,7 +387,7 @@
                 // Map the score column to color
                 dimension: 0,
                 inRange: {
-                  color: ['#65B581', '#FFCE34', '#FD665F']
+                  color: ['#65B581', '#FFCE34', '#FD665F', ]
                 }
               },
               series: [{
@@ -467,10 +598,6 @@
 
     .el-card__body {
       padding: 0 20px;
-    }
-
-    .el-form-item--small.el-form-item {
-      margin-bottom: 0px;
     }
 
     .card-content {

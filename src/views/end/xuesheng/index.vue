@@ -3,19 +3,9 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :inline="true" size="mini" :model="search">
-        <!-- <el-form-item label="学号">
-          <el-input v-model="search.xuehao"></el-input>
-        </el-form-item> -->
         <el-form-item label="姓名">
           <el-input v-model="search.xingming"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="性别">
-          <el-select v-model="search.xingbie">
-            <el-option label="请选择" value=""></el-option>
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="班级">
           <el-select v-model="search.banji">
             <el-option label="请选择" value=""></el-option>
@@ -56,9 +46,9 @@
           {{ row.xingbie }}
         </template>
       </el-table-column>
-      <el-table-column label="班级名称" align="center" min-width="80">
+      <el-table-column label="学院名称" align="center" min-width="120" show-overflow-tooltip>
         <template slot-scope="{ row }">
-          {{ row.banji }}
+          {{ row.xueyuan }}
         </template>
       </el-table-column>
       <el-table-column label="专业名称" align="center" min-width="120" show-overflow-tooltip>
@@ -66,6 +56,12 @@
           {{ row.zhuanye }}
         </template>
       </el-table-column>
+      <el-table-column label="班级名称" align="center" min-width="80">
+        <template slot-scope="{ row }">
+          {{ row.banji }}
+        </template>
+      </el-table-column>
+
       <el-table-column label="联系方式" align="center">
         <template slot-scope="{ row }">
           {{ row.lianxidianhua }}
@@ -76,7 +72,7 @@
           {{ row.qqhao }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" min-width="150">
+      <el-table-column label="操作" align="center" min-width="200">
         <template slot-scope="{ row }">
           <el-button @click="addScope(row)" type="text" v-if="role != '管理员'">
             成绩添加
@@ -131,14 +127,14 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="专业名称" prop="zhuanye">
+          <!-- <el-form-item label="专业名称" prop="zhuanye">
             <el-select v-model="form.zhuanye" style="width:100%" @change="handleChange1">
               <el-option :key="m.zhuanye" v-for="m in zhuanyeList" :value="m.zhuanye" :label="m.zhuanye"></el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item label="班级名称" prop="banji">
+          </el-form-item> -->
+          <el-form-item label="班级名称" prop="banji" required>
             <el-select v-model="form.banji" style="width:100%" @change="handleChange">
-              <el-option :key="m.banjimingcheng" v-for="m in banjiList1" :value="m.banjimingcheng"
+              <el-option :key="m.banjimingcheng" v-for="m in banjiList" :value="m.banjimingcheng"
                 :label="m.banjimingcheng"></el-option>
             </el-select>
           </el-form-item>
@@ -185,15 +181,15 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="专业名称" prop="zhuanye">
+          <!-- <el-form-item label="专业名称" prop="zhuanye">
             <el-select v-model="form1.zhuanye" style="width:100%" @change="handleChange1">
               <el-option :key="m.zhuanye" v-for="m in zhuanyeList" :value="m.zhuanye" :label="m.zhuanye"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
 
-          <el-form-item label="班级名称" prop="banji">
+          <el-form-item label="班级名称" prop="banji" required>
             <el-select v-model="form1.banji" style="width:100%" @change="handleChange">
-              <el-option :key="m.banjimingcheng" v-for="m in banjiList1" :value="m.banjimingcheng"
+              <el-option :key="m.banjimingcheng" v-for="m in banjiList" :value="m.banjimingcheng"
                 :label="m.banjimingcheng"></el-option>
             </el-select>
           </el-form-item>
@@ -286,7 +282,7 @@
           </el-form-item>
 
           <el-form-item label="互评分数" prop="hupingfenshu" :rules="[
-              { validator: rule.checkNumber, message: '输入一个有效数字' },
+              { required:true,validator: rule.isDecimal },
             ]">
             <el-input placeholder="请输入该同学的评价分数" v-model="form4.hupingfenshu" />
           </el-form-item>
@@ -363,11 +359,12 @@
             message: "请选择性别",
             trigger: "change"
           }],
-          lianxidianhua: [{
-              required: true,
-              message: "请填写联系方式",
-              trigger: "blur"
-            },
+          lianxidianhua: [
+            // {
+            //   required: true,
+            //   message: "请填写联系方式",
+            //   trigger: "blur"
+            // },
             {
               validator: rule.checkPhone,
               message: "请输入正确手机号码"
@@ -489,7 +486,7 @@
         suitangceshichengjiList: [],
         qiangdawentichengjiList: [],
         jiaoshipingjiachengjiList: [],
-        array: []
+        array: [],
       };
     },
 
@@ -878,8 +875,11 @@
       },
 
       searchSubmit() {
-        this.initKecheng()
-        // this.loadList(1);
+        if (localStorage.getItem('role') == '教师') {
+          this.initKecheng()
+        } else {
+          this.loadList(1);
+        }
       },
       sizeChange(e) {
         this.pagesize = e;
@@ -898,24 +898,18 @@
         this.list = []
         this.$post(api.xuesheng.list, filter)
           .then((res) => {
-
             this.loading = false;
             if (res.code == api.code.OK) {
               this.banjiList = res.data.banjiList
               this.zhuanyeList = res.data.zhuanyeList
               this.totalCount = res.data.totalCount;
               var array1 = res.data.list;
-              var array = [];
-
               if (this.totalCount != 0) {
                 array1.forEach((item) => {
-                  array.push(item);
-                });
-                for (var i in array) {
-                  this.list.push(array[i]);
-                }
-                // console.log(this.list)
+                  this.array.push(item);
+                })
               }
+              this.list = this.array;
               this.totalCount = this.list.length
             } else {
               this.$message.error(res.msg);
@@ -995,8 +989,6 @@
         this.pagesize = Math.floor(this.$route.query.pagesize);
         delete search.pagesize;
       }
-
-
       if (localStorage.getItem('role') == '教师') {
         this.initKecheng()
       } else {

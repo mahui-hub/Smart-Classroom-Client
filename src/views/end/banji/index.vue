@@ -38,11 +38,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <!-- @click="
-                $goto({ path: '/admin/banjiupdt', query: { id: row.id } })
-              " -->
           <el-button @click="edit(row)" type="text">编辑</el-button>
-
           <el-button type="text" @click="deleteItem(row)">删除 </el-button>
         </template>
       </el-table-column>
@@ -56,12 +52,12 @@
       <div class="form-database-form">
         <el-form :model="form" ref="formModel" label-width="100px" :rules="rules">
           <el-form-item label="学院名称" prop="xueyuan">
-            <el-select v-model="form.xueyuan" style="width:100%;">
+            <el-select v-model="form.xueyuan" style="width:100%;" @change="handleChange">
               <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="专业名称" prop="zhuanye">
+          <el-form-item label="专业名称" prop="zhuanye" v-if="form.xueyuan!=''">
             <el-select v-model="form.zhuanye" style="width:100%">
               <el-option v-for="m in zhuanyeList" :key="m.id" :value="m.zhuanye" :label="m.zhuanye"></el-option>
             </el-select>
@@ -152,6 +148,21 @@
           })
           .catch((err) => {
             this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
+      handleChange(val) {
+        const params = {}
+        params.xueyuan = val
+        this.$post(api.zhuanye.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.zhuanyeList = res.data.list
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
             this.$message.error(err.message);
           });
       },
@@ -321,6 +332,15 @@
       }
       this.initXueyuan()
       this.loadList(1);
+    },
+    watch: {
+      'form.xueyuan'(newVal, oldVal) {
+
+        if (newVal != oldVal && this.oper == "add") {
+          this.form.zhuanye = ""
+        }
+      },
+      deep: true
     },
     mounted() {},
     destroyed() {},

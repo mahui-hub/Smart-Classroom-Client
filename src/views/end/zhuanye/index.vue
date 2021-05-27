@@ -3,6 +3,11 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :inline="true" size="mini" :label-suffix="':'">
+        <el-form-item label="学院名称">
+          <el-select v-model="search.xueyuan" style="width:100%;" clearable>
+            <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="专业名称">
           <el-input v-model="search.zhuanye"></el-input>
         </el-form-item>
@@ -17,6 +22,9 @@
 
     <el-table border :data="list" style="width: 100%" highlight-current-row stripe>
       <el-table-column type="index" align="center"></el-table-column>
+      <el-table-column label="学院名称" align="center">
+        <template slot-scope="{ row }"> {{ row.xueyuan }} </template>
+      </el-table-column>
       <el-table-column label="专业名称" align="center">
         <template slot-scope="{ row }"> {{ row.zhuanye }} </template>
       </el-table-column>
@@ -35,6 +43,11 @@
     <el-dialog title="添加专业" :visible.sync="dialogVisible" size="mini">
       <div class="form-database-form">
         <el-form :model="form" ref="formModel" :rules="rules" label-width="100px">
+          <el-form-item label="学院名称" prop="zhuanye">
+            <el-select v-model="form.xueyuan" style="width:100%;">
+              <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="专业名称" prop="zhuanye">
             <el-input placeholder="输入专业名称" v-model="form.zhuanye" />
           </el-form-item>
@@ -48,6 +61,11 @@
     <el-dialog title="编辑专业" :visible.sync="dialogVisible1" size="mini">
       <div class="form-database-form">
         <el-form :model="form1" ref="formModel1" :rules="rules" label-width="100px">
+          <el-form-item label="学院名称" prop="zhuanye">
+            <el-select v-model="form1.xueyuan" style="width:100%;">
+              <el-option v-for="v in xueyuanlist" :value="v.xueyuan" :label="v.xueyuan" :key="v.id"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="专业名称" prop="zhuanye">
             <el-input placeholder="输入专业名称" v-model="form1.zhuanye" />
           </el-form-item>
@@ -77,11 +95,13 @@
   export default {
     data() {
       return {
+        xueyuanlist: [],
         dialogVisible1: false,
         dialogVisible: false,
         loading: false,
         list: [],
         search: {
+          xueyuan: "",
           zhuanye: "",
         },
         total: {},
@@ -109,6 +129,23 @@
       };
     },
     methods: {
+      initXueyuan() {
+        const params = {}
+        params.page = 1
+        params.pagesize = 10
+        this.$post(api.xueyuan.list, params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.xueyuanlist = res.data.list
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
+      },
       loadInfo() {
         // 获取模块得数据
         this.loading = true;
@@ -283,6 +320,7 @@
         this.pagesize = Math.floor(this.$route.query.pagesize);
         delete search.pagesize;
       }
+      this.initXueyuan()
       this.loadList(1);
     },
   };

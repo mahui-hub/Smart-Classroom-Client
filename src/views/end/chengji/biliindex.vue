@@ -108,8 +108,8 @@
             // if (!Number(value)) {
             //     callback(new Error('请输入[0,1]之间的数字'));
             // } else {
-            if (value < 0 || value > 1) {
-                callback(new Error('请输入[0,1]之间的数字'));
+            if (value < 1 || value > 100) {
+                callback(new Error('请输入[1,100]之间的数字'));
             } else {
                 callback();
             }
@@ -125,11 +125,11 @@
                 dialogVisible: false,
                 form: {
                     kechengid: '',
-                    shenghupingchengji: '',
-                    qimochengji: '',
-                    suitangceshichengji: '',
-                    qiangdawentichengji: '',
-                    jiaoshipingjiachengji: ''
+                    shenghupingchengji: 0,
+                    qimochengji: 0,
+                    suitangceshichengji: 0,
+                    qiangdawentichengji: 0,
+                    jiaoshipingjiachengji: 0
                 },
                 loading: false,
                 list: [],
@@ -240,21 +240,28 @@
                 this.operChange();
             },
             submit() {
-                var a = parseFloat(this.form.qimochengji)
-                var b = parseFloat(this.form.suitangceshichengji)
-                var c = parseFloat(this.form.qiangdawentichengji)
-                var d = parseFloat(this.form.shenghupingchengji)
-                var e = parseFloat(this.form.jiaoshipingjiachengji)
+                var a = Number(this.form.qimochengji)
+                var b = Number(this.form.suitangceshichengji)
+                var c = Number(this.form.qiangdawentichengji)
+                var d = Number(this.form.shenghupingchengji)
+                var e = Number(this.form.jiaoshipingjiachengji)
+                var obj = {}
+                obj.kechengid = this.form.kechengid
+                obj.qimochengji = a / (a + b + c + d + e)
+                obj.suitangceshichengji = b / (a + b + c + d + e)
+                obj.qiangdawentichengji = c / (a + b + c + d + e)
+                obj.shenghupingchengji = d / (a + b + c + d + e)
+                obj.jiaoshipingjiachengji = e / (a + b + c + d + e)
                 var zong = a + b + c + d + e
                 this.$refs.formModel.validate()
                     .then((res) => {
-                        if (zong != 1) {
-                            this.$message.error('请检查各成绩比例相加是否等于1');
+                        if (zong != 100) {
+                            this.$message.error('请检查各成绩比例相加是否等于100');
                             return
                         }
                         if (this.loading) return;
                         this.loading = true;
-                        var form = this.form;
+                        var form = obj;
                         this.$post("/chengjibiliinsert", form)
                             .then((res) => {
                                 this.loading = false;
@@ -279,22 +286,29 @@
                     });
             },
             submit1() {
-                var a = parseFloat(this.form.qimochengji)
-                var b = parseFloat(this.form.suitangceshichengji)
-                var c = parseFloat(this.form.qiangdawentichengji)
-                var d = parseFloat(this.form.shenghupingchengji)
-                var e = parseFloat(this.form.jiaoshipingjiachengji)
+                var a = Number(this.form.qimochengji)
+                var b = Number(this.form.suitangceshichengji)
+                var c = Number(this.form.qiangdawentichengji)
+                var d = Number(this.form.shenghupingchengji)
+                var e = Number(this.form.jiaoshipingjiachengji)
+                var obj = {}
+                obj.kechengid = this.form.kechengid
+                obj.qimochengji = a / (a + b + c + d + e)
+                obj.suitangceshichengji = b / (a + b + c + d + e)
+                obj.qiangdawentichengji = c / (a + b + c + d + e)
+                obj.shenghupingchengji = d / (a + b + c + d + e)
+                obj.jiaoshipingjiachengji = e / (a + b + c + d + e)
                 var zong = a + b + c + d + e
                 this.$refs.formModel
                     .validate()
                     .then((res) => {
-                        if (zong != 1) {
-                            this.$message.error('请检查各成绩比例相加是否等于1');
+                        if (zong != 100) {
+                            this.$message.error('请检查各成绩比例相加是否等于100');
                             return
                         }
                         if (this.loading) return;
                         this.loading = true;
-                        var form = this.form;
+                        var form = obj;
                         this.$post("/chengjibiliupdate", form)
                             .then((res) => {
                                 this.loading = false;

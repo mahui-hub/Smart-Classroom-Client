@@ -20,7 +20,7 @@
           <el-button style="float: right; padding: 3px 0" type="text" @click="view(r.id)">查看</el-button>
         </div>
         <div class="item">
-          <img :src="r.tupian" alt="" />
+          <img :src="r.tupian" alt="" style="height:200px" />
         </div>
       </el-card>
     </div>
@@ -43,6 +43,8 @@
         justify-content: space-between;
 
         .header-title {
+          font-size: 15px;
+          font-weight: bold;
           width: 80%;
           display: -webkit-box;
           -webkit-box-orient: vertical;

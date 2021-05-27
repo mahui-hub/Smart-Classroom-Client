@@ -24,19 +24,9 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="{ row }">
-              <div v-if="row.hupingrens!=''">
-                <div v-if="row.hupingrens.indexOf(username)==-1">
-                  <el-button type="text" @click="huping(row)">
-                    互评
-                  </el-button>
-                </div>
-              </div>
-              <div v-else>
-                <el-button type="text" @click="huping(row)">
-                  互评
-                </el-button>
-              </div>
-
+              <el-button type="text" @click="huping(row)">
+                互评
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -60,13 +50,14 @@
           </el-form-item>
           <el-form-item label="课程名称" prop="kechengid" required>
             <el-select v-model="form.kechengid" style="width: 100%">
-              <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
+              <el-option v-for="m in kechenglist" :key="m.id" :value="m.id" :label="m.kechengmingcheng"
+                :disabled="m.disabled">
               </el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="互评分数" prop="hupingfenshu" :rules="[
-                { validator: rule.checkNumber, message: '请输入一个有效数字' },
+                 { required:true,validator: rule.isDecimal },
               ]">
             <el-input placeholder="请输入互评分数" v-model="form.hupingfenshu" />
           </el-form-item>
@@ -124,7 +115,9 @@
         banjiList: [],
         zhuanyeList: [],
         kechengmingchengList: [],
-        username: ""
+        username: "",
+        kechengidList: [],
+        kechenglist: []
       };
     },
     watch: {},
@@ -134,7 +127,47 @@
         this.headtitle = "对" + row.xingming + "同学进行评价";
         this.form = row;
         this.form.hupingren = this.$store.state.user.session.username;
-        this.dialogVisible = true;
+        this.panduanjiekou(row)
+        this.$nextTick(() => {
+          this.dialogVisible = true;
+        })
+      },
+      panduanjiekou(row) {
+        const params = {}
+        params.xuehao = row.xuehao
+        params.hupingren = row.hupingren
+        this.$post('xueshenghuping_chaxun', params)
+          .then((res) => {
+            if (res.code == api.code.OK) {
+              this.kechengidList = res.data.kechengidList
+              var array = []
+              for (var i in this.kechengmingchengList) {
+                var obj = {}
+                console.log(this.kechengidList.some(({
+                  kechengid
+                }) => kechengid == this.kechengmingchengList[i].id))
+                if (this.kechengidList.some(({
+                    kechengid
+                  }) => kechengid == this.kechengmingchengList[i].id)) {
+                  obj.disabled = true
+                  obj.id = this.kechengmingchengList[i].id
+                  obj.kechengmingcheng = this.kechengmingchengList[i].kechengmingcheng
+                } else {
+                  obj.disabled = false
+                  obj.id = this.kechengmingchengList[i].id
+                  obj.kechengmingcheng = this.kechengmingchengList[i].kechengmingcheng
+                }
+                array.push(obj)
+              }
+              this.kechenglist = array
+            } else {
+              this.$message.error(res.msg);
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message.error(err.message);
+          });
       },
       submit1() {
         this.$refs.formModel1

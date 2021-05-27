@@ -348,20 +348,22 @@
       }
 
       .tieziconcent {
+        color: #888;
+        font-size: 14px;
+        margin-bottom: 10px;
         width: 800px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        color: #888;
-        font-size: 14px;
-        margin-bottom: 10px;
+        display: -webkit-box; //将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient: vertical; //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp: 2; //这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。
 
         span {
           margin-right: 20px;
         }
       }
 
-      .tiezibottom {}
     }
   }
 </style>

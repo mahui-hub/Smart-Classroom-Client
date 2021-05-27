@@ -1,5 +1,7 @@
 import http from "@/utils/ajax/http";
-import {empty} from "@/utils/extend";
+import {
+    empty
+} from "@/utils/extend";
 import date from '@/utils/date'
 import api from "@/api";
 
@@ -48,14 +50,14 @@ export default {
         callback(new Error(getMessage(options.message, '请输入正确的固定电话号码')))
     },
     checkMin(rule, value, callback, source, options) {
-        if ((empty(value) && value !==0) || value >= rule.value) {
+        if ((empty(value) && value !== 0) || value >= rule.value) {
             callback();
             return;
         }
         callback(new Error(getMessage(options.message, '请输入不小于' + rule.value + '值')))
     },
     checkMax(rule, value, callback, source, options) {
-        if ((empty(value) && value !==0) || value <= rule.value) {
+        if ((empty(value) && value !== 0) || value <= rule.value) {
             callback();
             return;
         }
@@ -84,6 +86,22 @@ export default {
     },
     getID() {
         return date('mdHi') + Math.floor(Math.random() * 10000);
+    },
+    isDecimal(rule, value, callback) {
+        if (!value) {
+            return callback(new Error('输入不可以为空'));
+        }
+        setTimeout(() => {
+            // if (!Number(value)) {
+            //     callback(new Error('请输入[0,1]之间的数字'));
+            // } else {
+            if (value < 1 || value > 100) {
+                callback(new Error('请输入[1,100]之间的数字'));
+            } else {
+                callback();
+            }
+            // }
+        }, 100);
     },
     date: date,
 }

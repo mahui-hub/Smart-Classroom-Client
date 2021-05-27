@@ -49,8 +49,10 @@
                             </el-table-column>
                             <el-table-column label="操作" align="center">
                                 <template slot-scope="{ row }">
-                                    <el-button @click="edit(row)" type="text">编辑</el-button>
-                                    <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+                                    <el-button @click="edit(row)" type="text" v-if="row.faburen==username">编辑
+                                    </el-button>
+                                    <el-button type="text" @click="deleteItem(row)" v-if="row.faburen==username">删除
+                                    </el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -81,7 +83,7 @@
                     <el-form-item label="发布人" prop="faburen">
                         <el-input v-model="form.faburen" readonly disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="课件资源" prop="fujian">
+                    <el-form-item label="课件资源" prop="fujian" required>
                         <e-upload-file v-model="form.fujian"></e-upload-file>
                     </el-form-item>
                 </el-form>
@@ -108,7 +110,7 @@
                     <el-form-item label="发布人" prop="faburen">
                         <el-input v-model="form1.faburen" readonly disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="课件资源" prop="fujian">
+                    <el-form-item label="课件资源" prop="fujian" required>
                         <e-upload-file v-model="form1.fujian"></e-upload-file>
                     </el-form-item>
                 </el-form>
@@ -121,7 +123,6 @@
     </div>
 </template>
 <script>
-    // import echarts from 'echarts'
     let echarts = require('echarts');
     import api from "@/api";
     import {
@@ -171,13 +172,24 @@
                         trigger: "blur"
                     }, ],
                 },
-                id: "",
+                role: "",
+                username: this.$store.state.user.session.username,
+                array1: [],
+                array: []
             };
         },
         methods: {
-            getchart() {
-                this.$post("kechengziyuan_echart.do").then(result => {
-                    this.echartList = result.data.echartList
+            getchart(id) {
+                const params = {}
+                params.kechengid = id
+
+                this.$post("kechengziyuan_echart.do", params).then(result => {
+                    // this.echartList = result.data.echartList
+                    var array2 = result.data.echartList
+                    array2.forEach((item) => {
+                        this.array1.push(item);
+                    })
+                    this.echartList = this.array1
                     this.$nextTick(function () {
                         //方法里面第一步// 基于准备好的dom，初始化echarts实例
                         let myChart = echarts.init(document.getElementById("myChart"));
@@ -228,6 +240,8 @@
                 params.pagesize = 12
                 if (localStorage.getItem("role") == "教师") {
                     params.jiaoshiid = localStorage.getItem("jiaoshiid");
+                } else if (localStorage.getItem("role") == "学生") {
+                    params.banjiid = localStorage.getItem("banjiId");
                 }
 
                 this.$post(api.kecheng.weblist, params)
@@ -236,6 +250,15 @@
                         if (res.code == api.code.OK) {
                             this.mapkechengleixing2 = res.data.mapkechengleixing2;
                             this.kechenglist = res.data.list;
+                            var list = res.data.list;
+                            this.array1 = []
+                            this.array = []
+                            this.list = []
+                            this.echartList = []
+                            for (var i in list) {
+                                this.getchart(list[i].id);
+                                this.loadList(1, list[i].id)
+                            }
                         } else {
                             this.$message.error(res.msg);
                         }
@@ -274,37 +297,38 @@
                 this.dialogVisible1 = true;
             },
             searchSubmit() {
-                this.loadList(1);
+                this.initKengcheng();
+                // this.loadList(1);
             },
             sizeChange(e) {
                 this.pagesize = e;
-                this.loadList(1);
+                // this.loadList(1);
+                this.initKengcheng();
             },
             checkIssh,
-            loadList(page) {
+            loadList(page, id) {
                 // 防止重新点加载列表
-                if (this.loading) return;
-                this.loading = true;
                 this.page = page;
                 // 筛选条件
                 var filter = extend(true, {}, this.search, {
+                    kechengid: id,
                     page: page + "",
                     pagesize: this.pagesize + "",
                 });
-                var diff = objectDiff.diff(filter, this.$route.query);
-                if (diff.changed != "equal") {
-                    // 筛选的条件不一致则更新链接
-                    this.$router.push({
-                        // 更新query
-                        path: this.$route.path,
-                        query: filter,
-                    });
-                }
                 this.$post(api.kechengziyuan.list, filter)
                     .then((res) => {
                         this.loading = false;
                         if (res.code == api.code.OK) {
-                            extend(this, res.data);
+                            // extend(this, res.data);
+                            this.totalCount = res.data.totalCount
+                            var array1 = res.data.list;
+                            if (this.totalCount != 0) {
+                                array1.forEach((item) => {
+                                    this.array.push(item);
+                                })
+                            }
+                            this.list = this.array;
+                            this.totalCount = this.list.length
                         } else {
                             this.$message.error(res.msg);
                         }
@@ -333,7 +357,8 @@
                                     this.$message.error(res.msg);
                                 } else {
                                     remove(this.list, row);
-                                    this.loadList(1);
+                                    // this.loadList(1);
+                                    this.initKengcheng();
                                 }
                             })
                             .catch((err) => {
@@ -358,7 +383,9 @@
                                 this.loading = false;
                                 if (res.code == api.code.OK) {
                                     this.$message.success("添加课件资源成功");
-                                    this.loadList(1);
+                                    this.initKengcheng();
+                                    // this.loadList(1);
+                                    // this.getchart()
                                     this.dialogVisible = false;
                                     this.$refs.formModel.resetFields();
                                     this.loadInfo();
@@ -389,7 +416,8 @@
                                     this.$message.success("修改课件资源成功");
                                     this.$refs.formModel1.resetFields();
                                     this.dialogVisible1 = false;
-                                    this.loadList(1);
+                                    this.initKengcheng();
+                                    // this.loadList(1);
                                     this.loadInfo();
                                 } else {
                                     this.$message.error(res.msg);
@@ -407,7 +435,7 @@
         },
         beforeRouteUpdate(to, form, next) {
             extend(this.search, to.query);
-            this.loadList(1);
+            // this.loadList(1);
             next();
         },
         created() {
@@ -420,12 +448,13 @@
                 this.pagesize = Math.floor(this.$route.query.pagesize);
                 delete search.pagesize;
             }
-            this.getchart()
-            this.initKengcheng();
-            this.loadList(1);
+            this.role = localStorage.getItem('role')
+            // this.initKengcheng();
+            // this.loadList(1);
         },
         mounted() {
-            this.getchart()
+            this.initKengcheng();
+            // this.getchart()
         }
     };
 </script>

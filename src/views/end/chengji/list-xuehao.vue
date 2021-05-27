@@ -41,7 +41,7 @@
         <el-table-column label="专业" align="center">
           <template slot-scope="{ row }"> {{ row.zhuanye }} </template>
         </el-table-column> -->
-      <el-table-column label="考勤成绩" align="center">
+      <el-table-column label="期末成绩" align="center">
         <template slot-scope="{ row }"> {{ row.qimochengji }} </template>
       </el-table-column>
       <el-table-column label="学生互评成绩" align="center">
