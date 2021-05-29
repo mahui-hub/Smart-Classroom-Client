@@ -44,7 +44,7 @@
       <el-table-column label="题目类型" align="center">
         <template slot-scope="{ row }"> {{ row.leixing }} </template>
       </el-table-column>
-      <el-table-column label="答案" align="center">
+      <el-table-column label="答案" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }">
           <e-paper-view :vo="row" :map="row.daan"></e-paper-view>
         </template>
@@ -55,9 +55,6 @@
 
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button @click="
-              $goto({ path: '/end/shitidetail', query: { id: row.id } })
-            " type="text">详情</el-button>
           <el-button @click="edit(row)" type="text">编辑</el-button>
           <!-- <el-button @click="$goto({ path: '/end/shitiupdt', query: { id: row.id } })" type="text">编辑</el-button> -->
 

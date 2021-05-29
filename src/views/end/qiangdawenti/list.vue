@@ -23,7 +23,7 @@
       <el-table-column label="抢答编号" align="center">
         <template slot-scope="{ row }"> {{ row.bianhao }} </template>
       </el-table-column>
-      <el-table-column label="问题标题" align="center">
+      <el-table-column label="问题标题" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }"> {{ row.biaoti }} </template>
       </el-table-column>
       <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
@@ -79,6 +79,9 @@
 
           <el-form-item label="抢答人" prop="qiangdaren">
             <el-input v-model="form.qiangdaren" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="回答内容" prop="beizhu">
+            <el-input v-model="form.beizhu" disabled type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
           </el-form-item>
 
           <el-form-item label="评分" prop="pingfen" required>

@@ -233,7 +233,9 @@
         }
       },
       edit(row) {
+
         this.oper = "edit";
+        this.operChange()
         this.form = row;
         this.id = row.id;
         this.dialogVisible = true;
