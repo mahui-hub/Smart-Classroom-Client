@@ -8,10 +8,6 @@
         <el-form-item label="姓名">
           <el-input v-model="search.xingming"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="互评分数">
-          <el-input type="text" style="width: 80px" v-model="search.hupingfenshu_start"></el-input>
-          -<el-input type="text" style="width: 80px" v-model="search.hupingfenshu_end"></el-input>
-        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
@@ -46,15 +42,12 @@
                       query: { id: row.id },
                     })
                   " type="text">详情</el-button>
-
-
           <!-- <el-button @click="
                     $goto({
                       path: '/end/xueshenghupingupdt',
                       query: { id: row.id },
                     })
                   " type="text">编辑</el-button> -->
-
           <el-button type="text" @click="deleteItem(row)">删除
           </el-button>
         </template>

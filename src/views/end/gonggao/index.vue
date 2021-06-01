@@ -233,7 +233,6 @@
         }
       },
       edit(row) {
-
         this.oper = "edit";
         this.operChange()
         this.form = row;

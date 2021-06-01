@@ -152,58 +152,6 @@
                 })
 
             },
-            // searchSubmit() {
-            //     this.loadList(1);
-            // },
-            // loadList(page) {
-            //     // 防止重新点加载列表
-            //     if (this.loading) return;
-            //     this.loading = true;
-            //     this.page = page;
-            //     // 筛选条件
-            //     var filter = extend(true, {}, this.search, {
-            //         page: page + "",
-            //         pagesize: this.pagesize + ""
-            //     });
-            //     var diff = objectDiff.diff(filter, this.$route.query);
-            //     if (diff.changed != 'equal') { // 筛选的条件不一致则更新链接
-            //         this.$router.replace({ // 更新query
-            //             path: this.$route.path,
-            //             query: filter
-            //         });
-            //     }
-            //     this.$post(api.keqiankaoqin.weblist, filter).then(res => {
-            //         this.loading = false;
-            //         if (res.code == api.code.OK) {
-            //             extend(this, res.data);
-            //         } else {
-            //             this.$message.error(res.msg);
-            //         }
-            //     }).catch(err => {
-            //         this.loading = false;
-            //         this.$message.error(err.message);
-            //     });
-            // },
-            // loadList1() {
-            //     // 筛选条件
-            //     var filter = extend(true, {}, this.search, {
-            //         page: 1,
-            //         pagesize: 12
-            //     });
-            //     this.$post(api.keqiankaoqin.weblist, filter).then(res => {
-            //         this.loading = false;
-            //         if (res.code == api.code.OK) {
-            //             extend(this, res.data);
-            //             // this.list = res.data.list
-            //             this.qiandaorenlist = res.data.qiandaorenlist
-            //         } else {
-            //             this.$message.error(res.msg);
-            //         }
-            //     }).catch(err => {
-            //         this.loading = false;
-            //         this.$message.error(err.message);
-            //     });
-            // },
             initKecheng() {
                 // 防止重新点加载列表
                 // 筛选条件
@@ -286,7 +234,6 @@
                 this.pagesize = Math.floor(this.$route.query.pagesize)
                 delete search.pagesize
             }
-            // this.loadList1()
             this.initKecheng()
             this.username = localStorage.getItem('username')
         },

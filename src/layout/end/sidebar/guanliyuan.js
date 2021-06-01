@@ -143,6 +143,14 @@ export default [{
     }, ],
   },
   {
+    label: "资源信息管理",
+    to: "",
+    children: [{
+      label: "资源信息列表",
+      to: "/end/ziyuan",
+    }, ],
+  },
+  {
     label: "系统管理",
     to: "",
     children: [{

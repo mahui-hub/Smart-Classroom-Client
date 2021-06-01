@@ -36,10 +36,10 @@
       </el-table-column>
 
       <el-table-column label="总得分" align="center">
-        <template slot-scope="{ row }"> {{ row.danxuantidefen+row.duoxuantidefen}} </template>
+        <template slot-scope="{ row }"> {{ row.zongdefen}} </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" min-width="100">
         <template slot-scope="{ row }">
           <el-button @click="
               $goto({
@@ -48,15 +48,8 @@
               })
             " type="text">详情</el-button>
 
-          <el-button @click="
-                    $goto({
-                      path: '/end/kaoshijieguoupdt',
-                      query: { id: row.id },
-                    })
-                  " type="text">编辑</el-button>
-
-
           <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+          <el-button type="text" @click="fenxiItem(row)">教学分析 </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,24 +58,33 @@
         layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
       </el-pagination>
     </div>
-
-    <!-- <div>
-      总得分总和: {{ total.sum_zongdefen }} 总得分平均值:
-      {{ total.avg_zongdefen }} 总得分最小值:
-      {{ total.min_zongdefen }} 总得分最大值: {{ total.max_zongdefen }}
-    </div>
-    <div>
-      <span>得出结论：</span> -->
-    <!-- <span v-if="(row.duoxuantidefen+row.danxuantidefen)/total.sum_zongdefen">该教师教学评价为及格</span> -->
-    <!-- <span v-if="0.85 < total.sum_zongdefen / 20 <= 1">该教师教学评价为优秀</span>
-      <span v-if="0.75 < total.sum_zongdefen / 20 <= 0.85">该教师教学评价为良好</span>
-      <span v-if="0.6 < total.sum_zongdefen / 20 <= 0.75">该教师教学评价为合格</span>
-      <span v-if="total.sum_zongdefen / 20 < 0.6">该教师教学评价为不合格</span>
-    </div> -->
+    <el-dialog title="教学分析" :visible.sync="dialogVisible">
+      <div class="form-database-form">
+        <div id="myChart" style="width: 100%; height: 350px;" ref="myChart"></div>
+        <div style="margin-top:30px;">
+          <div style="font-size: 20px;font-weight: bold;color: #19dab6;">得出结论：</div>
+          <div v-if="0.85 < value <= 1" class="titleStyle">该课程教学评价为优秀</div>
+          <div v-if="0.75 < value <= 0.85" class="titleStyle"> 该课程教学评价为良好</div>
+          <div v-if="0.6 < value <= 0.75" class="titleStyle">该课程教学评价为合格</div>
+          <div v-if="value < 0.6" class="titleStyle">该课程教学评价为不合格</div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
-<style type="text/scss" scoped lang="scss"></style>
+<style scoped lang="scss">
+  .titleStyle {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #a96666;
+  }
+</style>
 <script>
+  let echarts = require('echarts');
   import api from "@/api";
   import {
     remove,
@@ -93,12 +95,14 @@
   } from "@/utils/extend";
   import objectDiff from "objectdiff";
 
+
   /**
    * 后台列表页面
    */
   export default {
     data() {
       return {
+        dialogVisible: false,
         kechengmingchengList: [],
         loading: false,
         list: [],
@@ -111,11 +115,111 @@
         page: 1, // 当前页
         pagesize: 10, // 页大小
         totalCount: 0, // 总行数
+        echartsList: [],
+        value: ""
       };
     },
     watch: {},
     computed: {},
     methods: {
+      getchart() {
+        this.$nextTick(function () {
+          //方法里面第一步// 基于准备好的dom，初始化echarts实例
+          let myChart = echarts.init(document.getElementById("myChart"));
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption({
+            title: {
+              text: '教学分析',
+              left: 'right'
+            },
+            series: [{
+              type: 'gauge',
+              startAngle: 180,
+              endAngle: 0,
+              min: 0,
+              max: 1,
+              splitNumber: 8,
+              axisLine: {
+                lineStyle: {
+                  width: 6,
+                  color: [
+                    [0.25, '#FF6E76'],
+                    [0.5, '#FDDD60'],
+                    [0.75, '#58D9F9'],
+                    [1, '#7CFFB2']
+                  ]
+                }
+              },
+              pointer: {
+                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                length: '12%',
+                width: 20,
+                offsetCenter: [0, '-60%'],
+                itemStyle: {
+                  color: 'auto'
+                }
+              },
+              axisTick: {
+                length: 12,
+                lineStyle: {
+                  color: 'auto',
+                  width: 2
+                }
+              },
+              splitLine: {
+                length: 20,
+                lineStyle: {
+                  color: 'auto',
+                  width: 5
+                }
+              },
+              axisLabel: {
+                color: '#464646',
+                fontSize: 20,
+                distance: -60,
+                formatter: function (value) {
+                  if (value === 0.875) {
+                    return '优';
+                  } else if (value === 0.625) {
+                    return '中';
+                  } else if (value === 0.375) {
+                    return '良';
+                  } else if (value === 0.125) {
+                    return '差';
+                  }
+                }
+              },
+              title: {
+                offsetCenter: [0, '-20%'],
+                fontSize: 18
+              },
+              detail: {
+                fontSize: 30,
+                offsetCenter: [0, '0%'],
+                valueAnimation: true,
+                formatter: function (value) {
+                  return Math.round(value * 100) + '分';
+                },
+                color: 'auto'
+              },
+              data: this.echartsList
+            }]
+          })
+        })
+      },
+      fenxiItem(row) {
+
+        this.echartsList.push({
+          name: "该课程教学评价等级",
+          value: row.zongdefen / 100
+        })
+        this.$nextTick(() => {
+          this.getchart()
+        })
+        this.value = row.zongdefen / 100
+        this.dialogVisible = true
+
+      },
       initKecheng() {
         const params = {};
         params.kechengbianhao = "";
@@ -243,7 +347,9 @@
       this.initKecheng();
       this.loadList(1);
     },
-    mounted() {},
+    mounted() {
+
+    },
     destroyed() {},
   };
 </script>

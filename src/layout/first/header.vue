@@ -168,19 +168,19 @@
           },
           {
             id: "6",
-            menuName: "课程资源",
+            menuName: "资源中心",
             path: "/ziyuan",
             role: "学生",
           },
           {
             id: "6",
-            menuName: "课程资源",
+            menuName: "资源中心",
             path: "/ziyuan",
             role: "教师",
           },
           {
             id: "6",
-            menuName: "课程资源",
+            menuName: "资源中心",
             path: "/ziyuan",
             role: "管理员",
           },
