@@ -18,7 +18,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(r, i) in list">
+                <tr v-for="(r, i) in list" :key="i">
                   <td>{{ r.bianhao }}</td>
                   <td>{{ r.biaoti }}</td>
                   <td>{{ r.fenlei }}</td>
@@ -94,8 +94,8 @@
     methods: {
       getchart() {
         this.$post("ziyuanlist.do").then(result => {
-          this.ziyuanEcharts = result.data.ziyuanEcharts
-          console.log(this.ziyuanEcharts)
+          this.ziyuanEcharts = result.data.ziyuanEcharts1
+
           this.$nextTick(function () {
             //方法里面第一步// 基于准备好的dom，初始化echarts实例
             let myChart = echarts.init(document.getElementById("myChart"));
