@@ -277,9 +277,9 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="互评内容" prop="hupingneirong">
+          <!-- <el-form-item label="互评内容" prop="hupingneirong">
             <el-input type="textarea" v-model="form4.hupingneirong"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item label="互评分数" prop="hupingfenshu" :rules="[
               { required:true,validator: rule.isDecimal },
@@ -679,7 +679,7 @@
             localStorage.getItem('username')) {
             array.push(this.jiaoshipingjiachengjiList[i].hupingfenshu)
           }
-          1
+
         }
         for (var j in array) {
           pingjun = pingjun + array[j]

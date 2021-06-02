@@ -5,29 +5,12 @@
       <div class="message">系统登录</div>
       <div id="darkbannerwrap"></div>
       <form action="javascript:;" method="post" @submit="login">
-        <input
-          name="username"
-          v-model="form.username"
-          placeholder="用户名"
-          type="text"
-          id="user"
-        />
+        <input name="username" v-model="form.username" placeholder="用户名" type="text" id="user" />
         <hr class="hr15" />
-        <input
-          name="pwd"
-          placeholder="密码"
-          v-model="form.pwd"
-          type="password"
-          id="pass"
-        />
+        <input name="pwd" placeholder="密码" v-model="form.pwd" type="password" id="pass" />
         <hr class="hr15" />
         <el-select name="cx" v-model="form.cx" style="width: 100%">
-          <el-option
-            :key="r"
-            :value="r"
-            :label="r"
-            v-for="r in rules"
-          ></el-option>
+          <el-option :key="r" :value="r" :label="r" v-for="r in rules"></el-option>
         </el-select>
         <hr class="hr15" />
         <input value="登录" style="width:100%;" type="submit" id="login_btn" />
@@ -38,7 +21,7 @@
   </div>
 </template>
 <style type="text/scss" lang="scss">
-.lanserichang-index-login {
+  .lanserichang-index-login {
   background-image: url(http://al.cnweike.cn/content/0/0/1/258/598289.jpg);
   width: 100%;
   height: 100%;
@@ -181,77 +164,82 @@
 }
 </style>
 <script>
-import setting from "@/setting";
-import api from "@/api";
+  import setting from "@/setting";
+  import api from "@/api";
 
-export default {
-  name: "lanserichang-index",
-  data() {
-    return {
-      setting,
-      loading: false,
-      form: {
-        username: "",
-        pwd: "",
-        cx: "管理员",
+  export default {
+    name: "lanserichang-index",
+    data() {
+      return {
+        setting,
+        loading: false,
+        form: {
+          username: "",
+          pwd: "",
+          cx: "管理员",
+        },
+        rules: ["管理员", "学生", "教师"],
+      };
+    },
+    watch: {},
+    computed: {},
+    methods: {
+      validateLogin() {
+        var form = this.form;
+        var username = form.username;
+        var pwd = form.pwd;
+
+        if (username == "") {
+          this.$message.error("帐号不能为空");
+          return false;
+        }
+        if (pwd == "") {
+          this.$message.error("密码不能为空");
+          return false;
+        }
+        return true;
       },
-      rules: ["管理员", "学生", "教师"],
-    };
-  },
-  watch: {},
-  computed: {},
-  methods: {
-    validateLogin() {
-      var form = this.form;
-      var username = form.username;
-      var pwd = form.pwd;
 
-      if (username == "") {
-        this.$message.error("帐号不能为空");
-        return false;
-      }
-      if (pwd == "") {
-        this.$message.error("密码不能为空");
-        return false;
-      }
-      return true;
-    },
+      login() {
+        /*if(this.captchCode != this.form.pagerandom)
+              {
+                  this.$message.error('验证码错误');
+                  return;
+              }*/
 
-    login() {
-      /*if(this.captchCode != this.form.pagerandom)
-            {
-                this.$message.error('验证码错误');
-                return;
-            }*/
+        if (this.validateLogin()) {
+          this.loading = true;
+          this.$store
+            .dispatch("user/login", this.form)
+            .then((res) => {
+              this.loading = false;
+              if (res.code == api.code.OK) {
+                this.$message({
+                  showClose: true,
+                  message: '登录成功',
+                  type: 'success'
+                });
 
-      if (this.validateLogin()) {
-        this.loading = true;
-        this.$store
-          .dispatch("user/login", this.form)
-          .then((res) => {
-            this.loading = false;
-            if (res.code == api.code.OK) {
-              this.$message.success("登录成功");
-              localStorage.setItem("role", this.form.cx);
-              var redirect = this.$route.query.redirect;
-              if (redirect) {
-                this.$router.replace(redirect);
+                localStorage.setItem("role", this.form.cx);
+                var redirect = this.$route.query.redirect;
+                if (redirect) {
+                  this.$router.replace(redirect);
+                } else {
+                  this.$router.replace("/admin/sy");
+                }
               } else {
-                this.$router.replace("/admin/sy");
+                this.$message.error(res.msg);
               }
-            } else {
-              this.$message.error(res.msg);
-            }
-          })
-          .catch((err) => {
-            this.loading = false;
-            this.$message.error(err.message);
-          });
-      }
+            })
+            .catch((err) => {
+              this.loading = false;
+              this.$message.error(err.message);
+            });
+        }
+      },
     },
-  },
-  created() {},
-  mounted() {},
-  destroyed() {},
-};
+    created() {},
+    mounted() {},
+    destroyed() {},
+  };
 </script>

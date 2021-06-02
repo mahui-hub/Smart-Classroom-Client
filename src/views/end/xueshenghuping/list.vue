@@ -24,9 +24,9 @@
       <el-table-column label="姓名" align="center">
         <template slot-scope="{ row }"> {{ row.xingming }} </template>
       </el-table-column>
-      <el-table-column label="互评内容" align="center">
+      <!-- <el-table-column label="互评内容" align="center">
         <template slot-scope="{ row }"> {{ row.hupingneirong }} </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="互评分数" align="center">
         <template slot-scope="{ row }"> {{ row.hupingfenshu }} </template>
       </el-table-column>

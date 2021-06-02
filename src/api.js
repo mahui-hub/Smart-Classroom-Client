@@ -70,6 +70,15 @@ const api = {
     // create: "youqinglianjie_add.do",
     edit: "youqinglianjie_updt.do",
   },
+  ziyuanfenlei: {
+    list: "ziyuanfenlei_list.do",
+    insert: "ziyuanfenleiinsert.do",
+    update: "ziyuanfenleiupdate.do",
+    delete: "ziyuanfenlei_delete.do",
+    detail: "ziyuanfenlei_detail.do",
+    create: "ziyuanfenlei_add.do",
+    edit: "ziyuanfenlei_updt.do",
+  },
   lunbotu: {
     list: "lunbotu_list.do",
     insert: "lunbotuinsert.do",

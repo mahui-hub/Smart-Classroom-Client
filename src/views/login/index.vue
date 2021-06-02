@@ -160,7 +160,11 @@
             .then((res) => {
               this.loading = false;
               if (res.code == api.code.OK) {
-                this.$message.success("登录成功");
+                this.$message({
+                  showClose: true,
+                  message: '登录成功',
+                  type: 'success'
+                });
                 localStorage.setItem("role", this.loginForm.cx);
                 if (this.loginForm.cx == "学生") {
                   localStorage.setItem("banjiId", res.data.session.banjiid);

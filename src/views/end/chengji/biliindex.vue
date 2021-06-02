@@ -229,7 +229,12 @@
                 }
             },
             edit(row) {
-                this.form = row;
+                this.form = row
+                this.form.qiangdawentichengji = row.qiangdawentichengji * 100;
+                this.form.shenghupingchengji = row.shenghupingchengji * 100;
+                this.form.qimochengji = row.qimochengji * 100;
+                this.form.jiaoshipingjiachengji = row.jiaoshipingjiachengji * 100;
+                this.form.suitangceshichengji = row.suitangceshichengji * 100;
                 this.oper = "edit";
                 this.dialogVisible = true;
                 this.operChange();
@@ -309,6 +314,7 @@
                         if (this.loading) return;
                         this.loading = true;
                         var form = obj;
+                        console.log(form)
                         this.$post("/chengjibiliupdate", form)
                             .then((res) => {
                                 this.loading = false;

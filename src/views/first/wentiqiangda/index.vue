@@ -45,20 +45,9 @@
 
           <el-table-column label="操作" align="center">
             <template slot-scope="{ row }" v-if="row.qiangdarenshu > row.yiqiangrenshu && isQiang">
-              <div v-if="row.qiangdarens!=''">
-                <div v-if="row.qiangdarens.indexOf(username)==-1">
-                  <el-button type="text" @click="qiangda(row)">
-                    问题抢答
-                  </el-button>
-                </div>
-              </div>
-              <div v-else>
-                <el-button type="text" @click="qiangda(row)">
-                  问题抢答
-                </el-button>
-              </div>
-
-
+              <el-button type="text" @click="qiangda(row)" v-if="row.qiangdarens.indexOf(username)==-1">
+                问题抢答
+              </el-button>
             </template>
           </el-table-column>
         </el-table>

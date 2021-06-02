@@ -146,9 +146,14 @@ export default [{
     label: "资源信息管理",
     to: "",
     children: [{
-      label: "资源信息列表",
-      to: "/end/ziyuan",
-    }, ],
+        label: "资源分类管理",
+        to: "/end/ziyuanfenlei",
+      },
+      {
+        label: "资源信息列表",
+        to: "/end/ziyuan",
+      },
+    ],
   },
   {
     label: "系统管理",

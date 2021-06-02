@@ -31,6 +31,15 @@ export default [{
     },
   },
   {
+    path: "ziyuanfenlei",
+    name: "AdminziyuanfenleiList",
+    component: () => import("@/views/end/ziyuanfenlei/index"),
+    meta: {
+      title: "资源分类列表",
+      authLogin: true
+    },
+  },
+  {
     path: "qiangdawentidetail",
     props: (route) => ({
       id: route.query.id

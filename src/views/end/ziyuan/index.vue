@@ -6,11 +6,10 @@
         <el-form-item label="资源标题">
           <el-input v-model="search.biaoti"></el-input>
         </el-form-item>
-        <el-form-item label="论坛分类">
+        <el-form-item label="资源分类">
           <el-select v-model="search.fenlei">
-            <el-option label="请选择" value=""></el-option>
-            <el-option :key="m.fenleimingcheng" v-for="m in tiezifenleiList" :value="m.fenleimingcheng"
-              :label="m.fenleimingcheng"></el-option>
+            <el-option label="全部" value=""></el-option>
+            <el-option :key="m.fenlei" v-for="m in ziyuanfenleiList" :value="m.fenlei" :label="m.fenlei"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -76,10 +75,9 @@
             <el-input placeholder="请输入标题" v-model="form.biaoti" />
           </el-form-item>
 
-          <el-form-item label="课程名称" prop="fenlei">
+          <el-form-item label="资源分类" prop="fenlei">
             <el-select v-model="form.fenlei" style="width:100%;">
-              <el-option v-for="m in kechengmingchengList" :value="m.kechengmingcheng" :key="m.id"
-                :label="m.kechengmingcheng">
+              <el-option v-for="m in ziyuanfenleiList" :value="m.fenlei" :key="m.id" :label="m.fenlei">
               </el-option>
             </el-select>
           </el-form-item>
@@ -126,6 +124,7 @@
   export default {
     data() {
       return {
+        ziyuanfenleiList: [],
         rule,
         dialogVisible: false,
         form: {
@@ -155,30 +154,6 @@
     watch: {},
     computed: {},
     methods: {
-      initKecheng() {
-        // 防止重新点加载列表
-        // 筛选条件
-        const params = {}
-        if (localStorage.getItem('role') == '教师') {
-          params.jiaoshiid = localStorage.getItem("jiaoshiid")
-        } else if (localStorage.getItem('role') == '学生') {
-          params.banjiid = localStorage.getItem("banjiId")
-        }
-        params.page = 1
-        params.pagesize = 10
-        this.$post(api.kecheng.list, params)
-          .then((res) => {
-            if (res.code == api.code.OK) {
-              this.kechengmingchengList = res.data.list;
-            } else {
-              this.$message.error(res.msg);
-            }
-          })
-          .catch((err) => {
-            this.loading = false;
-            this.$message.error(err.message);
-          });
-      },
       submit() {
         this.$refs.formModel
           .validate()
@@ -267,6 +242,7 @@
             this.loading = false;
             if (res.code == api.code.OK) {
               extend(this, res.data);
+              this.ziyuanfenleiList = res.data.ziyuanfenleiList
             } else {
               this.$message.error(res.msg);
             }
@@ -324,7 +300,6 @@
         this.pagesize = Math.floor(this.$route.query.pagesize);
         delete search.pagesize;
       }
-      this.initKecheng()
       this.loadList(1);
     },
     mounted() {},
