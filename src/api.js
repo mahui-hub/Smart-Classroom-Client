@@ -321,6 +321,17 @@ const api = {
     weblist: "wentisousuolist.do",
     webdetail: "wentisousuodetail.do",
   },
+  liuyan: {
+    list: "liuyan_list.do",
+    insert: "liuyaninsert.do",
+    update: "liuyanupdate.do",
+    delete: "liuyan_delete.do",
+    detail: "liuyan_detail.do",
+    create: "liuyan_add.do",
+    edit: "liuyan_updt.do",
+    weblist: "liuyanlist.do",
+    webdetail: "liuyandetail.do",
+  },
   qiuzhujiaoshi: {
     list: "qiuzhujiaoshi_list.do",
     insert: "qiuzhujiaoshiinsert.do",

@@ -247,6 +247,7 @@
         next: {},
         comments: [],
         form: {
+          role: "",
           kechengmingcheng: "",
           ziyuanname: "",
           fujian: "",
@@ -386,6 +387,7 @@
           .then((res) => {
             if (this.loading) return;
             this.loading = true;
+            this.form.role = localStorage.getItem('role')
             var form = this.form;
             this.$post(api.kechengziyuan.insert, form)
               .then((res) => {
@@ -415,6 +417,7 @@
           .validate().then((res) => {
             if (this.loading) return;
             this.loading = true;
+            this.form1.role = localStorage.getItem('role')
             var form = this.form1;
             this.$post(api.kechengziyuan.update, form)
               .then((res) => {
@@ -453,6 +456,7 @@
           .then((result) => {
             //  this.echartList = result.data.echartList
             this.wendanlist = result.data.wendangshu
+
             this.echartList = [{
               name: '未上传',
               value: result.data.xueshengrenshu[0].value - result.data.yishangchuan[0].value

@@ -32,7 +32,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="text" @click="'/end/qiandao?keqiankaoqinid='+row.id" size="mini">
+                    <el-button type="text" @click="$goto({path:'/end/qiandao',query:{keqiankaoqinid:row.id } })"
+                        size="mini">
                         签到查询
                     </el-button>
                     <el-button @click="$goto({path:'/end/keqiankaoqindetail',query:{id:row.id } })" type="text">详情

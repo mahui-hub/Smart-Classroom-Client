@@ -1,8 +1,9 @@
 <template>
-    <div class="v-admin-sy">
-        <div id="myChart" style="width: 100%; height: 500px;" ref="myChart"></div>
-        <!-- {{setting.title}} 后台管理系统 -->
+    <div class="v-admin-sy" style="display:flex">
+        <div id="myChart" style="width: 50%; height: 500px;" ref="myChart"></div>
+        <div id="myChart1" style="width: 50%; height: 500px;" ref="myChart1"></div>
     </div>
+
 </template>
 <style type="text/scss" lang="scss">
 
@@ -15,10 +16,12 @@
         name: "v-admin-sy",
         data() {
             return {
-                setting
+                setting,
+                userlist: []
             }
         },
         mounted() {
+            this.getecharts()
             var chartDom = document.getElementById('myChart');
             var myChart = echarts.init(chartDom);
             var option;
@@ -26,7 +29,7 @@
             option = {
                 title: {
                     text: '系统钟表',
-                    left: 'center'
+                    left: 'left'
                 },
                 series: [{
                         name: 'hour',
@@ -250,6 +253,41 @@
             }, 1000);
 
             option && myChart.setOption(option);
+        },
+        methods: {
+            getecharts() {
+
+                this.$post("user_echart.do")
+                    .then((result) => {
+                        //  this.echartList = result.data.echartList
+                        this.userlist = result.data.userlist
+                        this.$nextTick(function () {
+                            //方法里面第一步// 基于准备好的dom，初始化echarts实例
+                            let myChart = echarts.init(document.getElementById("myChart1"));
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption({
+                                title: {
+                                    text: "系统用户数统计",
+                                    left: "right",
+                                },
+                                dataset: {
+                                    source: this.userlist,
+                                },
+                                xAxis: {
+                                    type: 'category'
+                                },
+                                yAxis: {},
+                                // Declare several bar series, each will be mapped
+                                // to a column of dataset.source by default.
+                                series: [{
+                                    type: 'bar',
+                                    barWidth: 50, //柱图宽度
+                                }, ]
+                            });
+                        });
+                    })
+                    .catch((result) => {});
+            }
         },
         destroyed() {}
     }

@@ -1,9 +1,7 @@
 <template>
-
     <div class="gonggao-detail" v-loading="loading" ref="print">
         <el-page-header @back="goBack" content="详情页面"></el-page-header>
         <div class="admin-detail">
-
             <div class="detail detail-text">
                 <div class="detail-title">
                     编号：

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div>
-      <e-container>
+      <el-container>
         <div style="box-shadow:0px 0px 3px 3px #BBBBBB;background-color: rgb(255, 255, 255);">
           <div style="padding:20px">
             <div class="news_show">
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-      </e-container>
+      </el-container>
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@
   import {
     extend
   } from "@/utils/extend";
+  import Econtainer from ''
   export default {
     data() {
       return {

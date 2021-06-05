@@ -25,9 +25,9 @@
 
           <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:14px;"
             @click.native.prevent="handleLogin">登录</el-button>
-          <p class="forget-password">
+          <!-- <p class="forget-password">
             <span @click="changeTab('forget')">忘记密码？</span>
-          </p>
+          </p> -->
         </span>
         <span v-if="login.type === 'forget'">
           <el-form-item prop="username">

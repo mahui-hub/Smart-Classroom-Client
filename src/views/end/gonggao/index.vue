@@ -45,7 +45,6 @@
                 query: { id: row.id },
               })
             " type="text">详情</el-button>
-          <!-- @click="$goto({ path: '/end/gonggaoupdt', query: { id: row.id } })" -->
           <el-button v-if="row.faburen == username" @click="edit(row)" type="text">编辑</el-button>
           <el-button type="text" @click="deleteItem(row)">删除 </el-button>
         </template>

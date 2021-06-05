@@ -43,7 +43,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{ row }">
-                    <el-button @click="edit(row)" type="text">编辑</el-button>
+                    <!-- <el-button @click="edit(row)" type="text">编辑</el-button> -->
                     <el-button type="text" @click="deleteItem(row)">删除 </el-button>
                 </template>
             </el-table-column>
@@ -108,11 +108,15 @@
             // if (!Number(value)) {
             //     callback(new Error('请输入[0,1]之间的数字'));
             // } else {
-            if (value < 1 || value > 100) {
-                callback(new Error('请输入[1,100]之间的数字'));
-            } else {
-                callback();
+            if (this.oper == "add") {
+                if (value < 1 || value > 100) {
+                    callback(new Error('请输入[1,100]之间的数字'));
+                } else {
+                    callback();
+                }
             }
+
+
             // }
         }, 100);
     }
@@ -230,11 +234,11 @@
             },
             edit(row) {
                 this.form = row
-                this.form.qiangdawentichengji = row.qiangdawentichengji * 100;
-                this.form.shenghupingchengji = row.shenghupingchengji * 100;
-                this.form.qimochengji = row.qimochengji * 100;
-                this.form.jiaoshipingjiachengji = row.jiaoshipingjiachengji * 100;
-                this.form.suitangceshichengji = row.suitangceshichengji * 100;
+                // this.form.qiangdawentichengji = row.qiangdawentichengji * 100;
+                // this.form.shenghupingchengji = row.shenghupingchengji * 100;
+                // this.form.qimochengji = row.qimochengji * 100;
+                // this.form.jiaoshipingjiachengji = row.jiaoshipingjiachengji * 100;
+                // this.form.suitangceshichengji = row.suitangceshichengji * 100;
                 this.oper = "edit";
                 this.dialogVisible = true;
                 this.operChange();
@@ -258,85 +262,85 @@
                 obj.shenghupingchengji = d / (a + b + c + d + e)
                 obj.jiaoshipingjiachengji = e / (a + b + c + d + e)
                 var zong = a + b + c + d + e
-                this.$refs.formModel.validate()
+                // this.$refs.formModel.validate()
+                //     .then((res) => {
+                if (zong != 100) {
+                    this.$message.error('请检查各成绩比例相加是否等于100');
+                    return
+                }
+                debugger
+                var form = obj;
+                this.$post("/chengjibiliinsert", form)
                     .then((res) => {
-                        if (zong != 100) {
-                            this.$message.error('请检查各成绩比例相加是否等于100');
-                            return
+                        this.loading = false;
+                        if (res.code == api.code.OK) {
+                            this.$message.success("设置成绩比例成功");
+                            // this.loadList(1);
+                            this.initKecheng()
+                            this.dialogVisible = false;
+                            this.$refs.formModel.resetFields();
+                            this.loadInfo();
+                        } else {
+                            this.$message.error(res.msg);
                         }
-                        if (this.loading) return;
-                        this.loading = true;
-                        var form = obj;
-                        this.$post("/chengjibiliinsert", form)
-                            .then((res) => {
-                                this.loading = false;
-                                if (res.code == api.code.OK) {
-                                    this.$message.success("设置成绩比例成功");
-                                    // this.loadList(1);
-                                    this.initKecheng()
-                                    this.dialogVisible = false;
-                                    this.$refs.formModel.resetFields();
-                                    this.loadInfo();
-                                } else {
-                                    this.$message.error(res.msg);
-                                }
-                            })
-                            .catch((err) => {
-                                this.loading = false;
-                                this.$message.error(err.message);
-                            });
                     })
                     .catch((err) => {
-                        console.log(err.message);
+                        this.loading = false;
+                        this.$message.error(err.message);
                     });
+                // })
+                // .catch((err) => {
+                //     console.log(err.message);
+                // });
             },
             submit1() {
-                var a = Number(this.form.qimochengji)
-                var b = Number(this.form.suitangceshichengji)
-                var c = Number(this.form.qiangdawentichengji)
-                var d = Number(this.form.shenghupingchengji)
-                var e = Number(this.form.jiaoshipingjiachengji)
+                var a = Number(this.form.qimochengji * 100)
+                var b = Number(this.form.suitangceshichengji * 100)
+                var c = Number(this.form.qiangdawentichengji * 100)
+                var d = Number(this.form.shenghupingchengji * 100)
+                var e = Number(this.form.jiaoshipingjiachengji * 100)
                 var obj = {}
                 obj.kechengid = this.form.kechengid
+                obj.id = this.form.id
+                // obj.qimochengji = a
+                // obj.suitangceshichengji = b
+                // obj.qiangdawentichengji = c
+                // obj.shenghupingchengji = d
+                // obj.jiaoshipingjiachengji = e
                 obj.qimochengji = a / (a + b + c + d + e)
                 obj.suitangceshichengji = b / (a + b + c + d + e)
                 obj.qiangdawentichengji = c / (a + b + c + d + e)
                 obj.shenghupingchengji = d / (a + b + c + d + e)
                 obj.jiaoshipingjiachengji = e / (a + b + c + d + e)
                 var zong = a + b + c + d + e
-                this.$refs.formModel
-                    .validate()
+
+
+                if (zong != 100) {
+                    this.$message.error('请检查各成绩比例相加是否等于100');
+                    return
+                }
+
+                var form = obj;
+                console.log(form)
+                this.$post("/chengjibiliupdate", form)
                     .then((res) => {
-                        if (zong != 100) {
-                            this.$message.error('请检查各成绩比例相加是否等于100');
-                            return
+                        this.loading = false;
+                        if (res.code == api.code.OK) {
+                            this.$message.success("修改成绩比例成功");
+                            // this.loadList(1);
+                            this.initKecheng()
+                            this.dialogVisible = false;
+                            this.$refs.formModel.resetFields();
+                            this.loadInfo();
+                        } else {
+                            this.$message.error(res.msg);
                         }
-                        if (this.loading) return;
-                        this.loading = true;
-                        var form = obj;
-                        console.log(form)
-                        this.$post("/chengjibiliupdate", form)
-                            .then((res) => {
-                                this.loading = false;
-                                if (res.code == api.code.OK) {
-                                    this.$message.success("修改成绩比例成功");
-                                    // this.loadList(1);
-                                    this.initKecheng()
-                                    this.dialogVisible = false;
-                                    this.$refs.formModel.resetFields();
-                                    this.loadInfo();
-                                } else {
-                                    this.$message.error(res.msg);
-                                }
-                            })
-                            .catch((err) => {
-                                this.loading = false;
-                                this.$message.error(err.message);
-                            });
                     })
                     .catch((err) => {
-                        console.log(err.message);
+                        this.loading = false;
+                        this.$message.error(err.message);
                     });
+
             },
             loadInfo() {
                 var form = this.form;
