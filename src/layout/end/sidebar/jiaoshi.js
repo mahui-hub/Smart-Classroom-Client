@@ -22,14 +22,7 @@ export default [{
       to: "/end/gonggao",
     }, ],
   },
-  {
-    label: "答疑内容管理",
-    to: "",
-    children: [{
-      label: "答疑问题管理",
-      to: "/end/wentisousuo",
-    }, ],
-  },
+
   {
     label: "题库信息管理",
     to: "",

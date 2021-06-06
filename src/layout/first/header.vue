@@ -109,7 +109,7 @@
     </el-dialog>
     <el-dialog title="答疑问题列表" :visible.sync="dialogVisible" :modal-append-to-body="false">
       <el-collapse v-model="activeName" accordion v-if="role=='学生'">
-        <div v-for="o in list" :key="o.id">
+        <div v-for="o in list1" :key="o.id">
           <el-collapse-item title="问题标题" name="1">
             <div>{{o.wentibiaoti}}</div>
           </el-collapse-item>
@@ -176,6 +176,7 @@
         dialogTableVisible: false,
         dialogVisible: false,
         list: [],
+        list1: [],
         role: "",
         activeIndex: "1",
         showSearch: false,
@@ -317,6 +318,7 @@
     methods: {
       dayiItem(row) {
         if (this.role == '学生') {
+          this.list1 = []
           if (row.dayineirong == '') {
             this.$message({
               message: '您的问题暂未解答哦!',
@@ -324,10 +326,12 @@
             });
             return
           } else {
+            this.list1.push(row)
             this.dialogVisible = true
           }
         }
         if (this.role == '教师') {
+          this.list1 = []
           if (row.dayineirong != '') {
             this.$message({
               message: '您已解答问题!',
@@ -335,6 +339,7 @@
             });
             return
           } else {
+            this.list1.push(row)
             this.dialogVisible = true
             this.form = row
           }

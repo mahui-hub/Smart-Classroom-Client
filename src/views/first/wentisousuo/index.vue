@@ -238,6 +238,7 @@
           return
         } else {
           this.list1.push(row)
+          console.log(this.list1)
           this.dialogVisible1 = true
           this.form = row
         }

@@ -15,9 +15,9 @@
         <el-form-item>
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-button type="primary" @click="addSubmit" icon="el-icon-plus">新增</el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </div>
 
@@ -25,8 +25,8 @@
       <el-table-column type="index" align="center"></el-table-column>
       <!-- 序号 -->
 
-      <el-table-column label="课程名称" align="center">
-        <template slot-scope="{ row }"> {{ row.kechengmingcheng }} </template>
+      <el-table-column label="课程名称" align="center" prop="kechengid" :formatter="kechengFormatter">
+
       </el-table-column>
       <el-table-column label="问题标题" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }"> {{ row.wentibiaoti }} </template>
@@ -37,8 +37,8 @@
       <el-table-column label="答疑内容" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }"> {{ row.dayineirong }} </template>
       </el-table-column>
-      <el-table-column label="发布人" align="center" show-overflow-tooltip>
-        <template slot-scope="{ row }"> {{ row.xuehao }} </template>
+      <el-table-column label="解答人" align="center" show-overflow-tooltip>
+        <template slot-scope="{ row }"> {{ row.jiedaren }} </template>
       </el-table-column>
 
       <el-table-column label="操作" align="center">
@@ -49,9 +49,9 @@
                 query: { id: row.id },
               })
             " type="text">详情</el-button>
-          <el-button @click="edit(row)" v-if="row.xuehao == username" type="text">编辑</el-button>
+          <!-- <el-button @click="edit(row)" v-if="row.xuehao == username" type="text">编辑</el-button> -->
 
-          <el-button type="text" v-if="row.xuehao == username" @click="deleteItem(row)">删除
+          <el-button type="text" @click="deleteItem(row)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -99,11 +99,11 @@
       </span>
     </el-dialog>
     <!-- 编辑答题内容 -->
-    <el-dialog title="编辑答疑问题" :visible.sync="dialogVisible1" size="mini">
+    <!-- <el-dialog title="编辑答疑问题" :visible.sync="dialogVisible1" size="mini">
       <div class="form-database-form">
         <el-form :model="form1" ref="formModel1" label-width="100px" status-icon validate-on-rule-change>
-          <el-form-item label="课程名称" prop="kechengmingcheng" required>
-            <el-input placeholder="输入课程名称" v-model="form1.kechengmingcheng" />
+          <el-form-item label="课程名称" prop="kechengid" required>
+            <el-input placeholder="输入课程名称" v-model="form1.kechengid" />
           </el-form-item>
 
           <el-form-item label="问题标题" prop="wentibiaoti" required>
@@ -127,7 +127,7 @@
         <el-button @click="dialogVisible1 = false">取 消</el-button>
         <el-button type="primary" @click="submit1">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <style type="text/scss" scoped lang="scss"></style>
@@ -188,6 +188,16 @@
     watch: {},
     computed: {},
     methods: {
+      kechengFormatter(row) {
+        var name = "";
+        this.kechengmingchengList.forEach(function (item) {
+          if (row.kechengid == item.id) {
+            name = item.kechengmingcheng;
+          }
+        });
+        console.log(name)
+        return name;
+      },
       edit(row) {
         console.log(row);
         this.dialogVisible1 = true;
@@ -201,7 +211,7 @@
             this.loading = true;
             var form = this.form1;
 
-            this.$post(api.wentisousuo.update, form)
+            this.$post(api.liuyan.update, form)
               .then((res) => {
                 this.loading = false;
                 if (res.code == api.code.OK) {
@@ -227,7 +237,7 @@
         // 更新数据,获取数据
         this.loading = true;
         var form = this.form;
-        this.$post(api.wentisousuo.edit, {
+        this.$post(api.liuyan.edit, {
             id: this.id,
           })
           .then((res) => {
@@ -280,7 +290,7 @@
             this.loading = true;
             var form = this.form;
 
-            this.$post(api.wentisousuo.insert, form)
+            this.$post(api.liuyan.insert, form)
               .then((res) => {
                 this.loading = false;
                 if (res.code == api.code.OK) {
@@ -307,7 +317,7 @@
         var form = this.form;
         // 获取模块得数据
         this.loading = true;
-        this.$post(api.wentisousuo.create, {
+        this.$post(api.liuyan.create, {
             id: this.$route.query.id,
           })
           .then((res) => {
@@ -355,7 +365,7 @@
             query: filter,
           });
         }
-        this.$post(api.wentisousuo.list, filter)
+        this.$post(api.liuyan.list, filter)
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
@@ -379,7 +389,7 @@
             // 确定操作
 
             this.loading = true; // 滚动条
-            this.$post(api.wentisousuo.delete, {
+            this.$post(api.liuyan.delete, {
                 // 提交后台
                 id: row.id,
               })

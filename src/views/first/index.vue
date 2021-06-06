@@ -373,10 +373,11 @@
                 containLabel: true
               },
               xAxis: {
-                name: 'amount'
+                name: '帖子数量',
               },
               yAxis: {
                 type: 'category',
+                name: '帖子类型'
               },
               visualMap: {
                 orient: 'horizontal',

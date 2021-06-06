@@ -12,26 +12,18 @@ export default [{
     ],
   },
   {
-    label: "答疑信息管理",
+    label: "成绩信息管理",
     to: "",
     children: [{
-      label: "答疑信息管理",
-      to: "/end/wentisousuo",
-    }, ],
-  },
-  {
-    label: "成绩管理",
-    to: "",
-    children: [{
-      label: "成绩查询",
+      label: "自我成绩查询",
       to: "/end/chengji_xuehao",
     }, ],
   },
   {
-    label: "互评管理",
+    label: "互评信息管理",
     to: "",
     children: [{
-      label: "互评查询",
+      label: "互评信息查询",
       to: "/end/xueshenghuping_hupingren",
     }, ],
   },

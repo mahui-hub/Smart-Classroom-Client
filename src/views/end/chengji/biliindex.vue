@@ -43,7 +43,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{ row }">
-                    <!-- <el-button @click="edit(row)" type="text">编辑</el-button> -->
+                    <el-button @click="edit(row)" type="text">编辑</el-button>
                     <el-button type="text" @click="deleteItem(row)">删除 </el-button>
                 </template>
             </el-table-column>
@@ -233,14 +233,16 @@
                 }
             },
             edit(row) {
-                this.form = row
-                // this.form.qiangdawentichengji = row.qiangdawentichengji * 100;
-                // this.form.shenghupingchengji = row.shenghupingchengji * 100;
-                // this.form.qimochengji = row.qimochengji * 100;
-                // this.form.jiaoshipingjiachengji = row.jiaoshipingjiachengji * 100;
-                // this.form.suitangceshichengji = row.suitangceshichengji * 100;
+                // this.form = row
+                this.form.id = row.id
+                this.form.kechengid = row.kechengid
                 this.oper = "edit";
                 this.dialogVisible = true;
+                this.form.qiangdawentichengji = row.qiangdawentichengji * 100;
+                this.form.shenghupingchengji = row.shenghupingchengji * 100;
+                this.form.qimochengji = row.qimochengji * 100;
+                this.form.jiaoshipingjiachengji = row.jiaoshipingjiachengji * 100;
+                this.form.suitangceshichengji = row.suitangceshichengji * 100;
                 this.operChange();
             },
             addSubmit() {
@@ -294,32 +296,24 @@
                 // });
             },
             submit1() {
-                var a = Number(this.form.qimochengji * 100)
-                var b = Number(this.form.suitangceshichengji * 100)
-                var c = Number(this.form.qiangdawentichengji * 100)
-                var d = Number(this.form.shenghupingchengji * 100)
-                var e = Number(this.form.jiaoshipingjiachengji * 100)
+                var a = Number(this.form.qimochengji)
+                var b = Number(this.form.suitangceshichengji)
+                var c = Number(this.form.qiangdawentichengji)
+                var d = Number(this.form.shenghupingchengji)
+                var e = Number(this.form.jiaoshipingjiachengji)
                 var obj = {}
                 obj.kechengid = this.form.kechengid
                 obj.id = this.form.id
-                // obj.qimochengji = a
-                // obj.suitangceshichengji = b
-                // obj.qiangdawentichengji = c
-                // obj.shenghupingchengji = d
-                // obj.jiaoshipingjiachengji = e
                 obj.qimochengji = a / (a + b + c + d + e)
                 obj.suitangceshichengji = b / (a + b + c + d + e)
                 obj.qiangdawentichengji = c / (a + b + c + d + e)
                 obj.shenghupingchengji = d / (a + b + c + d + e)
                 obj.jiaoshipingjiachengji = e / (a + b + c + d + e)
                 var zong = a + b + c + d + e
-
-
                 if (zong != 100) {
                     this.$message.error('请检查各成绩比例相加是否等于100');
                     return
                 }
-
                 var form = obj;
                 console.log(form)
                 this.$post("/chengjibiliupdate", form)
