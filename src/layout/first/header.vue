@@ -4,7 +4,7 @@
       <el-col :span="4" class="logo">
         <span> {{ setting.title }}</span>
       </el-col>
-      <el-col :span="15">
+      <el-col :span="16">
         <!-- 改为element导航栏 -->
         <el-menu :default-active="activeIndex" mode="horizontal" background-color="#ffffff" text-color="#5a9c15"
           active-text-color="#5a9c15" @select="handleSelect" menu-trigger="click" class="myElMenu">
