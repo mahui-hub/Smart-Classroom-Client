@@ -1,40 +1,40 @@
 <template>
   <div class="app">
     <div>
-      <el-container>
-        <div style="box-shadow:0px 0px 3px 3px #BBBBBB;background-color: rgb(255, 255, 255);">
-          <div style="padding:20px">
-            <div class="news_show">
-              <div class="show_t" v-html="map.biaoti"> </div>
-              <div style="text-align:center">
-                <span class="fa_time">
-                  发布人:{{ map.faburen }} &nbsp;&nbsp;
-                </span>
-              </div>
-              <div v-html="map.neirong"></div>
-              <div class="s_x clearfix">
-                <template v-if="prev.id">
-                  <router-link :to="'gonggaodetail?id=' + prev.id" class="s_prev">
-                    上一篇：<span v-html="prev.biaoti"></span>
-                  </router-link>
-                </template>
-                <template v-else>
-                  <a href="javascript:;" class="s_prev">上一篇：没有了</a>
-                </template>
+      <!-- <el-container> -->
+      <div style="box-shadow:0px 0px 3px 3px #BBBBBB;background-color: rgb(255, 255, 255);">
+        <div style="padding:20px">
+          <div class="news_show">
+            <div class="show_t" v-html="map.biaoti"> </div>
+            <div style="text-align:center">
+              <span class="fa_time">
+                发布人:{{ map.faburen }} &nbsp;&nbsp;
+              </span>
+            </div>
+            <div v-html="map.neirong"></div>
+            <div class="s_x clearfix">
+              <template v-if="prev.id">
+                <router-link :to="'gonggaodetail?id=' + prev.id" class="s_prev">
+                  上一篇：<span v-html="prev.biaoti"></span>
+                </router-link>
+              </template>
+              <template v-else>
+                <a href="javascript:;" class="s_prev">上一篇：没有了</a>
+              </template>
 
-                <template v-if="next.id">
-                  <router-link :to="'/gonggaodetail?id=' + next.id" class="x_next">
-                    下一篇：<span v-html="next.biaoti"></span>
-                  </router-link>
-                </template>
-                <template v-else>
-                  <a href="javascript:;" class="x_next">下一篇：没有了</a>
-                </template>
-              </div>
+              <template v-if="next.id">
+                <router-link :to="'/gonggaodetail?id=' + next.id" class="x_next">
+                  下一篇：<span v-html="next.biaoti"></span>
+                </router-link>
+              </template>
+              <template v-else>
+                <a href="javascript:;" class="x_next">下一篇：没有了</a>
+              </template>
             </div>
           </div>
         </div>
-      </el-container>
+      </div>
+      <!-- </el-container> -->
     </div>
   </div>
 </template>
@@ -44,7 +44,6 @@
   import {
     extend
   } from "@/utils/extend";
-  import Econtainer from ''
   export default {
     data() {
       return {
