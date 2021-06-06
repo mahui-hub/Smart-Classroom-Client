@@ -14,11 +14,11 @@
         </el-menu>
       </el-col>
 
-      <el-col :span="5" class="header_account_area">
+      <el-col :span="4">
         <template v-if="role!='管理员'">
-          <el-dropdown>
+          <el-dropdown style="float:left">
             <el-badge :value="list.length" class="item" type="warning">
-              <el-button type="primary" size="mini" icon="el-icon-chat-dot-round">我的消息
+              <el-button type="primary" size="mini">我的消息
               </el-button>
             </el-badge>
             <el-dropdown-menu slot="dropdown">
@@ -48,8 +48,8 @@
           </el-dropdown>
         </template>
         <template v-if="$session.username">
-          <el-dropdown>
-            <el-button type="primary" size="mini">
+          <el-dropdown style="float:right">
+            <el-button type="primary" size="mini" style="margin-right:0">
               {{ $session.username }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
@@ -68,7 +68,7 @@
 
       </el-col>
     </el-row>
-    <el-dialog title="答疑问题列表" :visible.sync="dialogTableVisible" width="85%" :modal-append-to-body="false">
+    <el-dialog title="答疑问题列表" :visible.sync="dialogTableVisible" width="65%" :modal-append-to-body="false">
       <el-table border :data="list" stripe highlight-current-row>
         <el-table-column type="index" label=" "></el-table-column>
         <el-table-column label="课程名称" align="center" show-overflow-tooltip :formatter="kechengFormatter">
