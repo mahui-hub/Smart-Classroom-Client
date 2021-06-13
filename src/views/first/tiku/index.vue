@@ -126,6 +126,7 @@
         this.search.kechengid = id;
         // 筛选条件
         var filter = extend(true, {}, this.search, {
+          state: 1,
           tikutype: "评价题库",
           page: page + "",
           pagesize: this.pagesize + "",

@@ -90,6 +90,7 @@
                 params.banjiid = localStorage.getItem("banjiId");
                 params.pagesize = 10;
                 params.page = 1;
+
                 this.$post(api.kecheng.list, params)
                     .then((res) => {
                         if (res.code == api.code.OK) {
@@ -127,6 +128,7 @@
                 this.search.kechengid = id;
                 // 筛选条件
                 var filter = extend(true, {}, this.search, {
+                    state: 1,
                     page: page + "",
                     pagesize: this.pagesize + "",
                 });
