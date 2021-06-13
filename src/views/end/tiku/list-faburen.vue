@@ -27,9 +27,8 @@
     </div>
 
 
-    <el-table :data="list" stripe highlight-current-row border>
+    <el-table :data="list" stripe highlight-current-row>
       <el-table-column type="index" align="center"></el-table-column>
-      <!-- 序号 -->
       <el-table-column label="题库名称" align="center">
         <template slot-scope="{ row }">
           {{ row.tikumingcheng }}

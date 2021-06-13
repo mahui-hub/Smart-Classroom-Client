@@ -13,6 +13,7 @@
               :disabled="m.disabled!=role"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="课程名称">
           <el-select v-model="search.kechengid" clearable>
             <el-option v-for="m in kechengmingchengList" :key="m.id" :value="m.id" :label="m.kechengmingcheng">
@@ -37,7 +38,7 @@
           {{ row.tikubianhao }}
         </template>
       </el-table-column>
-      <el-table-column label="题库名称" align="center">
+      <el-table-column label="题库名称" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }">
           {{ row.tikumingcheng }}
         </template>
@@ -49,15 +50,24 @@
       </el-table-column>
       <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
       </el-table-column>
+      <el-table-column label="发布状态" align="center">
+        <template slot-scope="{ row }">
+          <el-tag v-if="row.state==0" type="success">未发布</el-tag>
+          <el-tag v-if="row.state==1" type="info">已发布</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="发布人" align="center">
         <template slot-scope="{ row }">
           {{ row.faburen }}
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" min-width="180">
+      <el-table-column label="操作" align="center" min-width="260">
         <template slot-scope="{ row }">
           <!-- @click="$goto('/end/shitiadd?id=' + row.id)" -->
+          <el-button @click="fabu(row)" type="text" v-if="username == row.faburen&&row.state==0">
+            题库发布
+          </el-button>
           <el-button @click="shitiadd(row)" type="text" v-if="username == row.faburen">
             试题添加
           </el-button>
@@ -224,6 +234,48 @@
       };
     },
     methods: {
+      fabu(row) {
+        this.$confirm('此操作将把' + row.tikumingcheng + '题库永久发布, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const params = {}
+          params.tikuid = row.id
+          this.$post(api.shiti.list, params)
+            .then((res) => {
+              if (res.code == api.code.OK) {
+                if (res.data.list.length != 0) {
+                  row.state = 1
+                  var form = row;
+                  console.log(form)
+                  this.$post(api.tiku.update, form).then(res => {
+                    this.loading = false;
+                    if (res.code == api.code.OK) {
+                      this.$message.success('题库状态修改成功');
+                      this.loadList(1)
+                    } else {
+                      this.$message.error(res.msg);
+                    }
+                  })
+                } else {
+                  this.$message.error('该题库目前没有试题，暂不能发布');
+                  return
+                }
+              } else {
+                this.$message.error(res.msg);
+              }
+            })
+            .catch((err) => {
+              this.$message.error(err.message);
+            });
+
+
+        }).catch(() => {
+
+        });
+
+      },
       kechengFormatter(row) {
         var name = "";
         this.kechengmingchengList.forEach(function (item) {
