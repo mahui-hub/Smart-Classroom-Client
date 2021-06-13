@@ -165,6 +165,7 @@
                   message: '登录成功',
                   type: 'success'
                 });
+
                 localStorage.setItem("role", this.loginForm.cx);
                 if (this.loginForm.cx == "学生") {
                   localStorage.setItem("banjiId", res.data.session.banjiid);
@@ -262,7 +263,6 @@
               this.login.type = "up";
             })
             .catch(() => {
-              // this.loginForm.password1 = AES.decrypt(this.loginForm.password1);
               this.loading = false;
             });
         }

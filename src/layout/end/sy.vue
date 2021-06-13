@@ -256,7 +256,6 @@
         },
         methods: {
             getecharts() {
-
                 this.$post("user_echart.do")
                     .then((result) => {
                         //  this.echartList = result.data.echartList

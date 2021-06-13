@@ -1,12 +1,5 @@
 <template>
   <div class="v-list" v-loading="loading" element-loading-text="加载中">
-    <!-- <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span class="title">
-          管理员列表
-        </span>
-      </div> -->
-    <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" :inline="true" size="mini">
         <el-form-item label="帐号">
@@ -16,7 +9,7 @@
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="addSubmit" icon="el-icon-plus">添加管理员</el-button>
+          <el-button type="primary" @click="addSubmit" icon="el-icon-plus" v-if="username=='admin'">添加管理员</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -28,14 +21,13 @@
       <el-table-column label="帐号" align="center">
         <template slot-scope="{ row }"> {{ row.username }} </template>
       </el-table-column>
-      <!-- <el-table-column label="密码" align="center">
-        <template slot-scope="{ row }"> {{ row.pwd }} </template>
-      </el-table-column> -->
 
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button type="text" @click="editItem(row)">编辑</el-button>
-          <el-button type="text" @click="deleteItem(row)">删除 </el-button>
+          <el-button type="text" @click="editItem(row)" v-if="row.username==username">编辑</el-button>
+          <el-button type="text" @click="editItem(row)" v-if="username=='admin'&&row.username!=username">编辑</el-button>
+          <el-button type="text" @click="deleteItem(row)" v-if="username=='admin'&&row.username!=username">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -84,6 +76,7 @@
   export default {
     data() {
       return {
+        username: this.$store.state.user.session.username,
         oper: "",
         dialogVisible: false,
         headerTitle: "",

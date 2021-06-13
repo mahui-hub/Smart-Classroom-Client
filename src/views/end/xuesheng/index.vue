@@ -310,6 +310,7 @@
   } from "@/utils/extend";
   import objectDiff from "objectdiff";
   import rule from "@/utils/rule";
+  import CryptoJS from "crypto-js";
 
   /**
    * 后台列表页面
@@ -605,7 +606,6 @@
             array.push(this.suitangceshichengjiList[i].zongdefen)
           }
         }
-        console.log(array)
         for (var j in array) {
           pingjun = pingjun + array[j]
           a = pingjun / array.length
@@ -773,7 +773,30 @@
         this.form.banjiid = id;
         this.form1.banjiid = id;
       },
+      // Encrypt(message, key) {
+      //   var keyHex = CryptoJS.enc.Utf8.parse(key)
+      //   var option = {
+      //     mode: CryptoJS.mode.CBC,
+      //     padding: CryptoJS.pad.Pkcs7
+      //   }
+      //   var encrypt = CryptoJS.DES.encrypt(message, keyHex, option)
+      //   return encrypt.toString()
+      // },
+      Encrypt(message, key, iv) {
+        var keyHex = CryptoJS.enc.Utf8.parse(key)
+        var ivHex = CryptoJS.enc.Utf8.parse(iv)
+        var option = {
+          iv: ivHex,
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7
+        }
+        var encrypt = CryptoJS.DES.encrypt(message, keyHex, option)
+        return encrypt.toString()
+      },
+
       submit() {
+        // var a = this.Encrypt(this.form.mima)
+        // console.log(a)
         this.$refs.formModel
           .validate()
           .then((res) => {
