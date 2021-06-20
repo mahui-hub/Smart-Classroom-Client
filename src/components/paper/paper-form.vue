@@ -141,7 +141,7 @@
                         type: "warning",
                     })
                     .then(() => {
-                        if (this.tikuType == "测验题库") {
+                        if (this.tikuType == "测验试卷") {
                             var endtime = Math.floor(new Date().getTime() / 1000);
                             var result = extend(true, [], this.paperList);
                             each(result, (i, o) => {

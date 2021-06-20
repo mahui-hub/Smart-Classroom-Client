@@ -3,7 +3,7 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" :inline="true" size="mini">
-        <el-form-item label="题库名称">
+        <el-form-item label="试卷名称">
           <el-input v-model="search.tikumingcheng"></el-input>
         </el-form-item>
         <el-form-item label="课程名称" prop="kechengid">
@@ -23,10 +23,10 @@
       <el-table-column label="评价人" align="center">
         <template slot-scope="{ row }"> {{ row.kaoshiren }} </template>
       </el-table-column>
-      <el-table-column label="题库编号" align="center">
+      <el-table-column label="试卷编号" align="center">
         <template slot-scope="{ row }"> {{ row.tikubianhao }} </template>
       </el-table-column>
-      <el-table-column label="题库名称" align="center">
+      <el-table-column label="试卷名称" align="center">
         <template slot-scope="{ row }"> {{ row.tikumingcheng }} </template>
       </el-table-column>
       <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
@@ -109,7 +109,7 @@
         search: {
           tikumingcheng: "",
           kechengid: "",
-          tikutype: "评价题库",
+          tikutype: "评价问卷",
         },
         total: {},
         page: 1, // 当前页
@@ -267,7 +267,7 @@
         this.page = page;
         // 筛选条件
         if (localStorage.getItem('role') == '教师') {
-          this.search.tikutype = "测验题库"
+          this.search.tikutype = "测验试卷"
         }
         var filter = extend(true, {}, this.search, {
           page: page + "",

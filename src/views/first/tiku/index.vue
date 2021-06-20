@@ -5,7 +5,7 @@
         <el-table border :data="list" stripe highlight-current-row>
           <el-table-column type="index" align="center"></el-table-column>
           <!-- 序号 -->
-          <el-table-column label="题库名称" align="center" prop="tikumingcheng">
+          <el-table-column label="试卷名称" align="center" prop="tikumingcheng">
           </el-table-column>
           <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
           </el-table-column>
@@ -127,7 +127,7 @@
         // 筛选条件
         var filter = extend(true, {}, this.search, {
           state: 1,
-          tikutype: "评价题库",
+          tikutype: "评价问卷",
           page: page + "",
           pagesize: this.pagesize + "",
         });

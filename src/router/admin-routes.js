@@ -724,7 +724,7 @@ export default [{
     name: "AdmintikuList",
     component: () => import("@/views/end/tiku/index"),
     meta: {
-      title: "题库列表",
+      title: "试卷列表",
       authLogin: true
     },
   },
@@ -733,7 +733,7 @@ export default [{
     name: "AdmintikuListfaburen",
     component: () => import("@/views/end/tiku/list-faburen"),
     meta: {
-      title: "题库列表",
+      title: "试卷列表",
       authLogin: true
     },
   },
@@ -742,7 +742,7 @@ export default [{
   //   name: "AdmintikuAdd",
   //   component: () => import("@/views/end/tiku/add"),
   //   meta: {
-  //     title: "添加题库",
+  //     title: "添加试卷",
   //     authLogin: true
   //   },
   // },
@@ -754,7 +754,7 @@ export default [{
     }),
     component: () => import("@/views/end/tiku/updt"),
     meta: {
-      title: "编辑题库",
+      title: "编辑试卷",
       authLogin: true
     },
   },
@@ -766,7 +766,7 @@ export default [{
     name: "AdmintikuDetail",
     component: () => import("@/views/end/tiku/detail"),
     meta: {
-      title: "题库详情"
+      title: "试卷详情"
     },
   },
   {

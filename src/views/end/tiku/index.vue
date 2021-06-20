@@ -3,11 +3,11 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form :model="search" size="mini" :inline="true">
-        <el-form-item label="题库名称">
+        <el-form-item label="试卷名称">
           <el-input v-model="search.tikumingcheng"></el-input>
         </el-form-item>
 
-        <el-form-item label="题库类型">
+        <el-form-item label="试卷类型">
           <el-select v-model="search.tikutype" clearable>
             <el-option v-for="m in tikuleixinglist" :value="m.label" :label="m.label" :key="m.label"
               :disabled="m.disabled!=role"></el-option>
@@ -24,7 +24,7 @@
           <el-button type="primary" @click="searchSubmit" icon="el-icon-search">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="addSubmit" icon="el-icon-plus">新增题库</el-button>
+          <el-button type="primary" @click="addSubmit" icon="el-icon-plus">新增试卷</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,17 +33,17 @@
       <el-table-column type="index" align="center"></el-table-column>
       <!-- 序号 -->
 
-      <el-table-column label="题库编号" align="center">
+      <el-table-column label="试卷编号" align="center">
         <template slot-scope="{ row }">
           {{ row.tikubianhao }}
         </template>
       </el-table-column>
-      <el-table-column label="题库名称" align="center" show-overflow-tooltip>
+      <el-table-column label="试卷名称" align="center" show-overflow-tooltip>
         <template slot-scope="{ row }">
           {{ row.tikumingcheng }}
         </template>
       </el-table-column>
-      <el-table-column label="题库类型" align="center">
+      <el-table-column label="试卷类型" align="center">
         <template slot-scope="{ row }">
           {{ row.tikutype }}
         </template>
@@ -66,19 +66,19 @@
         <template slot-scope="{ row }">
           <!-- @click="$goto('/end/shitiadd?id=' + row.id)" -->
           <el-button @click="fabu(row)" type="text" v-if="username == row.faburen&&row.state==0">
-            题库发布
+            试卷发布
           </el-button>
           <el-button @click="shitiadd(row)" type="text" v-if="username == row.faburen">
             试题添加
           </el-button>
           <el-button type="text" @click="$goto('/end/shiti?tikuid=' + row.id)">
             试题查询 </el-button>
-          <el-button type="text" @click="$goto('/end/jieguo?tikuid=' + row.id)" v-if="row.tikutype=='测验题库'">
+          <el-button type="text" @click="$goto('/end/jieguo?tikuid=' + row.id)" v-if="row.tikutype=='测验试卷'">
             测验结果查询 </el-button>
           <!-- <el-button @click="$goto('/end/kaoshijieguoadd?id=' + row.id)" type="text">
             评价结果添加
           </el-button> -->
-          <el-button type="text" @click="$goto('/end/kaoshijieguo?tikuid=' + row.id)" v-if="row.tikutype=='评价题库'">
+          <el-button type="text" @click="$goto('/end/kaoshijieguo?tikuid=' + row.id)" v-if="row.tikutype=='评价问卷'">
             评价结果查询
           </el-button>
           <!-- <el-button @click="$goto({ path: '/end/tikudetail', query: { id: row.id } })" type="text">详情</el-button> -->
@@ -97,15 +97,15 @@
     <el-dialog :title="headerTitle" :visible.sync="dialogVisible" size="mini">
       <div class="form-database-form">
         <el-form :model="form" ref="formModel" label-width="100px" status-icon validate-on-rule-change>
-          <el-form-item label="题库编号" prop="tikubianhao" :rules="[{ required: true, message: '请填写题库编号' }]">
-            <el-input placeholder="请输入题库编号" disabled v-model="form.tikubianhao" />
+          <el-form-item label="试卷编号" prop="tikubianhao" :rules="[{ required: true, message: '请填写试卷编号' }]">
+            <el-input placeholder="请输入试卷编号" disabled v-model="form.tikubianhao" />
           </el-form-item>
 
-          <el-form-item label="题库名称" prop="tikumingcheng" required :rules="[{ required: true, message: '请填写题库名称' }]">
-            <el-input placeholder="请输入题库名称" v-model="form.tikumingcheng" />
+          <el-form-item label="试卷名称" prop="tikumingcheng" required :rules="[{ required: true, message: '请填写试卷名称' }]">
+            <el-input placeholder="请输入试卷名称" v-model="form.tikumingcheng" />
           </el-form-item>
           <!-- 后续增加---先注释掉 -->
-          <el-form-item label="题库类型" prop="tikuleixing">
+          <el-form-item label="试卷类型" prop="tikuleixing">
             <el-select v-model="form.tikutype" clearable style="width: 100%">
               <el-option v-for="m in tikuleixinglist" :value="m.label" :label="m.label" :key="m.label"
                 :disabled="m.disabled!=role"></el-option>
@@ -128,15 +128,15 @@
         <el-button type="primary" @click="submit1" v-if="oper == 'edit'">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 添加题库题目 -->
-    <el-dialog title="添加题库题目" :visible.sync="dialogVisibletiku" size="mini">
+    <!-- 添加试卷题目 -->
+    <el-dialog title="添加试卷题目" :visible.sync="dialogVisibletiku" size="mini">
       <div class="form-database-form">
         <el-form :model="formtiku" ref="formModeltiku" label-width="100px" status-icon validate-on-rule-change>
-          <el-form-item label="题库编号" prop="tikubianhao">
+          <el-form-item label="试卷编号" prop="tikubianhao">
             <el-input v-model="formtiku.tikubianhao" disabled></el-input>
           </el-form-item>
 
-          <el-form-item label="题库名称" prop="tikumingcheng">
+          <el-form-item label="试卷名称" prop="tikumingcheng">
             <el-input v-model="formtiku.tikumingcheng" disabled></el-input>
           </el-form-item>
           <el-form-item label="发布人" prop="faburen">
@@ -194,15 +194,16 @@
           daan: "",
           faburen: this.$store.state.user.session.username,
           tikuid: 0,
+          state: 0
         },
         dialogVisibletiku: false,
         username: "",
         kechengmingchengList: [],
         tikuleixinglist: [{
-          label: "评价题库",
+          label: "评价问卷",
           disabled: "管理员"
         }, {
-          label: "测验题库",
+          label: "测验试卷",
           disabled: "教师"
         }],
         oper: "",
@@ -228,6 +229,7 @@
           faburen: this.$store.state.user.session.username,
           tikutype: "",
           kechengid: "",
+          state: 0
         },
         jiaoshiList: [],
         role: ""
@@ -235,7 +237,7 @@
     },
     methods: {
       fabu(row) {
-        this.$confirm('此操作将把' + row.tikumingcheng + '题库永久发布, 是否继续?', '提示', {
+        this.$confirm('此操作将把' + row.tikumingcheng + '试卷永久发布, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -252,14 +254,14 @@
                   this.$post(api.tiku.update, form).then(res => {
                     this.loading = false;
                     if (res.code == api.code.OK) {
-                      this.$message.success('题库状态修改成功');
+                      this.$message.success('试卷状态修改成功');
                       this.loadList(1)
                     } else {
                       this.$message.error(res.msg);
                     }
                   })
                 } else {
-                  this.$message.error('该题库目前没有试题，暂不能发布');
+                  this.$message.error('该试卷目前没有试题，暂不能发布');
                   return
                 }
               } else {
@@ -308,7 +310,7 @@
               .then((res) => {
                 this.loading = false;
                 if (res.code == api.code.OK) {
-                  this.$message.success("修改题库成功");
+                  this.$message.success("修改试卷成功");
                   this.loadList(1);
                   this.loading = false;
                   this.dialogVisible = false;
@@ -439,7 +441,7 @@
               .then((res) => {
                 this.loading = false;
                 if (res.code == api.code.OK) {
-                  this.$message.success("添加题库成功");
+                  this.$message.success("添加试卷成功");
                   this.loadList(1);
                   this.dialogVisible = false;
                   this.$refs.formModel.resetFields();
@@ -485,9 +487,9 @@
       },
       operChange() {
         if (this.oper == "add") {
-          this.headerTitle = "添加题库";
+          this.headerTitle = "添加试卷";
         } else {
-          this.headerTitle = "编辑题库";
+          this.headerTitle = "编辑试卷";
         }
       },
       searchSubmit() {

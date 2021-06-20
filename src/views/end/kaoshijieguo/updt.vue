@@ -9,10 +9,10 @@
 
 
                 <el-form :model="form" ref="formModel" label-width="130px" status-icon validate-on-rule-change>
-                    <el-form-item v-if="isRead" label="题库编号" prop="tikubianhao">
+                    <el-form-item v-if="isRead" label="试卷编号" prop="tikubianhao">
                         {{  form.tikubianhao  }} </el-form-item>
 
-                    <el-form-item v-if="isRead" label="题库名称" prop="tikumingcheng">
+                    <el-form-item v-if="isRead" label="试卷名称" prop="tikumingcheng">
                         {{  form.tikumingcheng  }} </el-form-item>
 
                     <el-form-item v-if="isRead" label="发布人" prop="faburen">

@@ -1,81 +1,90 @@
 <template>
-    
+
     <div class="jieguo-detail" v-loading="loading" ref="print">
         <el-page-header @back="goBack" content="详情页面"></el-page-header>
         <div class="admin-detail">
 
-                        <div class="detail detail-text">
+            <div class="detail detail-text">
                 <div class="detail-title">
-                    题库编号：
+                    试卷编号：
                 </div>
                 <div class="detail-content">
                     {{ map.tikubianhao }}
                 </div>
-            </div><div class="detail detail-text">
+            </div>
+            <div class="detail detail-text">
                 <div class="detail-title">
                     评价编号：
                 </div>
                 <div class="detail-content">
                     {{ map.kaoshibianhao }}
                 </div>
-            </div><div class="detail detail-text">
+            </div>
+            <div class="detail detail-text">
                 <div class="detail-title">
                     类型：
                 </div>
                 <div class="detail-content">
                     {{ map.leixing }}
                 </div>
-            </div><div class="detail detail-text">
+            </div>
+            <div class="detail detail-text">
                 <div class="detail-title">
                     字母：
                 </div>
                 <div class="detail-content">
                     {{ map.zimu }}
                 </div>
-            </div>                        <div class="detail detail-longtext">
+            </div>
+            <div class="detail detail-longtext">
                 <div class="detail-title">
-                    题库名称：
+                    试卷名称：
                 </div>
                 <div class="detail-content">
                     {{ map.tikumingcheng }}
                 </div>
-            </div><div class="detail detail-longtext">
+            </div>
+            <div class="detail detail-longtext">
                 <div class="detail-title">
                     试题题目：
                 </div>
                 <div class="detail-content">
                     {{ map.shititimu }}
                 </div>
-            </div>                        <div class="detail detail-textuser">
+            </div>
+            <div class="detail detail-textuser">
                 <div class="detail-title">
                     发布人：
                 </div>
                 <div class="detail-content">
                     {{ map.faburen }}
                 </div>
-            </div><div class="detail detail-textuser">
+            </div>
+            <div class="detail detail-textuser">
                 <div class="detail-title">
                     评价人：
                 </div>
                 <div class="detail-content">
                     {{ map.kaoshiren }}
                 </div>
-            </div>                        <div class="detail detail-textarea">
+            </div>
+            <div class="detail detail-textarea">
                 <div class="detail-title">
                     答案：
                 </div>
                 <div class="detail-content">
                     {{ map.daan }}
                 </div>
-            </div>                        <div class="detail detail-money">
+            </div>
+            <div class="detail detail-money">
                 <div class="detail-title">
                     得分：
                 </div>
                 <div class="detail-content">
                     {{ map.defen }}
                 </div>
-            </div>            
-                                                            
+            </div>
+
         </div>
         <div class="mt10">
             <el-button type="default" class="hidePrint" @click="$router.go(-1)">
@@ -88,7 +97,7 @@
     </div>
 </template>
 <style type="text/scss" scoped lang="scss">
-.jieguo-detail{
+    .jieguo-detail{
     .admin-detail {
         display: flex;
         flex-wrap: wrap;
@@ -140,60 +149,58 @@
 </style>
 <script>
     import api from '@/api';
-    import { extend } from '@/utils/extend';
+    import {
+        extend
+    } from '@/utils/extend';
 
-    
+
     export default {
         data() {
             return {
-                loading:false,
-                map:{},
+                loading: false,
+                map: {},
 
-                            }
-        },
-                props:{
-            id:{
-                type:[String,Number],
-                required:true
-            },
-                    },
-        watch: {
-            id:{
-                handler(){
-                    this.loadDetail();
-                },
-                immediate:true
             }
         },
-        computed: {
-                    },
+        props: {
+            id: {
+                type: [String, Number],
+                required: true
+            },
+        },
+        watch: {
+            id: {
+                handler() {
+                    this.loadDetail();
+                },
+                immediate: true
+            }
+        },
+        computed: {},
         methods: {
             goBack() {
                 this.$router.go(-1)
             },
-            loadDetail(){
-                if(this.loading) return;
+            loadDetail() {
+                if (this.loading) return;
                 this.loading = true;
-                this.$get(api.jieguo.detail , {
-                    id:this.id
-                }).then(res=>{
+                this.$get(api.jieguo.detail, {
+                    id: this.id
+                }).then(res => {
                     this.loading = false;
-                    if(res.code == api.code.OK){
-                        extend(this , res.data);
-                    }else{
+                    if (res.code == api.code.OK) {
+                        extend(this, res.data);
+                    } else {
                         this.$message.error(res.msg);
                     }
-                }).catch(err=>{
+                }).catch(err => {
                     this.loading = false;
                     this.$message.error(err.message);
                 });
             },
-                    },
-        created() {
-                    },
-        mounted() {
-                    },
-        destroyed() {
-                    }
+        },
+        created() {},
+        mounted() {},
+        destroyed() {}
     }
 </script>

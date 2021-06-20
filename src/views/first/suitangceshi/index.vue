@@ -5,7 +5,7 @@
                 <el-table border :data="list" stripe highlight-current-row>
                     <el-table-column type="index" align="center"></el-table-column>
                     <!-- 序号 -->
-                    <el-table-column label="题库名称" align="center" prop="tikumingcheng">
+                    <el-table-column label="试卷名称" align="center" prop="tikumingcheng">
                     </el-table-column>
                     <el-table-column label="课程名称" align="center" :formatter="kechengFormatter">
                     </el-table-column>
@@ -63,7 +63,7 @@
                 search: {
                     kechengid: "",
                     tikumingcheng: "",
-                    tikutype: '测验题库'
+                    tikutype: '测验试卷'
                 },
                 page: 1, // 当前页
                 pagesize: 12, // 页大小

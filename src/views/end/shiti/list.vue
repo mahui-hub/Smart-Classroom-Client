@@ -3,7 +3,7 @@
     <!-- 搜索 -->
     <div class="form-search">
       <el-form @submit.prevent.stop :inline="true" size="mini">
-        <el-form-item label="题库名称">
+        <el-form-item label="试卷名称">
           <el-input v-model="search.tikumingcheng"></el-input>
         </el-form-item>
         <el-form-item label="试题题目">
@@ -17,11 +17,11 @@
           </el-select>
         </el-form-item>
         <!-- 后续使用 -->
-        <el-form-item label="题库类别">
+        <el-form-item label="试卷类别">
           <el-select v-model="search.tikutype" clearable>
             <el-option label="请选择" value=""></el-option>
-            <el-option label="评价题库" value="评价题库"></el-option>
-            <el-option label="测验题库" value="测验题库"></el-option>
+            <el-option label="评价问卷" value="评价问卷"></el-option>
+            <el-option label="测验试卷" value="测验试卷"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -32,10 +32,10 @@
 
     <el-table border :data="list" style="width: 100%" highlight-current-row stripe>
       <el-table-column type="index" align="center"></el-table-column>
-      <el-table-column label="题库名称" align="center">
+      <el-table-column label="试卷名称" align="center">
         <template slot-scope="{ row }"> {{ row.tikumingcheng }} </template>
       </el-table-column>
-      <el-table-column label="题库类别" align="center">
+      <el-table-column label="试卷类别" align="center">
         <template slot-scope="{ row }"> {{ row.tikutype }} </template>
       </el-table-column>
       <el-table-column label="试题题目" align="center" show-overflow-tooltip>
@@ -70,11 +70,11 @@
     <el-dialog title="编辑试题" :visible.sync="dialogVisible" size="mini">
       <div class="form-database-form">
         <el-form :model="form" ref="formModel" label-width="100px" status-icon validate-on-rule-change>
-          <el-form-item label="题库编号" prop="tikubianhao">
+          <el-form-item label="试卷编号" prop="tikubianhao">
             <el-input v-model="form.tikubianhao" disabled></el-input>
           </el-form-item>
 
-          <el-form-item label="题库名称" prop="tikumingcheng">
+          <el-form-item label="试卷名称" prop="tikumingcheng">
             <el-input v-model="form.tikumingcheng" disabled></el-input>
           </el-form-item>
 

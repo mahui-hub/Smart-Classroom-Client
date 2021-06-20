@@ -148,7 +148,7 @@
      name: "IndextikuList",
      component: () => import("@/views/first/tiku/index"),
      meta: {
-       title: "题库列表",
+       title: "试卷列表",
        authLogin: true
      },
    },
@@ -160,7 +160,7 @@
      }),
      component: () => import("@/views/first/tiku/webdetail"),
      meta: {
-       title: "题库详情",
+       title: "试卷详情",
        authLogin: true
      },
    },

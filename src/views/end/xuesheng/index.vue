@@ -577,7 +577,7 @@
         const params = {}
         params.tikumingcheng = ''
         params.kechengid = ''
-        params.tikutype = '测验题库'
+        params.tikutype = '测验试卷'
         params.kaoshiren = ''
         this.$post(api.kaoshijieguo.list, params)
           .then((res) => {

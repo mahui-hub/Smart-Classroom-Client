@@ -1,7 +1,7 @@
 <template>
   <div class="app" v-loading="loading">
     <div style="margin:15px 0 0 0;background-color:#FFFFFF;box-shadow:0px 0px 2px 2px #DDDDDD">
-      <e-module-widget-title title="题库详情">
+      <e-module-widget-title title="试卷详情">
         <div style="padding:20px;">
           <div class="common-title" style="margin-top: 4em;">
             <p>
@@ -12,7 +12,7 @@
           <div class="news_show">
             <div class="show_t" v-html="map.tikumingcheng"> </div>
             <div style="text-align:center">
-              <span class="fa_time">题库编号:{{ map.tikubianhao }} </span>
+              <span class="fa_time">试卷编号:{{ map.tikubianhao }} </span>
               <span class="fa_time">教师:{{ map.faburen}} </span>
               <span class="fa_time"> 发布人:{{ map.faburen }} </span>
             </div>
@@ -98,7 +98,7 @@
           .then((res) => {
             this.loading = false;
             if (res.code == api.code.OK) {
-              if (tikuType == "测验题库") {
+              if (tikuType == "测验试卷") {
                 this.$refs.child.defen()
                 this.$message.success("考试完成");
 

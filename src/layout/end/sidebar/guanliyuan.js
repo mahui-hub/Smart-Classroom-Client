@@ -71,14 +71,14 @@ export default [{
     }, ],
   },
   {
-    label: "题库信息管理",
+    label: "试卷信息管理",
     to: "",
     children: [{
-        label: "题库信息添加",
+        label: "试卷信息添加",
         to: "/end/tiku",
       },
       {
-        label: "题库试题查询",
+        label: "试卷试题查询",
         to: "/end/shiti",
       },
     ],
